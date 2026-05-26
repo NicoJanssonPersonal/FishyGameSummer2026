@@ -3,7 +3,7 @@ using UnityEngine;
 public class BoatController : MonoBehaviour
 {
     public float thrustForce = 150f;
-    public float maxSpeed = 1f;
+    public float maxSpeed = 3f;
 
     public float turnTorque = 500f;
     public float maxAngularVelocity = 2f;
@@ -19,10 +19,16 @@ public class BoatController : MonoBehaviour
     public float maxRudderAngle = 35f;
     public float rudderTurnSpeed = 5f;
 
+    public Camera boatCam;
+    private Vector3 originalLocalPosition;
+    private float smoothSpeedPercentage;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
+        originalLocalPosition = boatCam.transform.localPosition;
+        
         rb.maxAngularVelocity = maxAngularVelocity;
     }
 
@@ -32,6 +38,7 @@ public class BoatController : MonoBehaviour
         turnInput = Input.GetAxis("Horizontal");   // A/D or Left/Right
 
         AnimateVisuals();
+        CameraZoomer();
     }
 
     void FixedUpdate()
@@ -39,15 +46,17 @@ public class BoatController : MonoBehaviour
         ApplyThrust();
         ApplySteering();
         ApplyWaterResistance();
+        float currentSpeed = rb.linearVelocity.magnitude;
+        smoothSpeedPercentage = Mathf.Clamp01(currentSpeed / maxSpeed);
     }
 
     void ApplyThrust()
     {
-        if (rb.linearVelocity.magnitude < maxSpeed)
-        {
-            Vector3 forwardThrust = transform.forward * moveInput * thrustForce;
-            rb.AddForce(forwardThrust, ForceMode.Force);
-        }
+        float currentSpeed = rb.linearVelocity.magnitude;
+        float thrustFactor = Mathf.Clamp01(1f - (currentSpeed / maxSpeed));
+
+        Vector3 forwardThrust = transform.forward * moveInput * thrustForce * thrustFactor;
+        rb.AddForce(forwardThrust, ForceMode.Force);
     }
 
     void ApplySteering()
@@ -85,4 +94,26 @@ public class BoatController : MonoBehaviour
             );
         }
     }
+    void CameraZoomer()
+    {
+        if (boatCam == null) return;
+
+        float targetFOV = Mathf.Lerp(60, 70, smoothSpeedPercentage);
+        boatCam.fieldOfView = Mathf.Lerp(boatCam.fieldOfView, targetFOV, Time.deltaTime * 2f);
+
+        float targetXShift = -turnInput * 1.5f;
+
+        float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
+        if (Mathf.Abs(forwardSpeed) < 0.1f) targetXShift = 0;
+
+        Vector3 targetPosition = originalLocalPosition;
+        targetPosition.x += targetXShift;
+
+        boatCam.transform.localPosition = Vector3.Lerp(
+            boatCam.transform.localPosition,
+            targetPosition,
+            Time.deltaTime * 4f
+        );
+    }
+
 }

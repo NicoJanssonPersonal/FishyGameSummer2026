@@ -176,7 +176,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101264516}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -309,7 +309,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307784325}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -559,7 +559,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375048427}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -919,7 +919,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692394909}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1081,7 +1081,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838254083}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1194,7 +1194,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1304501309}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1307,7 +1307,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378313839}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1420,7 +1420,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396643397}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1540,7 +1540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoatController
   thrustForce: 150
-  maxSpeed: 1
+  maxSpeed: 3
   turnTorque: 500
   maxAngularVelocity: 2
   sidewaysGrip: 2.5
@@ -1548,10 +1548,7 @@ MonoBehaviour:
   rudderTransform: {fileID: 156816445}
   maxRudderAngle: 35
   rudderTurnSpeed: 5
-  invertRudder: 0
-  visualsTransform: {fileID: 79397866}
-  maxTiltAngle: 10
-  tiltSpeed: 4
+  boatCam: {fileID: 330585545}
 --- !u!54 &1867024620
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1620,7 +1617,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077428782}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2f1aacbf0f5f5c148b8ffe238f36c0f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
