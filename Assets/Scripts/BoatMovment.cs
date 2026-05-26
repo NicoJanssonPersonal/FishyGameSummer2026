@@ -2,35 +2,87 @@ using UnityEngine;
 
 public class BoatController : MonoBehaviour
 {
-    public float engineForce = 20f;
-    public float rudderTorque = 5f;
-    public float waterDrag = 0.98f;
-    public float angularDragWater = 0.95f;
-    public float gravity = 9.81f;
+    public float thrustForce = 150f;
+    public float maxSpeed = 1f;
 
-    Rigidbody rb;
+    public float turnTorque = 500f;
+    public float maxAngularVelocity = 2f;
 
-    void Awake()
+    public float sidewaysGrip = 2.5f;
+    public float forwardDrag = 0.5f;
+
+    private Rigidbody rb;
+    private float moveInput;
+    private float turnInput;
+
+    public Transform rudderTransform;
+    public float maxRudderAngle = 35f;
+    public float rudderTurnSpeed = 5f;
+
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        rb.maxAngularVelocity = maxAngularVelocity;
+    }
+
+    void Update()
+    {
+        moveInput = Input.GetAxis("Vertical");     // W/S or Up/Down
+        turnInput = Input.GetAxis("Horizontal");   // A/D or Left/Right
+
+        AnimateVisuals();
     }
 
     void FixedUpdate()
     {
-        float throttle = Input.GetAxis("Vertical");     // W/S
-        float rudder = Input.GetAxis("Horizontal");     // A/D
+        ApplyThrust();
+        ApplySteering();
+        ApplyWaterResistance();
+    }
 
-        rb.AddForce(transform.forward * throttle * engineForce);
+    void ApplyThrust()
+    {
+        if (rb.linearVelocity.magnitude < maxSpeed)
+        {
+            Vector3 forwardThrust = transform.forward * moveInput * thrustForce;
+            rb.AddForce(forwardThrust, ForceMode.Force);
+        }
+    }
 
-        float forwardSpeed =
-            Vector3.Dot(rb.linearVelocity, transform.forward);
+    void ApplySteering()
+    {
+        float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
+        float speedFactor = Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed);
 
-        float steeringPower =
-            rudder * rudderTorque * Mathf.Abs(forwardSpeed);
+        float turnAmount = turnInput * turnTorque * speedFactor;
+        rb.AddTorque(transform.up * turnAmount, ForceMode.Force);
+    }
 
-        rb.AddTorque(Vector3.up * steeringPower);
+    void ApplyWaterResistance()
+    {
+        Vector3 forwardVelocity = transform.forward * Vector3.Dot(rb.linearVelocity, transform.forward);
+        rb.AddForce(-forwardVelocity * forwardDrag, ForceMode.Force);
 
-        rb.linearVelocity *= waterDrag;
-        rb.angularVelocity *= angularDragWater;
+        Vector3 rightVelocity = transform.right * Vector3.Dot(rb.linearVelocity, transform.right);
+
+        rb.AddForce(-rightVelocity * sidewaysGrip, ForceMode.Force);
+    }
+
+    void AnimateVisuals()
+    {
+
+        if (rudderTransform != null)
+        {
+            float directionMultiplier = -1;
+            float targetYRotation = turnInput * maxRudderAngle * directionMultiplier;
+
+            Quaternion targetRudderRot = Quaternion.Euler(0f, targetYRotation, 0f);
+            rudderTransform.localRotation = Quaternion.Lerp(
+                rudderTransform.localRotation,
+                targetRudderRot,
+                Time.deltaTime * rudderTurnSpeed
+            );
+        }
     }
 }
