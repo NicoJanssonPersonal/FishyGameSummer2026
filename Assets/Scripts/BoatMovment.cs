@@ -112,7 +112,7 @@ public class BoatController : MonoBehaviour
         boatCam.transform.localPosition = Vector3.Lerp(
             boatCam.transform.localPosition,
             targetPosition,
-            Time.deltaTime * 4f
+            Time.deltaTime * 0.5f
         );
     }
 
