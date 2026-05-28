@@ -24,10 +24,10 @@ public class FishingController : MonoBehaviour
         {
             float randomDelay = Random.Range(spawnIntervall, spawnIntervall + 1);
             yield return new WaitForSeconds(randomDelay);
-            
+
             boatPos = rb.position;
-            
-            SpawnPlop(minRadius, maxRadius); 
+
+            SpawnPlop(minRadius, maxRadius);
         }
     }
 
@@ -37,14 +37,40 @@ public class FishingController : MonoBehaviour
         float randomDistance = Random.Range(minSpawnRadius, maxSpawnRadius);
         float xOffset = Mathf.Cos(randomAngle) * randomDistance;
         float zOffset = Mathf.Sin(randomAngle) * randomDistance;
-        
+
         Vector3 spawnOffset = new Vector3(xOffset, 0.1f, zOffset);
-        
+
         Vector3 spawnLocation = boatPos + spawnOffset;
-       
+
         GameObject spawnedPlop = Instantiate(plop, spawnLocation, Quaternion.identity);
 
+        StartCoroutine(ChangeAllChildrenOpacityRoutine(spawnedPlop));
         Destroy(spawnedPlop, 5f);
+    }
+    private IEnumerator ChangeAllChildrenOpacityRoutine(GameObject parentObj)
+    {
+        float currentTime = 0;
+        float fadeDuration = 5f;
 
+        Renderer[] Renderers = parentObj.GetComponentsInChildren<Renderer>();
+
+        while (currentTime < fadeDuration)
+        {
+            currentTime += Time.deltaTime;
+
+            float alpha = Mathf.Lerp(1f, 0f, currentTime / fadeDuration);
+
+            foreach (Renderer rend in Renderers)
+            {
+                if (rend != null)
+                {
+                    Color c = rend.material.color;
+                    c.a = alpha;
+                    rend.material.color = c;
+                }
+            }
+
+            yield return null;
+        }
     }
 }

@@ -28,7 +28,7 @@ public class BoatController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         originalLocalPosition = boatCam.transform.localPosition;
-        
+
         rb.maxAngularVelocity = maxAngularVelocity;
     }
 
@@ -55,8 +55,17 @@ public class BoatController : MonoBehaviour
         float currentSpeed = rb.linearVelocity.magnitude;
         float thrustFactor = Mathf.Clamp01(1f - (currentSpeed / maxSpeed));
 
-        Vector3 forwardThrust = transform.forward * moveInput * thrustForce * thrustFactor;
-        rb.AddForce(forwardThrust, ForceMode.Force);
+        if (moveInput >= 0)
+        {
+            Vector3 forwardThrust = transform.forward * moveInput * thrustForce * thrustFactor;
+            rb.AddForce(forwardThrust, ForceMode.Force);
+        }
+        else
+        {
+            Vector3 forwardThrust = (transform.forward * moveInput * thrustForce * thrustFactor) * 0.05f;
+            rb.AddForce(forwardThrust, ForceMode.Force);
+        }
+
     }
 
     void ApplySteering()
@@ -83,7 +92,16 @@ public class BoatController : MonoBehaviour
 
         if (rudderTransform != null)
         {
-            float directionMultiplier = -1;
+            float directionMultiplier;
+            if(moveInput >= 0)
+            {
+                directionMultiplier = -1;
+            }
+            else
+            {
+                directionMultiplier = 1;
+            }
+            
             float targetYRotation = turnInput * maxRudderAngle * directionMultiplier;
 
             Quaternion targetRudderRot = Quaternion.Euler(0f, targetYRotation, 0f);
