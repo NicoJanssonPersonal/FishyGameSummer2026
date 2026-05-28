@@ -27,7 +27,6 @@ Material:
   m_ValidKeywords:
   - _ENABLEPLANERREFLECTION
   - _ENABLEREFRACTION
-  - _ENABLESHORELINE
   m_InvalidKeywords: []
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
@@ -268,7 +267,7 @@ Material:
     - _Caustics_Strength: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ConformToGeometry: 1
+    - _ConformToGeometry: 0
     - _Cull: 2
     - _Cutoff: 0.5
     - _Depth_Distance: 1.26
@@ -288,7 +287,7 @@ Material:
     - _ENABLENORMAL: 0
     - _ENABLEPLANERREFLECTION: 1
     - _ENABLEREFRACTION: 1
-    - _ENABLESHORELINE: 1
+    - _ENABLESHORELINE: 0
     - _ENABLESURFACEFOAM: 1
     - _ENABLEUNDERWATERLAYER: 1
     - _ENABLEWAVE: 0
@@ -327,7 +326,7 @@ Material:
     - _InterSec_Foam_Invert: 0
     - _InterSec_Foam_Scale: 10.66
     - _InterSec_Foam_Smooth: 0.02
-    - _InterSec_GradientDissolve: 1
+    - _InterSec_GradientDissolve: 0
     - _InterSec_Width: 0.59
     - _IntersectionDistanceCutoff: 2.5
     - _IntersectionDistanceDepth: 0.5
@@ -416,7 +415,7 @@ Material:
     - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _SurfFoam_AlphaBlend: 0
-    - _SurfFoam_Edge: 0.531
+    - _SurfFoam_Edge: 0.513
     - _SurfFoam_EdgeSmooth: 0
     - _SurfFoam_Scale: 0.19
     - _Surface: 1
