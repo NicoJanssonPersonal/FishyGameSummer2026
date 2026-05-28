@@ -45,5 +45,6 @@ public class FishingController : MonoBehaviour
         GameObject spawnedPlop = Instantiate(plop, spawnLocation, Quaternion.identity);
 
         Destroy(spawnedPlop, 5f);
+
     }
 }

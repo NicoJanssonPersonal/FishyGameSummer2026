@@ -98,7 +98,7 @@ public class BoatController : MonoBehaviour
     {
         if (boatCam == null) return;
 
-        float targetFOV = Mathf.Lerp(60, 70, smoothSpeedPercentage);
+        float targetFOV = Mathf.Lerp(50, 60, smoothSpeedPercentage);
         boatCam.fieldOfView = Mathf.Lerp(boatCam.fieldOfView, targetFOV, Time.deltaTime * 2f);
 
         float targetXShift = -turnInput * 1.5f;
