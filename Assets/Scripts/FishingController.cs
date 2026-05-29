@@ -17,4 +17,6 @@ public class FishingController1 : MonoBehaviour
 
         Debug.Log("Plop Clicked! Current Score: " + totalScore);
     }
+
+
 }
