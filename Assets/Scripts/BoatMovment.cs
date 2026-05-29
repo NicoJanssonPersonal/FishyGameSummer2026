@@ -3,18 +3,16 @@ using UnityEngine;
 public class BoatController : MonoBehaviour
 {
     [Header("Motor Settings")]
-    public float thrustForce = 150f;
-    public float maxSpeed = 3f;
-    public float reverseSpeedDebuff = 0.05f;
+    public float thrustForce = 50f; // Acceleration
+    public float maxSpeed = 5f; // Top speed
+    public float reverseSpeedDebuff = 0.5f; // Reversing speed decrease (50% by default)
 
-    public float turnTorque = 500f;
-   
-
-    public float sidewaysGrip = 2.5f;
-    public float forwardDrag = 0.5f;
+    public float sidewaysGrip = 2.5f; // ???
+    public float forwardDrag = 0.5f; // Water resistance
 
     [Header("Steering Limits")]
     public float maxTurnTorque = 50f; // Caps the raw force applied
+    public float turnTorque = 15f; // Turn acceleration
     public float minTurningRadius = 10f; // The tightest circle the boat can make
     public float maxAngularVelocity = 2f; // Caps how fast the boat can spin (rad/s)
 
@@ -87,14 +85,21 @@ public class BoatController : MonoBehaviour
         float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
         float speedFactor = Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed);
 
-        // 2. Calculate and clamp the torque (Max Turn Thrust)
-        float turnAmount = turnInput * turnTorque * speedFactor;
+        // 2. Determine steering direction based on forward/backward movement
+        float currentTurnInput = turnInput;
+        if (forwardSpeed < 0f)
+        {
+            currentTurnInput = -turnInput; // Inverts the steering when going in reverse
+        }
+
+        // 3. Calculate and clamp the torque (Max Turn Thrust) using the adjusted input
+        float turnAmount = currentTurnInput * turnTorque * speedFactor;
         turnAmount = Mathf.Clamp(turnAmount, -maxTurnTorque, maxTurnTorque);
 
-        // 3. Apply the torque
+        // 4. Apply the torque
         rb.AddTorque(transform.up * turnAmount, ForceMode.Force);
 
-        // 4. Enforce Max Turn Speed & Max Turn Radius
+        // 5. Enforce Max Turn Speed & Max Turn Radius
         LimitRotationSpeed(forwardSpeed);
     }
 
@@ -108,7 +113,6 @@ public class BoatController : MonoBehaviour
         if (Mathf.Abs(forwardSpeed) > 0.2f && minTurningRadius > 0f)
         {
             float radiusLimitedAngularSpeed = Mathf.Abs(forwardSpeed) / minTurningRadius;
-            // Keep whichever limit is stricter (smaller)
             allowedAngularSpeed = Mathf.Min(allowedAngularSpeed, radiusLimitedAngularSpeed);
         }
 
@@ -131,19 +135,20 @@ public class BoatController : MonoBehaviour
 
     void AnimateVisuals()
     {
-
         if (rudderTransform != null)
         {
+
+            float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
             float directionMultiplier;
-            if(moveInput >= 0)
+            if (forwardSpeed >= 0f)
             {
-                directionMultiplier = -1;
+                directionMultiplier = -1f;
             }
             else
             {
-                directionMultiplier = 1;
+                directionMultiplier = -1f;
             }
-            
+
             float targetYRotation = turnInput * maxRudderAngle * directionMultiplier;
 
             Quaternion targetRudderRot = Quaternion.Euler(0f, targetYRotation, 0f);

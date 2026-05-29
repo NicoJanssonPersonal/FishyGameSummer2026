@@ -1174,7 +1174,7 @@ MonoBehaviour:
   minTurningRadius: 10
   maxAngularVelocity: 2
   rudderTransform: {fileID: 156816445}
-  maxRudderAngle: 35
+  maxRudderAngle: 10
   rudderTurnSpeed: 5
   boatCam: {fileID: 330585545}
   maxCamFOV: 80
