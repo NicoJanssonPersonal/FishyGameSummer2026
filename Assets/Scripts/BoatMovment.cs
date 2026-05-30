@@ -7,7 +7,7 @@ public class BoatController : MonoBehaviour
     public float maxSpeed = 5f; // Top speed
     public float reverseSpeedDebuff = 0.5f; // Reversing speed decrease (50% by default)
 
-    public float sidewaysGrip = 2.5f; // ???
+    public float sidewaysGrip = 2.5f; // ??? (De säger PANG om den e fö låg)
     public float forwardDrag = 0.5f; // Water resistance
 
     [Header("Steering Limits")]
@@ -31,6 +31,8 @@ public class BoatController : MonoBehaviour
     public float minCamFOV = 70f;
     private Vector3 originalLocalPosition;
     private float smoothSpeedPercentage;
+    private float currentXRotation = 40f;
+    public float reverseTiltAngle = 45f;
 
     void Start()
     {
@@ -149,7 +151,7 @@ public class BoatController : MonoBehaviour
                 directionMultiplier = -1f;
             }
 
-            float targetYRotation = turnInput * maxRudderAngle * directionMultiplier;
+            float targetYRotation = turnInput * minTurningRadius * directionMultiplier;
 
             Quaternion targetRudderRot = Quaternion.Euler(0f, targetYRotation, 0f);
             rudderTransform.localRotation = Quaternion.Lerp(
@@ -179,6 +181,24 @@ public class BoatController : MonoBehaviour
             targetPosition,
             Time.deltaTime * 0.5f
         );
+
+        
+        float targetXRotation = 40f;
+
+        // 1. Check if moving backward. 
+        if (forwardSpeed < -0.2f)
+        {
+            targetXRotation = reverseTiltAngle;
+        }
+
+        
+        float maxChangePerSecond = Mathf.Abs(reverseTiltAngle) / 10f;
+        currentXRotation = Mathf.MoveTowards(currentXRotation, targetXRotation, maxChangePerSecond * Time.deltaTime);
+
+        // 3. Directly force the local X angle while preserving your camera's current Y and Z.
+        // This overrides basic rotation conflicts.
+        Vector3 currentAngles = boatCam.transform.localEulerAngles;
+        boatCam.transform.localEulerAngles = new Vector3(currentXRotation, currentAngles.y, currentAngles.z);
     }
 
 }
