@@ -43,7 +43,7 @@ public class MinigameManager : MonoBehaviour
 
         if (greenZoneRects[0] != null)
         {
-            float greenZoneBottom = greenZoneRects[0].anchoredPosition.y - (greenZoneRects[0].rect.height / 2f);
+            float greenZoneBottom = greenZoneRects[0].anchoredPosition.y - (greenZoneRects[0].rect.height / 4f);
 
             if (fishY <= greenZoneBottom)
             {
