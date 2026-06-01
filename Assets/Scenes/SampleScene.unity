@@ -1906,10 +1906,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -2229,6 +2229,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 714472047}
     m_Modifications:
+    - target: {fileID: 2956475559440856572, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+      propertyPath: m_Radius
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2956475559440856572, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
       propertyPath: m_IsTrigger
       value: 1

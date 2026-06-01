@@ -13,6 +13,8 @@ public class MinigameManager : MonoBehaviour
     bool isFishInGreenZone = false;
     public Rigidbody2D fisheRB;
 
+    [Header("fiskarns STATS")]
+    float constantSpeed = 50f;
     private bool isUIOpen = false;
     private minigameTriggerForwarder fishForwarder;
     private RectTransform[] greenZoneRects = new RectTransform[4];
@@ -23,20 +25,44 @@ public class MinigameManager : MonoBehaviour
 
     void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isUIOpen) closeUI();
-            else openUi();
+            //else openUi();
+        }
+        if (!isUIOpen) return;
+
+        RectTransform fishRect = fishe.GetComponent<RectTransform>();
+        if (fishRect == null) return;
+
+        float fishY = fishRect.anchoredPosition.y;
+
+        if (greenZoneRects[0] != null)
+        {
+            float greenZoneBottom = greenZoneRects[0].anchoredPosition.y - (greenZoneRects[0].rect.height / 2f);
+
+            if (fishY <= greenZoneBottom)
+            {
+                fishEscaped();
+                closeUI();
+                return;
+            }
+        }
+        if (isUIOpen && Input.GetKeyDown(KeyCode.Space) && !isFishInGreenZone)
+        {
+            fishEscaped();
         }
 
         if (isUIOpen && isFishInGreenZone)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                RectTransform fishRect = fishe.GetComponent<RectTransform>();
+                bool spacePressedOnce = true;
+                fishRect = fishe.GetComponent<RectTransform>();
                 if (fishRect != null)
                 {
-                    float fishY = fishRect.anchoredPosition.y;
+                    fishY = fishRect.anchoredPosition.y;
                     float detectionRadius = 25f;
                     bool teleported = false;
 
@@ -54,6 +80,8 @@ public class MinigameManager : MonoBehaviour
                             teleported = true;
                             break;
                         }
+
+
                     }
 
                     if (!teleported)
@@ -64,15 +92,26 @@ public class MinigameManager : MonoBehaviour
                         if (Mathf.Abs(fishY - lastZoneY) <= detectionRadius)
                         {
                             CatchFish();
+                            spacePressedOnce = false;
                         }
                     }
                 }
+                if (spacePressedOnce)
+                {
+                    fisheRB.linearVelocity = new Vector2(fisheRB.linearVelocity.x, -constantSpeed);
+                }
+
             }
         }
     }
     void CatchFish()
     {
         Debug.Log("fish caught");
+        closeUI();
+    }
+    void fishEscaped()
+    {
+        Debug.Log("fisharn escpaed");
         closeUI();
     }
     public void openUi()
@@ -107,7 +146,7 @@ public class MinigameManager : MonoBehaviour
             RectTransform rect = newgreenZone.GetComponent<RectTransform>();
             if (rect != null)
             {
-                float dynamicY = 146.7f + (i * yOffset);
+                float dynamicY = 140.5f + (i * yOffset);
                 rect.anchoredPosition3D = new Vector3(1127f, dynamicY, 0f);
                 float dynamicScaleY = 0.45f - (i * scaleShrinkFactor);
                 if (dynamicScaleY < 0.05f) dynamicScaleY = 0.05f;
