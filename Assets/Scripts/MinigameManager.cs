@@ -18,9 +18,11 @@ public class MinigameManager : MonoBehaviour
     private bool isUIOpen = false;
     private minigameTriggerForwarder fishForwarder;
     private RectTransform[] greenZoneRects = new RectTransform[4];
+    private Vector3 initalFishPos;
     void Start()
     {
         closeUI();
+        initalFishPos = fishe.transform.position;
     }
 
     void Update()
@@ -118,8 +120,8 @@ public class MinigameManager : MonoBehaviour
     {
         closeUI();
         isUIOpen = true;
-        //greenZoneRects.Clear();
-        fishe.transform.position = new Vector3(366.5f, 126.5f, 0);
+        //greenZoneRects.Clear();new Vector3(366.5f, 126.5f, 0)
+        fishe.transform.position = initalFishPos;
         uiPanel.SetActive(true);
         generategreenZones(1);
     }
