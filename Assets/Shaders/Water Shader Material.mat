@@ -442,7 +442,7 @@ Material:
     - _Underwater_Fade: 34.2
     - _WORLDSPACEDEPTH: 1
     - _WaterDepth: 0.3
-    - _Water_Depth: 1.5
+    - _Water_Depth: 1
     - _WaveHeight: 0.01
     - _WaveHeight2nd: 0.01
     - _WaveLength: 10

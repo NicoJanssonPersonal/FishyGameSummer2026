@@ -14,7 +14,8 @@ public class MinigameManager : MonoBehaviour
     public Rigidbody2D fisheRB;
 
     [Header("fiskarns STATS")]
-    float constantSpeed = 50f;
+    public float constantSpeed = 50f;
+    public int fishDifficulty = 2;
     private bool isUIOpen = false;
     private minigameTriggerForwarder fishForwarder;
     private RectTransform[] greenZoneRects = new RectTransform[4];
@@ -123,7 +124,7 @@ public class MinigameManager : MonoBehaviour
         //greenZoneRects.Clear();new Vector3(366.5f, 126.5f, 0)
         fishe.transform.position = initalFishPos;
         uiPanel.SetActive(true);
-        generategreenZones(1);
+        generategreenZones(fishDifficulty);
     }
 
     void closeUI()
