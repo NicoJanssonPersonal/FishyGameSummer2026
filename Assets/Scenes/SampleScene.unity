@@ -1685,7 +1685,7 @@ MonoBehaviour:
   fishe: {fileID: 1970376046}
   fisheRB: {fileID: 1970376051}
   constantSpeed: 100
-  fishDifficulty: 5
+  fishDifficulty: 1
 --- !u!4 &1653483917
 Transform:
   m_ObjectHideFlags: 0

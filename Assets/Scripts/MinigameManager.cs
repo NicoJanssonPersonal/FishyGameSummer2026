@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MinigameManager : MonoBehaviour
@@ -15,7 +16,7 @@ public class MinigameManager : MonoBehaviour
 
     [Header("fiskarns STATS")]
     public float constantSpeed = 50f;
-    public int fishDifficulty = 2;
+    public int fishDifficulty = 1;
     private bool isUIOpen = false;
     private minigameTriggerForwarder fishForwarder;
     private RectTransform[] greenZoneRects = new RectTransform[4];
@@ -76,14 +77,13 @@ public class MinigameManager : MonoBehaviour
                         if (Mathf.Abs(fishY - currentZoneY) <= detectionRadius)
                         {
                             float nextZoneY = greenZoneRects[i + 1].anchoredPosition.y;
-                            fishRect.anchoredPosition = new Vector2(fishRect.anchoredPosition.x, nextZoneY + Random.Range(5, 15));
+                            fishRect.anchoredPosition = new Vector2(fishRect.anchoredPosition.x, nextZoneY + Random.Range(-5, 25));
 
                             if (fisheRB != null) fisheRB.linearVelocity = Vector2.zero;
 
                             teleported = true;
                             break;
                         }
-
 
                     }
 
@@ -132,12 +132,13 @@ public class MinigameManager : MonoBehaviour
         isUIOpen = false;
         isFishInGreenZone = false;
         uiPanel.SetActive(false);
+        deletegreenZones();
     }
 
     void generategreenZones(int difficulty)
     {
         float yOffset = 65f;
-        float scaleShrinkFactor = 0.075f * difficulty;
+        float scaleShrinkFactor = 0.075f * (difficulty * Random.Range(0.5f, 1.5f));
 
         for (int i = 0; i < 4; i++)
         {
@@ -149,13 +150,36 @@ public class MinigameManager : MonoBehaviour
             RectTransform rect = newgreenZone.GetComponent<RectTransform>();
             if (rect != null)
             {
-                float dynamicY = 140.5f + (i * yOffset);
+                float dynamicY = 140.5f + (i * yOffset) + Random.Range(0, 15);
                 rect.anchoredPosition3D = new Vector3(1127f, dynamicY, 0f);
                 float dynamicScaleY = 0.45f - (i * scaleShrinkFactor);
                 if (dynamicScaleY < 0.05f) dynamicScaleY = 0.05f;
                 rect.localScale = new Vector3(1f, dynamicScaleY, 1f);
 
                 greenZoneRects[i] = rect;
+            }
+        }
+    }
+    void deletegreenZones()
+    {
+        if (greenZoneRects == null || greenZoneRects.Length == 0)
+        {
+            Debug.Log("greenzonesrects är tom");
+            return;
+        }
+
+        for (int i = 0; i < greenZoneRects.Length; i++)
+        {
+            if (greenZoneRects[i] != null)
+            {
+                minigameTriggerForwarder zoneForwarder = greenZoneRects[i].GetComponent<minigameTriggerForwarder>();
+                if (zoneForwarder != null)
+                {
+                    zoneForwarder.OnForwardTriggerChanged -= HandleTriggerStateChanged;
+                }
+
+                Destroy(greenZoneRects[i].gameObject);
+                greenZoneRects[i] = null;
             }
         }
     }
