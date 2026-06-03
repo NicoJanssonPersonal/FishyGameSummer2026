@@ -20,19 +20,21 @@ public class DayNightCycle : MonoBehaviour
     [Header("Sun Aesthetics")]
     [SerializeField] private Gradient sunColorGradient;
 
-    [Header("Water Aesthetics (Layer Filter Mode)")]
+    [Header("Water Aesthetics (Individual Gradients Mode)")]
     [Tooltip("Drop your Water Material asset directly from the Project/Assets folder here")]
     [SerializeField] private Material waterMaterialAsset;
 
     [Tooltip("The actual Water GameObject(s) in your hierarchy that need to change color visually")]
     [SerializeField] private Renderer[] waterSceneRenderers;
 
-    [Tooltip("The single master color filter laid on top of all water properties")]
-    [SerializeField] private Gradient masterWaterFilterGradient;
-
-    [Range(0f, 1f)]
-    [Tooltip("How strongly the filter layer is applied on top of the original colors")]
-    [SerializeField] private float filterStrength = 0.6f;
+    [SerializeField] private Gradient shallowColorGradient;
+    [SerializeField] private Gradient deepColorGradient;
+    [SerializeField] private Gradient surfFoamColorGradient;
+    [SerializeField] private Gradient interSecColorGradient;
+    [SerializeField] private Gradient slColorGradient;
+    [SerializeField] private Gradient underwaterColorGradient;
+    [SerializeField] private Gradient shadowColorGradient;
+    [SerializeField] private Gradient waveTopGradient;
 
     [Header("UI Image Fading")]
     [SerializeField] private Image dayImage;
@@ -60,10 +62,6 @@ public class DayNightCycle : MonoBehaviour
     private float targetNightAlpha = 0f;
     private float currentFadeAlpha = 0f;
 
-    // Track the target and current intensity for the 1-second fade
-    private float targetSunIntensity = 2f;
-    private float currentSunIntensity = 2f;
-
     // Shader Property IDs
     private int shallowColorID;
     private int deepColorID;
@@ -74,14 +72,12 @@ public class DayNightCycle : MonoBehaviour
     private int shadowColorID;
     private int waveTopID;
 
-    // Cached baseline default colors
-    private Color origShallow, origDeep, origSurfFoam, origInterSec, origSl, origUnderwater, origShadow, origWaveTop;
-
     public float TimeValue { get; private set; }
 
     void Start()
     {
-        sunLight = GetComponent<Light>();
+        // Uncommented this to ensure sunLight reference is caught automatically if not set in inspector
+        if (sunLight == null) sunLight = GetComponent<Light>();
 
         // Cache Shader IDs
         shallowColorID = Shader.PropertyToID("_Color_Shallow");
@@ -95,15 +91,6 @@ public class DayNightCycle : MonoBehaviour
 
         if (waterMaterialAsset != null)
         {
-            origShallow = waterMaterialAsset.GetColor(shallowColorID);
-            origDeep = waterMaterialAsset.GetColor(deepColorID);
-            origSurfFoam = waterMaterialAsset.GetColor(surfFoamColorID);
-            origInterSec = waterMaterialAsset.GetColor(interSecColorID);
-            origSl = waterMaterialAsset.GetColor(slColorID);
-            origUnderwater = waterMaterialAsset.GetColor(underwaterColorID);
-            origShadow = waterMaterialAsset.GetColor(shadowColorID);
-            origWaveTop = waterMaterialAsset.GetColor(waveTopID);
-
             runtimeWaterMaterial = new Material(waterMaterialAsset);
 
             if (waterSceneRenderers != null && waterSceneRenderers.Length > 0)
@@ -120,8 +107,6 @@ public class DayNightCycle : MonoBehaviour
 
         // Force snap values instantly at start frame
         UpdateCycleValues();
-        currentSunIntensity = targetSunIntensity;
-        if (sunLight != null) sunLight.intensity = currentSunIntensity;
 
         DetermineTargetUIState();
         currentFadeAlpha = targetNightAlpha;
@@ -158,32 +143,51 @@ public class DayNightCycle : MonoBehaviour
         float xRotation = (overallDayPercent * 360f) - 90f;
         transform.rotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        // 1-SECOND SNAP FADE TIMING:
-        // Check if the current clock time is within the daytime window (6:00 to 18:00)
-        if (currentInGameTime >= 6f && currentInGameTime < 18f)
-        {
-            targetSunIntensity = 2f; // Day target
-        }
-        else
-        {
-            targetSunIntensity = 0f; // Night target
-        }
-
-        if (sunLight != null)
-        {
-            sunLight.color = sunColorGradient.Evaluate(overallDayPercent);
-
-            // To transition a total value of 2 units in exactly 1 second, 
-            // the transition speed needs to be 2f units per second.
-            float fadeSpeed = 2f;
-            currentSunIntensity = Mathf.MoveTowards(currentSunIntensity, targetSunIntensity, fadeSpeed * Time.deltaTime);
-
-            sunLight.intensity = currentSunIntensity;
-        }
-
         // Keep water shader matching the back-and-forth movement layout
         TimeValue = Mathf.Cos((overallDayPercent - 0.5f) * 2f * Mathf.PI);
         float waterSwayProgress = (TimeValue * 0.5f) + 0.5f;
+
+        // --- GRADUAL SUN INTENSITY & SHADOW FADE LOGIC ---
+        if (sunLight != null)
+        {
+            // NEW: Instead of using overallDayPercent, we use waterSwayProgress 
+            // to make the sun color gradient cycle back and forth seamlessly.
+            sunLight.color = sunColorGradient.Evaluate(waterSwayProgress);
+
+            float calculatedIntensity = 0f;
+            float calculatedShadowStrength = 0f;
+
+            // Sunrise Window: From 6:00 to 7:00, fade intensity to 2, shadows to 1
+            if (currentInGameTime >= 6f && currentInGameTime < 7f)
+            {
+                float t = currentInGameTime - 6f;
+                calculatedIntensity = Mathf.Lerp(0f, 2f, t);
+                calculatedShadowStrength = Mathf.Lerp(0f, 1f, t);
+            }
+            // Daytime Window: From 7:00 to 17:00, full intensity (2) and full shadows (1)
+            else if (currentInGameTime >= 7f && currentInGameTime < 17f)
+            {
+                calculatedIntensity = 2f;
+                calculatedShadowStrength = 1f;
+            }
+            // Sunset Window: From 17:00 to 18:00, fade intensity to 0, shadows to 0
+            else if (currentInGameTime >= 17f && currentInGameTime < 18f)
+            {
+                float t = currentInGameTime - 17f;
+                calculatedIntensity = Mathf.Lerp(2f, 0f, t);
+                calculatedShadowStrength = Mathf.Lerp(1f, 0f, t);
+            }
+            // Nighttime Window: From 18:00 to 8:00, zeroed out
+            else
+            {
+                calculatedIntensity = 0f;
+                calculatedShadowStrength = 0f;
+            }
+
+            sunLight.intensity = calculatedIntensity;
+            sunLight.shadowStrength = calculatedShadowStrength;
+        }
+
         UpdateWaterLayerFilter(waterSwayProgress);
     }
 
@@ -191,16 +195,14 @@ public class DayNightCycle : MonoBehaviour
     {
         if (runtimeWaterMaterial == null) return;
 
-        Color filterColor = masterWaterFilterGradient.Evaluate(progress);
-
-        runtimeWaterMaterial.SetColor(shallowColorID, Color.Lerp(origShallow, filterColor, filterStrength));
-        runtimeWaterMaterial.SetColor(deepColorID, Color.Lerp(origDeep, filterColor, filterStrength));
-        runtimeWaterMaterial.SetColor(surfFoamColorID, Color.Lerp(origSurfFoam, filterColor, filterStrength));
-        runtimeWaterMaterial.SetColor(interSecColorID, Color.Lerp(origInterSec, filterColor, filterStrength));
-        runtimeWaterMaterial.SetColor(slColorID, Color.Lerp(origSl, filterColor, filterStrength));
-        runtimeWaterMaterial.SetColor(underwaterColorID, Color.Lerp(origUnderwater, filterColor, filterStrength));
-        runtimeWaterMaterial.SetColor(shadowColorID, Color.Lerp(origShadow, filterColor, filterStrength));
-        runtimeWaterMaterial.SetColor(waveTopID, Color.Lerp(origWaveTop, filterColor, filterStrength));
+        runtimeWaterMaterial.SetColor(shallowColorID, shallowColorGradient.Evaluate(progress));
+        runtimeWaterMaterial.SetColor(deepColorID, deepColorGradient.Evaluate(progress));
+        runtimeWaterMaterial.SetColor(surfFoamColorID, surfFoamColorGradient.Evaluate(progress));
+        runtimeWaterMaterial.SetColor(interSecColorID, interSecColorGradient.Evaluate(progress));
+        runtimeWaterMaterial.SetColor(slColorID, slColorGradient.Evaluate(progress));
+        runtimeWaterMaterial.SetColor(underwaterColorID, underwaterColorGradient.Evaluate(progress));
+        runtimeWaterMaterial.SetColor(shadowColorID, shadowColorGradient.Evaluate(progress));
+        runtimeWaterMaterial.SetColor(waveTopID, waveTopGradient.Evaluate(progress));
     }
 
     private void DetermineTargetUIState()
