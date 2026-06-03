@@ -15,8 +15,8 @@ public class MinigameManager : MonoBehaviour
     public Rigidbody2D fisheRB;
 
     [Header("fiskarns STATS")]
-    public float constantSpeed = 50f;
-    public int fishDifficulty = 1;
+    public float constantSpeed = GlobalStats.constantSpeed;
+    public int fishDifficulty = GlobalStats.fishDifficulty;
     private bool isUIOpen = false;
     private minigameTriggerForwarder fishForwarder;
     private RectTransform[] greenZoneRects = new RectTransform[4];
