@@ -7,9 +7,9 @@ public class FishingController : MonoBehaviour
     public GameObject plop;
     Vector3 boatPos;
     [Header("Spawn Settings")]
-    public float minRadius = 5;
-    public float maxRadius = 15;
-    public float spawnIntervall = 2;
+    public float minRadius = GlobalStats.minRadius;
+    public float maxRadius = GlobalStats.maxRadius;
+    public float spawnIntervall = GlobalStats.spawnIntervall;
 
 
     void Start()
@@ -27,11 +27,11 @@ public class FishingController : MonoBehaviour
 
             boatPos = rb.position;
 
-            SpawnPlop(minRadius, maxRadius);
+            SpawnPlop(minRadius, maxRadius, GlobalStats.plopAmount);
         }
     }
 
-    void SpawnPlop(float minSpawnRadius, float maxSpawnRadius)
+    void SpawnPlop(float minSpawnRadius, float maxSpawnRadius, int SpawnAmount)
     {
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);
         float randomDistance = Random.Range(minSpawnRadius, maxSpawnRadius);
@@ -42,10 +42,13 @@ public class FishingController : MonoBehaviour
 
         Vector3 spawnLocation = boatPos + spawnOffset;
 
-        GameObject spawnedPlop = Instantiate(plop, spawnLocation, Quaternion.identity);
-
-        StartCoroutine(ChangeAllChildrenOpacityRoutine(spawnedPlop));
-        Destroy(spawnedPlop, 5f);
+        for (int i = 0; i < SpawnAmount; i++)
+        {
+            GameObject spawnedPlop = Instantiate(plop, spawnLocation, Quaternion.identity);
+            StartCoroutine(ChangeAllChildrenOpacityRoutine(spawnedPlop));
+            Destroy(spawnedPlop, 5f);
+        }
+        
     }
     private IEnumerator ChangeAllChildrenOpacityRoutine(GameObject parentObj)
     {

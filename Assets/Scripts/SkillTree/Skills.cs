@@ -14,24 +14,13 @@ public class Skills : ScriptableObject
         ThrustForce,
         MaxSpeed,
         ReverseSpeedDebuff,
-        SidewaysGrip,
-        ForwardDrag,
 
         // === STEERING ===
         MaxTurnTorque,
         TurnTorque,
         MinTurningRadius,
         MaxAngularVelocity,
-        MaxRudderAngle,
         RudderTurnSpeed,
-
-        // === CAMERA ===
-        MaxCamFOV,
-        MinCamFOV,
-
-        // === REVERSE ===
-        CurrentXRotation,
-        ReverseTiltAngle,
 
         // === MINIGAME ===
         ConstantSpeed,
@@ -40,7 +29,8 @@ public class Skills : ScriptableObject
         // === PLOPS ===
         MinRadius,
         MaxRadius,
-        SpawnInterval
+        SpawnInterval,
+        plopAmount
     }
 
     public StatType targetStat;
@@ -74,12 +64,6 @@ public class Skills : ScriptableObject
             case StatType.ReverseSpeedDebuff:
                 GlobalStats.reverseSpeedDebuff += upgradeAmount;
                 break;
-            case StatType.SidewaysGrip:
-                GlobalStats.sidewaysGrip += upgradeAmount;
-                break;
-            case StatType.ForwardDrag:
-                GlobalStats.forwardDrag += upgradeAmount;
-                break;
 
             // === STEERING ===
             case StatType.MaxTurnTorque:
@@ -94,27 +78,8 @@ public class Skills : ScriptableObject
             case StatType.MaxAngularVelocity:
                 GlobalStats.maxAngularVelocity += upgradeAmount;
                 break;
-            case StatType.MaxRudderAngle:
-                GlobalStats.maxRudderAngle += upgradeAmount;
-                break;
             case StatType.RudderTurnSpeed:
                 GlobalStats.rudderTurnSpeed += upgradeAmount;
-                break;
-
-            // === CAMERA ===
-            case StatType.MaxCamFOV:
-                GlobalStats.maxCamFOV += upgradeAmount;
-                break;
-            case StatType.MinCamFOV:
-                GlobalStats.minCamFOV += upgradeAmount;
-                break;
-
-            // === REVERSE ===
-            case StatType.CurrentXRotation:
-                GlobalStats.currentXRotation += upgradeAmount;
-                break;
-            case StatType.ReverseTiltAngle:
-                GlobalStats.reverseTiltAngle += upgradeAmount;
                 break;
 
             // === MINIGAME ===
@@ -135,6 +100,9 @@ public class Skills : ScriptableObject
             case StatType.SpawnInterval:
                 GlobalStats.spawnIntervall += upgradeAmount;
                 break;
+            case StatType.plopAmount:
+                GlobalStats.plopAmount += (int)upgradeAmount;
+                break;
         }
 
         Debug.Log($"{skillName} upgraded! New global value: " + GetCurrentValueString());
@@ -148,24 +116,13 @@ public class Skills : ScriptableObject
             StatType.ThrustForce => GlobalStats.thrustForce.ToString(),
             StatType.MaxSpeed => GlobalStats.maxSpeed.ToString(),
             StatType.ReverseSpeedDebuff => GlobalStats.reverseSpeedDebuff.ToString(),
-            StatType.SidewaysGrip => GlobalStats.sidewaysGrip.ToString(),
-            StatType.ForwardDrag => GlobalStats.forwardDrag.ToString(),
 
             // Steering
             StatType.MaxTurnTorque => GlobalStats.maxTurnTorque.ToString(),
             StatType.TurnTorque => GlobalStats.turnTorque.ToString(),
             StatType.MinTurningRadius => GlobalStats.minTurningRadius.ToString(),
             StatType.MaxAngularVelocity => GlobalStats.maxAngularVelocity.ToString(),
-            StatType.MaxRudderAngle => GlobalStats.maxRudderAngle.ToString(),
             StatType.RudderTurnSpeed => GlobalStats.rudderTurnSpeed.ToString(),
-
-            // Camera
-            StatType.MaxCamFOV => GlobalStats.maxCamFOV.ToString(),
-            StatType.MinCamFOV => GlobalStats.minCamFOV.ToString(),
-
-            // Reverse
-            StatType.CurrentXRotation => GlobalStats.currentXRotation.ToString(),
-            StatType.ReverseTiltAngle => GlobalStats.reverseTiltAngle.ToString(),
 
             // Minigame & Plops
             StatType.ConstantSpeed => GlobalStats.constantSpeed.ToString(),
@@ -173,6 +130,7 @@ public class Skills : ScriptableObject
             StatType.MinRadius => GlobalStats.minRadius.ToString(),
             StatType.MaxRadius => GlobalStats.maxRadius.ToString(),
             StatType.SpawnInterval => GlobalStats.spawnIntervall.ToString(),
+            StatType.plopAmount => GlobalStats.plopAmount.ToString(),
 
             _ => "Unknown"
         };

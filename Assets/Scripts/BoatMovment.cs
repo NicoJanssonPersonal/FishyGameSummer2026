@@ -3,18 +3,18 @@ using UnityEngine;
 public class BoatController : MonoBehaviour
 {
     [Header("Motor Settings")]
-    public float thrustForce = 50f; // Acceleration
-    public float maxSpeed = 5f; // Top speed
-    public float reverseSpeedDebuff = 0.5f; // Reversing speed decrease (50% by default)
+    public float thrustForce = GlobalStats.thrustForce; // Acceleration
+    public float maxSpeed = GlobalStats.maxSpeed; // Top speed
+    public float reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff; // Reversing speed decrease (50% by default)
 
-    public float sidewaysGrip = 2.5f; // ??? (De säger PANG om den e fö låg)
+    public float sidewaysGrip = 2.5f; // ??? (De sï¿½ger PANG om den e fï¿½ lï¿½g)
     public float forwardDrag = 0.5f; // Water resistance
 
     [Header("Steering Limits")]
-    public float maxTurnTorque = 50f; // Caps the raw force applied
-    public float turnTorque = 15f; // Turn acceleration
-    public float minTurningRadius = 10f; // The tightest circle the boat can make
-    public float maxAngularVelocity = 2f; // Caps how fast the boat can spin (rad/s)
+    public float maxTurnTorque = GlobalStats.maxTurnTorque; // Caps the raw force applied
+    public float turnTorque = GlobalStats.turnTorque; // Turn acceleration
+    public float minTurningRadius = GlobalStats.minTurningRadius; // The tightest circle the boat can make
+    public float maxAngularVelocity = GlobalStats.maxAngularVelocity; // Caps how fast the boat can spin (rad/s)
 
     private Rigidbody rb;
     private float moveInput;
@@ -22,8 +22,7 @@ public class BoatController : MonoBehaviour
 
     [Header("Rudder Settings (Visual)")]
     public Transform rudderTransform;
-    public float maxRudderAngle = 35f;
-    public float rudderTurnSpeed = 5f;
+    public float rudderTurnSpeed = GlobalStats.rudderTurnSpeed;
 
     [Header("Camera Settings")]
     public Camera boatCam;
