@@ -3,12 +3,13 @@ using UnityEngine;
 public class FishingController1 : MonoBehaviour
 {
     public MinigameManager minigameManager;
+    public FishMinigame fishMinigame;
     private static int totalScore = 0;
     void Start()
     {
-        if (minigameManager == null)
+        if (fishMinigame == null)
         {
-            minigameManager = FindAnyObjectByType<MinigameManager>();
+            fishMinigame = FindAnyObjectByType<FishMinigame>();
         }
     }
     void OnMouseDown()
@@ -22,9 +23,9 @@ public class FishingController1 : MonoBehaviour
         totalScore++;
         
         // Safety check to prevent crashing if it's STILL missing
-        if (minigameManager != null)
+        if (fishMinigame != null)
         {
-            minigameManager.openUi();
+            fishMinigame.openUi();
         }
         else
         {

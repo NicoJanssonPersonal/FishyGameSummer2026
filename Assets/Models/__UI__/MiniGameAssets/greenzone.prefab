@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4260077590841644350}
   m_Layer: 0
   m_Name: greenzone
-  m_TagString: Untagged
+  m_TagString: greenzones
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
