@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class FishingController : MonoBehaviour
@@ -7,14 +8,17 @@ public class FishingController : MonoBehaviour
     public GameObject plop;
     Vector3 boatPos;
     [Header("Spawn Settings")]
-    public float minRadius = GlobalStats.minRadius;
-    public float maxRadius = GlobalStats.maxRadius;
-    public float spawnIntervall = GlobalStats.spawnIntervall;
+    public float minRadius;
+    public float maxRadius;
+    public float spawnIntervall;
 
 
     void Start()
     {
         boatPos = rb.position;
+        minRadius = GlobalStats.minRadius;
+        maxRadius = GlobalStats.maxRadius;
+        spawnIntervall = GlobalStats.spawnIntervall;
         StartCoroutine(SpawnLoop());
     }
 

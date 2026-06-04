@@ -3,19 +3,11 @@ using UnityEngine;
 public class BoatController : MonoBehaviour
 {
     [Header("Motor Settings")]
-    public float thrustForce = GlobalStats.thrustForce; // Acceleration
-    public float maxSpeed = GlobalStats.maxSpeed; // Top speed
-    public float reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff; // Reversing speed decrease (50% by default)
-
+    public float thrustForce, maxSpeed, reverseSpeedDebuff;
     public float sidewaysGrip = 2.5f; // ??? (De s�ger PANG om den e f� l�g)
     public float forwardDrag = 0.5f; // Water resistance
-
     [Header("Steering Limits")]
-    public float maxTurnTorque = GlobalStats.maxTurnTorque; // Caps the raw force applied
-    public float turnTorque = GlobalStats.turnTorque; // Turn acceleration
-    public float minTurningRadius = GlobalStats.minTurningRadius; // The tightest circle the boat can make
-    public float maxAngularVelocity = GlobalStats.maxAngularVelocity; // Caps how fast the boat can spin (rad/s)
-
+    public float minTurningRadius, maxAngularVelocity, turnTorque, maxTurnTorque;
     private Rigidbody rb;
     private float moveInput;
     private float turnInput;
@@ -35,11 +27,11 @@ public class BoatController : MonoBehaviour
 
     void Start()
     {
+        getStatsFromGlobalStats();
+
         rb = GetComponent<Rigidbody>();
 
         originalLocalPosition = boatCam.transform.localPosition;
-
-        
     }
 
     void Update()
@@ -49,6 +41,20 @@ public class BoatController : MonoBehaviour
 
         AnimateVisuals();
         CameraZoomer();
+    }
+    void getStatsFromGlobalStats()
+    {
+        maxTurnTorque = GlobalStats.maxTurnTorque; // Caps the raw force applied
+        turnTorque = GlobalStats.turnTorque; // Turn acceleration
+        minTurningRadius = GlobalStats.minTurningRadius; // The tightest circle the boat can make
+        maxAngularVelocity = GlobalStats.maxAngularVelocity;
+        thrustForce = GlobalStats.thrustForce; // Acceleration
+        maxSpeed = GlobalStats.maxSpeed; // Top speed
+        reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff;
+        thrustForce = GlobalStats.thrustForce; // Acceleration
+        maxSpeed = GlobalStats.maxSpeed; // Top speed
+        reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff;
+        rudderTurnSpeed = GlobalStats.rudderTurnSpeed;
     }
 
     void FixedUpdate()
@@ -181,7 +187,7 @@ public class BoatController : MonoBehaviour
             Time.deltaTime * 0.5f
         );
 
-        
+
         float targetXRotation = 40f;
 
         // 1. Check if moving backward. 
@@ -190,7 +196,7 @@ public class BoatController : MonoBehaviour
             targetXRotation = reverseTiltAngle;
         }
 
-        
+
         float maxChangePerSecond = Mathf.Abs(reverseTiltAngle) / 10f;
         currentXRotation = Mathf.MoveTowards(currentXRotation, targetXRotation, maxChangePerSecond * Time.deltaTime);
 

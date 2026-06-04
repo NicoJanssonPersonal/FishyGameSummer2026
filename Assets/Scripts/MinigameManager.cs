@@ -23,6 +23,8 @@ public class MinigameManager : MonoBehaviour
     private Vector3 initalFishPos;
     void Start()
     {
+        fishDifficulty = GlobalStats.fishDifficulty;
+        constantSpeed = GlobalStats.constantSpeed;
         closeUI();
         initalFishPos = fishe.transform.position;
     }
@@ -48,8 +50,7 @@ public class MinigameManager : MonoBehaviour
 
             if (fishY <= greenZoneBottom)
             {
-                fishEscaped();
-                closeUI();
+                //fishEscaped();
                 return;
             }
         }
@@ -60,6 +61,7 @@ public class MinigameManager : MonoBehaviour
 
         if (isUIOpen && isFishInGreenZone)
         {
+            Debug.Log("in ze zone");
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 bool spacePressedOnce = true;
@@ -77,7 +79,7 @@ public class MinigameManager : MonoBehaviour
                         if (Mathf.Abs(fishY - currentZoneY) <= detectionRadius)
                         {
                             float nextZoneY = greenZoneRects[i + 1].anchoredPosition.y;
-                            fishRect.anchoredPosition = new Vector2(fishRect.anchoredPosition.x, nextZoneY + Random.Range(-5, 25));
+                            fishRect.anchoredPosition = new Vector2(fishRect.anchoredPosition.x, nextZoneY + Random.Range(0, 25));
 
                             if (fisheRB != null) fisheRB.linearVelocity = Vector2.zero;
 
@@ -125,6 +127,7 @@ public class MinigameManager : MonoBehaviour
         fishe.transform.position = initalFishPos;
         uiPanel.SetActive(true);
         generategreenZones(fishDifficulty);
+        //generategreenZonesAI(fishDifficulty);
     }
 
     void closeUI()
@@ -156,10 +159,12 @@ public class MinigameManager : MonoBehaviour
                 if (dynamicScaleY < 0.05f) dynamicScaleY = 0.05f;
                 rect.localScale = new Vector3(1f, dynamicScaleY, 1f);
 
+                
                 greenZoneRects[i] = rect;
             }
         }
     }
+
     void deletegreenZones()
     {
         if (greenZoneRects == null || greenZoneRects.Length == 0)
