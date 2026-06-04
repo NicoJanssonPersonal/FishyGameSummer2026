@@ -2253,7 +2253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1653483917}
-  - component: {fileID: 1653483916}
+  - component: {fileID: 1653483918}
   m_Layer: 0
   m_Name: minigameManager
   m_TagString: Untagged
@@ -2261,25 +2261,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1653483916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653483915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4da0d96e33a1ac468cbf43c8fa35420, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MinigameManager
-  uiPanel: {fileID: 1834783427}
-  greenZoneHolder: {fileID: 181113612}
-  greenZone: {fileID: 6224181379542586208, guid: 3fd77f3e69860ce4e9d7ace123e6b678, type: 3}
-  fishe: {fileID: 1970376046}
-  fisheRB: {fileID: 1970376051}
-  constantSpeed: 100
-  fishDifficulty: 1
 --- !u!4 &1653483917
 Transform:
   m_ObjectHideFlags: 0
@@ -2295,6 +2276,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1653483918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653483915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0d4a06d826bea049ad78907eb5a4419, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishMinigame
+  uiPanel: {fileID: 1834783427}
+  greenZoneHolder: {fileID: 181113612}
+  greenZone: {fileID: 6224181379542586208, guid: 3fd77f3e69860ce4e9d7ace123e6b678, type: 3}
+  fisheGameObject: {fileID: 1970376046}
+  fishRB: {fileID: 0}
+  constantSpeed: 50
+  fishDifficulty: 1
 --- !u!1 &1769883130
 GameObject:
   m_ObjectHideFlags: 0
@@ -2597,10 +2597,10 @@ MonoBehaviour:
   reverseSpeedDebuff: 0.35
   sidewaysGrip: 2.5
   forwardDrag: 0.1
-  maxTurnTorque: 50
-  turnTorque: 15
   minTurningRadius: 10
   maxAngularVelocity: 2
+  turnTorque: 15
+  maxTurnTorque: 50
   rudderTransform: {fileID: 526247414}
   rudderTurnSpeed: 5
   boatCam: {fileID: 330585545}
@@ -3488,7 +3488,7 @@ PrefabInstance:
     - target: {fileID: 2405035637702580934, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
       propertyPath: minigameManager
       value: 
-      objectReference: {fileID: 1653483916}
+      objectReference: {fileID: 0}
     - target: {fileID: 3935305661142784557, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
       propertyPath: m_Name
       value: Plopwraper
