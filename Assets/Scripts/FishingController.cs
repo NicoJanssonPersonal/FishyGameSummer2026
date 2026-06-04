@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class FishingController1 : MonoBehaviour
 {
-    public MinigameManager minigameManager;
     public FishMinigame fishMinigame;
     private static int totalScore = 0;
     void Start()

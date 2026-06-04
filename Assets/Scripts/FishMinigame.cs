@@ -8,9 +8,7 @@ public class FishMinigame : MonoBehaviour
     public GameObject greenZone;
     public GameObject fisheGameObject;
     private RectTransform fishe;
-
-    [Header("Game State")]
-    private bool isFishInGreenZone = false;
+    public Rigidbody2D fishRB;
     private bool isUIOpen = false;
 
     [Header("Fish Stats")]
@@ -23,10 +21,11 @@ public class FishMinigame : MonoBehaviour
     void Start()
     {
         fishe = fisheGameObject.GetComponent<RectTransform>();
+        fishRB = fisheGameObject.GetComponent<Rigidbody2D>();
         fishDifficulty = GlobalStats.fishDifficulty;
         constantSpeed = GlobalStats.constantSpeed;
         initialFishPos = fishe.anchoredPosition;
-        debugfiskpos();
+        //debugfiskpos();
         closeUI();
     }
 
@@ -38,10 +37,11 @@ public class FishMinigame : MonoBehaviour
     }
     void Update()
     {
+        bool spacePressedOnce = false;
+        bool fishInAnyZone = false;
         if (!isUIOpen)
             return;
 
-        isFishInGreenZone = false;
 
         for (int i = 0; i < greenZoneObjects.Length; i++)
         {
@@ -53,40 +53,80 @@ public class FishMinigame : MonoBehaviour
 
             if (zoneRect != null && IsOverlapping(fishe, zoneRect))
             {
-                isFishInGreenZone = true;
+                fishInAnyZone = true;
 
-                Debug.Log($"Fish touching zone {i}");
-
-                // Stop checking once one overlap is found
+                //Debug.Log($"Fish touching zone {i}");
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    spacePressedOnce = true;
+                    if (i < greenZoneObjects.Length - 1)
+                    {
+                        MoveFishToZone(i + 1);
+                    }
+                    else
+                    {
+                        CatchFish();
+                        spacePressedOnce = false;
+                    }
+                }
                 break;
             }
         }
-        // FIXA så att den teleporta uppåt när man trycker på space
+        if (!fishInAnyZone && Input.GetKeyDown(KeyCode.Space))
+        {
+            FishEscaped();
+        }
+        if (spacePressedOnce)
+        {
+            fishRB.linearVelocity = new Vector2(fishRB.linearVelocity.x, -constantSpeed);
+        }
+
     }
 
-    bool IsOverlapping(RectTransform a, RectTransform b)
+    void MoveFishToZone(int zoneIndex)
     {
-        Vector3[] cornersA = new Vector3[4];
-        Vector3[] cornersB = new Vector3[4];
+        if (zoneIndex >= greenZoneObjects.Length)
+        {
+            CatchFish();
+            return;
+        }
 
-        a.GetWorldCorners(cornersA);
-        b.GetWorldCorners(cornersB);
+        RectTransform zone =
+            greenZoneObjects[zoneIndex].GetComponent<RectTransform>();
 
-        Rect rectA = new Rect(
-            cornersA[0].x,
-            cornersA[0].y,
-            cornersA[2].x - cornersA[0].x,
-            cornersA[2].y - cornersA[0].y
+        Vector3 targetPos = zone.position;
+
+        targetPos.y += Random.Range(-20f, 20f);
+
+        fishe.position = targetPos;
+    }
+
+    bool IsOverlapping(RectTransform fish, RectTransform zone)
+    {
+        Vector3[] fishCorners = new Vector3[4];
+        Vector3[] zoneCorners = new Vector3[4];
+
+        fish.GetWorldCorners(fishCorners);
+        zone.GetWorldCorners(zoneCorners);
+
+        float fishWidth = fishCorners[2].x - fishCorners[0].x;
+        float fishHeight = fishCorners[2].y - fishCorners[0].y;
+
+        Rect fishHitbox = new Rect(
+            fishCorners[0].x,
+            fishCorners[2].y - fishHeight / 8f,
+            fishWidth,
+            fishHeight / 8f
         );
 
-        Rect rectB = new Rect(
-            cornersB[0].x,
-            cornersB[0].y,
-            cornersB[2].x - cornersB[0].x,
-            cornersB[2].y - cornersB[0].y
+        Rect zoneRect = new Rect(
+            zoneCorners[0].x,
+            zoneCorners[0].y,
+            zoneCorners[2].x - zoneCorners[0].x,
+            zoneCorners[2].y - zoneCorners[0].y
         );
-        // FISK RECT/COLLIDERN ÄR HELA FISKEN INTE BARA TARGETEN
-        return rectA.Overlaps(rectB);
+
+        return fishHitbox.Overlaps(zoneRect);
     }
 
     void CatchFish()
@@ -113,13 +153,12 @@ public class FishMinigame : MonoBehaviour
         uiPanel.SetActive(true);
 
         generategreenZones(fishDifficulty, 4);
-        debugfiskpos();
+        //debugfiskpos();
     }
 
     void closeUI()
     {
         isUIOpen = false;
-        isFishInGreenZone = false;
 
         deletegreenZones();
 

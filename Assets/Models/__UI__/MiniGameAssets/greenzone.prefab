@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3006722839931271098}
   - component: {fileID: 6267577416807202125}
   - component: {fileID: 5927717647652135134}
-  - component: {fileID: 4260077590841644350}
   m_Layer: 0
   m_Name: greenzone
   m_TagString: greenzones
@@ -123,15 +122,3 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 100, y: 100}
   m_EdgeRadius: 0
---- !u!114 &4260077590841644350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6224181379542586208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94b7a2b7ce14adf42ac6e2ba8116accf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::minigameTriggerForwarder

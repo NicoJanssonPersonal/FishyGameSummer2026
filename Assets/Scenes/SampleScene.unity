@@ -2253,7 +2253,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1653483917}
-  - component: {fileID: 1653483916}
   - component: {fileID: 1653483918}
   m_Layer: 0
   m_Name: minigameManager
@@ -2262,25 +2261,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1653483916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1653483915}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4da0d96e33a1ac468cbf43c8fa35420, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MinigameManager
-  uiPanel: {fileID: 1834783427}
-  greenZoneHolder: {fileID: 181113612}
-  greenZone: {fileID: 6224181379542586208, guid: 3fd77f3e69860ce4e9d7ace123e6b678, type: 3}
-  fishe: {fileID: 1970376046}
-  fisheRB: {fileID: 1970376051}
-  constantSpeed: 100
-  fishDifficulty: 1
 --- !u!4 &1653483917
 Transform:
   m_ObjectHideFlags: 0
@@ -2312,6 +2292,7 @@ MonoBehaviour:
   greenZoneHolder: {fileID: 181113612}
   greenZone: {fileID: 6224181379542586208, guid: 3fd77f3e69860ce4e9d7ace123e6b678, type: 3}
   fisheGameObject: {fileID: 1970376046}
+  fishRB: {fileID: 0}
   constantSpeed: 50
   fishDifficulty: 1
 --- !u!1 &1769883130
