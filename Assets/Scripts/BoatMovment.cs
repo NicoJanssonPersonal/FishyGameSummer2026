@@ -51,14 +51,13 @@ public class BoatController : MonoBehaviour
         thrustForce = GlobalStats.thrustForce; // Acceleration
         maxSpeed = GlobalStats.maxSpeed; // Top speed
         reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff;
-        thrustForce = GlobalStats.thrustForce; // Acceleration
-        maxSpeed = GlobalStats.maxSpeed; // Top speed
         reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff;
         rudderTurnSpeed = GlobalStats.rudderTurnSpeed;
     }
 
     void FixedUpdate()
     {
+        getStatsFromGlobalStats();
         ApplyThrust();
         ApplySteering();
         ApplyWaterResistance();

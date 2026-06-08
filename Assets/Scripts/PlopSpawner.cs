@@ -7,18 +7,11 @@ public class FishingController : MonoBehaviour
     public Rigidbody rb;
     public GameObject plop;
     Vector3 boatPos;
-    [Header("Spawn Settings")]
-    public float minRadius;
-    public float maxRadius;
-    public float spawnIntervall;
 
 
     void Start()
     {
         boatPos = rb.position;
-        minRadius = GlobalStats.minRadius;
-        maxRadius = GlobalStats.maxRadius;
-        spawnIntervall = GlobalStats.spawnIntervall;
         StartCoroutine(SpawnLoop());
     }
 
@@ -26,12 +19,12 @@ public class FishingController : MonoBehaviour
     {
         while (true)
         {
-            float randomDelay = Random.Range(spawnIntervall, spawnIntervall + 1);
+            float randomDelay = Random.Range(GlobalStats.spawnIntervall, GlobalStats.spawnIntervall + 1);
             yield return new WaitForSeconds(randomDelay);
 
             boatPos = rb.position;
 
-            SpawnPlop(minRadius, maxRadius, GlobalStats.plopAmount);
+            SpawnPlop(GlobalStats.minRadius, GlobalStats.maxRadius, GlobalStats.plopAmount);
         }
     }
 
@@ -52,7 +45,7 @@ public class FishingController : MonoBehaviour
             StartCoroutine(ChangeAllChildrenOpacityRoutine(spawnedPlop));
             Destroy(spawnedPlop, 5f);
         }
-        
+
     }
     private IEnumerator ChangeAllChildrenOpacityRoutine(GameObject parentObj)
     {

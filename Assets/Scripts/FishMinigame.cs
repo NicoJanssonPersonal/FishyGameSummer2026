@@ -12,8 +12,6 @@ public class FishMinigame : MonoBehaviour
     private bool isUIOpen = false;
 
     [Header("Fish Stats")]
-    public float constantSpeed = GlobalStats.constantSpeed;
-    public int fishDifficulty = GlobalStats.fishDifficulty;
 
     private GameObject[] greenZoneObjects = new GameObject[4];
     private Vector2 initialFishPos;
@@ -22,8 +20,6 @@ public class FishMinigame : MonoBehaviour
     {
         fishe = fisheGameObject.GetComponent<RectTransform>();
         fishRB = fisheGameObject.GetComponent<Rigidbody2D>();
-        fishDifficulty = GlobalStats.fishDifficulty;
-        constantSpeed = GlobalStats.constantSpeed;
         initialFishPos = fishe.anchoredPosition;
         //debugfiskpos();
         closeUI();
@@ -78,7 +74,7 @@ public class FishMinigame : MonoBehaviour
         }
         if (spacePressedOnce)
         {
-            fishRB.linearVelocity = new Vector2(fishRB.linearVelocity.x, -constantSpeed);
+            fishRB.linearVelocity = new Vector2(fishRB.linearVelocity.x, -GlobalStats.constantSpeed);
         }
 
     }
@@ -145,14 +141,15 @@ public class FishMinigame : MonoBehaviour
     {
         // called from fishinController
         closeUI();
-
+        //GlobalStats.fishDifficulty = GlobalStats.fishDifficulty + 1;
+        //Debug.Log(GlobalStats.fishDifficulty);
         isUIOpen = true;
 
         fishe.anchoredPosition = initialFishPos;
 
         uiPanel.SetActive(true);
 
-        generategreenZones(fishDifficulty, 4);
+        generategreenZones(GlobalStats.fishDifficulty, 4);
         //debugfiskpos();
     }
 
