@@ -43,11 +43,24 @@ public static class GlobalStats
     public static int Level { get => _level; set => _level = value; }
     private static float _expTonNextLevel = 10;
     public static float expTonNextLevel { get => _expTonNextLevel; set => _expTonNextLevel = value; }
+    private static float _rarityChance = 1f;
+    public static float rarityChance { get => _rarityChance; set => _rarityChance = value; }
 
     // === Fishing ===
     // multifish chance
+    private static float _multiFishChance = 0f;
+    public static float multiFishChance { get => _multiFishChance; set => _multiFishChance = value; }
     // multi fish
-
+    private static float _multiFishAmount = 0f;
+    public static float multiFishAmount { get => _multiFishAmount; set => _multiFishAmount = value; }
+    // xp and money gain
+    private static float _xpGain = 0f;
+    public static float xpGain { get => _xpGain; set => _xpGain = value; }
+    private static float _moneyGain = 0f;
+    public static float moneyGain { get => _moneyGain; set => _moneyGain = value; }
     // fish rarity chance
-    
+    private static float _fishRarity = 0f;
+    public static float fishRarity { get => _fishRarity; set => _fishRarity = value; }
+
+    // === Character specific ===
 }

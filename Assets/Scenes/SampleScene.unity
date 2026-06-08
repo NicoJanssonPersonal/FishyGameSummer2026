@@ -1335,9 +1335,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishingController
   rb: {fileID: 1867024620}
   plop: {fileID: 3935305661142784557, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
-  minRadius: 5
-  maxRadius: 15
-  spawnIntervall: 2
 --- !u!4 &526247414 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3816968320278170718, guid: 4949be5eb6beb9e40b372d469baeca0d, type: 3}
@@ -1777,6 +1774,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb56261e97083be4896ee325be588d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardManager
+  rarityPrefabs:
+  - {fileID: 6068844338802303957, guid: 1b33c408d284ef148981c478044bed68, type: 3}
+  - {fileID: 3765119316893112399, guid: 60eb42a1a5a4712489de862cfb57656c, type: 3}
+  - {fileID: 7622463771971018130, guid: 8a586ac691542e447b29dcdaa400c0b2, type: 3}
+  - {fileID: 596225509588397016, guid: da119bd0f63e0fd45b55eba9825864a5, type: 3}
+  - {fileID: 8429156887595062897, guid: b14d69f258ca6dd42bde5763d9afc26f, type: 3}
   container: {fileID: 1199776202}
 --- !u!1 &1305153392
 GameObject:
@@ -2454,8 +2457,6 @@ MonoBehaviour:
   greenZone: {fileID: 6224181379542586208, guid: 3fd77f3e69860ce4e9d7ace123e6b678, type: 3}
   fisheGameObject: {fileID: 1970376046}
   fishRB: {fileID: 0}
-  constantSpeed: 50
-  fishDifficulty: 1
 --- !u!1 &1688678500
 GameObject:
   m_ObjectHideFlags: 0
