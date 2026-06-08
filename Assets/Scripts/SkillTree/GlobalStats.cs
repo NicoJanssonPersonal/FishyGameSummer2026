@@ -35,4 +35,19 @@ public static class GlobalStats
     public static float spawnIntervall { get => _spawnIntervall; set => _spawnIntervall = value; }
     private static int _plopAmount = 1;
     public static int plopAmount { get => _plopAmount; set => _plopAmount = value; }
+
+    // === Levelup System ===
+    private static float _experince = 0f;
+    public static float Experince { get => _experince; set => _experince = value; }
+    public static int _level = 0;
+    public static int Level { get => _level; set => _level = value; }
+    private static float _expTonNextLevel = 10;
+    public static float expTonNextLevel { get => _expTonNextLevel; set => _expTonNextLevel = value; }
+
+    // === Fishing ===
+    // multifish chance
+    // multi fish
+
+    // fish rarity chance
+    
 }

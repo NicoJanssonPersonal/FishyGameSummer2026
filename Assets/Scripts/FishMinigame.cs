@@ -128,6 +128,7 @@ public class FishMinigame : MonoBehaviour
     void CatchFish()
     {
         Debug.Log("Fish caught");
+        GlobalStats.Experince = GlobalStats.Experince + (GlobalStats.fishDifficulty * 3);
         closeUI();
     }
 

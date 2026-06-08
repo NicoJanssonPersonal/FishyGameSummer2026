@@ -26,30 +26,30 @@ public class CardManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         testInputs();
         for (int i = 0; i < cards.Length; i++)
         {
             {
-            if (LeveldUp)
-            {
-                if (!calledOnce)
+                if (checkLevel())
                 {
-                    for (int j = 0; j < 3; j++)
+                    if (!calledOnce)
                     {
-                        StartCoroutine(ExecuteAfterDelay(cards[j], j));
-                    } 
-                    calledOnce = true;
+                        for (int j = 0; j < 3; j++)
+                        {
+                            StartCoroutine(ExecuteAfterDelay(cards[j], j));
+                        }
+                        calledOnce = true;
+                    }
+                }
+                else if (!checkLevel())
+                {
+                    cards[i].SetActive(false);
+                    calledOnce = false;
                 }
             }
-            else if (!LeveldUp)
-            {
-                cards[i].SetActive(false);
-                calledOnce = false;
-            }
         }
-        }
-        
+
     }
     IEnumerator ExecuteAfterDelay(GameObject card, int number)
     {
@@ -90,7 +90,17 @@ public class CardManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            LeveldUp = false;
+            GlobalStats.Experince = 0;
         }
+    }
+    bool checkLevel()
+    {
+        if (GlobalStats.Experince < GlobalStats.expTonNextLevel)
+        {
+            return false;
+        }
+        GlobalStats.expTonNextLevel = GlobalStats.expTonNextLevel * 1.33f;
+        Debug.Log(GlobalStats.expTonNextLevel);
+        return true;
     }
 }
