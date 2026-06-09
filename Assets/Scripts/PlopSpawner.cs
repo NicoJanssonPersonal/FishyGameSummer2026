@@ -24,23 +24,21 @@ public class FishingController : MonoBehaviour
 
             boatPos = rb.position;
 
-            SpawnPlop(GlobalStats.minRadius, GlobalStats.maxRadius, GlobalStats.plopAmount);
+            SpawnPlop(GlobalStats.minRadius, GlobalStats.maxRadius, Mathf.RoundToInt(GlobalStats.plopAmount));
         }
     }
 
     void SpawnPlop(float minSpawnRadius, float maxSpawnRadius, int SpawnAmount)
     {
-        float randomAngle = Random.Range(0f, Mathf.PI * 2f);
-        float randomDistance = Random.Range(minSpawnRadius, maxSpawnRadius);
-        float xOffset = Mathf.Cos(randomAngle) * randomDistance;
-        float zOffset = Mathf.Sin(randomAngle) * randomDistance;
-
-        Vector3 spawnOffset = new Vector3(xOffset, 0.1f, zOffset);
-
-        Vector3 spawnLocation = boatPos + spawnOffset;
-
         for (int i = 0; i < SpawnAmount; i++)
         {
+            float randomAngle = Random.Range(0f, Mathf.PI * 2f);
+            float randomDistance = Random.Range(minSpawnRadius, maxSpawnRadius);
+            float xOffset = Mathf.Cos(randomAngle) * randomDistance;
+            float zOffset = Mathf.Sin(randomAngle) * randomDistance;
+
+            Vector3 spawnOffset = new Vector3(xOffset, 0.1f, zOffset);
+            Vector3 spawnLocation = boatPos + spawnOffset;
             GameObject spawnedPlop = Instantiate(plop, spawnLocation, Quaternion.identity);
             StartCoroutine(ChangeAllChildrenOpacityRoutine(spawnedPlop));
             Destroy(spawnedPlop, 5f);

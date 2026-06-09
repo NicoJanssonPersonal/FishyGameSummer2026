@@ -33,15 +33,15 @@ public static class GlobalStats
     public static float maxRadius { get => _maxRadius; set => _maxRadius = value; }
     private static float _spawnIntervall = 2f;
     public static float spawnIntervall { get => _spawnIntervall; set => _spawnIntervall = value; }
-    private static int _plopAmount = 1;
-    public static int plopAmount { get => _plopAmount; set => _plopAmount = value; }
+    private static float _plopAmount = 1;
+    public static float plopAmount { get => _plopAmount; set => _plopAmount = value; }
 
     // === Levelup System ===
     private static float _experince = 0f;
     public static float Experince { get => _experince; set => _experince = value; }
     public static int _level = 0;
     public static int Level { get => _level; set => _level = value; }
-    private static float _expTonNextLevel = 10;
+    private static float _expTonNextLevel = 2;
     public static float expTonNextLevel { get => _expTonNextLevel; set => _expTonNextLevel = value; }
     private static float _rarityChance = 1f;
     public static float rarityChance { get => _rarityChance; set => _rarityChance = value; }
@@ -51,7 +51,7 @@ public static class GlobalStats
     private static float _multiFishChance = 0f;
     public static float multiFishChance { get => _multiFishChance; set => _multiFishChance = value; }
     // multi fish
-    private static float _multiFishAmount = 0f;
+    private static float _multiFishAmount = 1f;
     public static float multiFishAmount { get => _multiFishAmount; set => _multiFishAmount = value; }
     // xp and money gain
     private static float _xpGain = 0f;

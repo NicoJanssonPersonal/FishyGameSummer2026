@@ -6,10 +6,8 @@ public class CardManager : MonoBehaviour
     private GameObject[] cards;
     [SerializeField] private GameObject[] rarityPrefabs;
     public Transform container;
-    // Array to keep track of the actual prefabs we spawn
     private GameObject[] activeSpawnedCards = new GameObject[3];
 
-    bool LeveldUp = false;
     bool calledOnce = false;
 
     void Start()
@@ -31,16 +29,17 @@ public class CardManager : MonoBehaviour
 
     void Update()
     {
-        testInputs();
-
-        if (checkLevel() || LeveldUp)
+        if (checkLevel())
         {
             if (!calledOnce)
             {
                 TriggerCardDisplay();
                 calledOnce = true;
-                LeveldUp = false;
             }
+        }
+        else if (GlobalStats.Experince == 0 && calledOnce)
+        {
+            HideCards();
         }
     }
 
@@ -56,13 +55,28 @@ public class CardManager : MonoBehaviour
             }
 
             activeSpawnedCards[i] = Instantiate(selectedPrefabs[i], cards[i].transform.position, cards[i].transform.rotation);
-
+            activeSpawnedCards[i].transform.localScale = selectedPrefabs[i].transform.localScale * 2f; 
             activeSpawnedCards[i].SetActive(false);
 
             cards[i].SetActive(false);
 
             StartCoroutine(ExecuteAfterDelay(activeSpawnedCards[i], i));
         }
+    }
+    public void HideCards()
+    {
+        StopAllCoroutines();
+
+        for (int i = 0; i < activeSpawnedCards.Length; i++)
+        {
+            if (activeSpawnedCards[i] != null)
+            {
+                Destroy(activeSpawnedCards[i]); 
+                
+            }
+        }
+
+        calledOnce = false;
     }
 
     IEnumerator ExecuteAfterDelay(GameObject card, int number)
@@ -76,7 +90,6 @@ public class CardManager : MonoBehaviour
         card.SetActive(true);
         float elapsed = 0f;
         float startRotation = card.transform.eulerAngles.y;
-
         float targetRotation = startRotation + 360f;
 
         while (elapsed < duration)
@@ -85,12 +98,16 @@ public class CardManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
 
             float currentRotation = Mathf.Lerp(startRotation, targetRotation, t);
+            if (card == null) yield break; 
             card.transform.eulerAngles = new Vector3(0, currentRotation, 0);
 
             yield return null;
         }
 
-        card.transform.eulerAngles = new Vector3(40, targetRotation, 0);
+        if (card != null)
+        {
+            card.transform.eulerAngles = new Vector3(40, targetRotation, 0);
+        }
     }
 
     GameObject[] pickCard(float cardRarityChance)
@@ -100,42 +117,18 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             float roll = Random.Range(0f, 1f);
-
             float finalScore = roll * cardRarityChance;
-
-            if (finalScore >= 0.9f)
-            {
-                selected[i] = rarityPrefabs[3];
-            }
-            else if (finalScore >= 0.75f)
-            {
-                selected[i] = rarityPrefabs[2];
-            }
-            else if (finalScore >= 0.45f)
-            {
-                selected[i] = rarityPrefabs[1];
-            }
-            else
-            {
-                selected[i] = rarityPrefabs[0];
-            }
+            
+            if (finalScore >= 0.97f) { selected[i] = rarityPrefabs[4]; }
+            else if (finalScore >= 0.9f) { selected[i] = rarityPrefabs[3]; }
+            else if (finalScore >= 0.75f) { selected[i] = rarityPrefabs[2]; }
+            else if (finalScore >= 0.45f) { selected[i] = rarityPrefabs[1]; }
+            else { selected[i] = rarityPrefabs[0]; }
         }
 
         return selected;
     }
 
-    void testInputs()
-    {
-        //remove
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            LeveldUp = true;
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            GlobalStats.Experince = 0;
-        }
-    }
     bool checkLevel()
     {
         if (GlobalStats.Experince < GlobalStats.expTonNextLevel)
@@ -143,7 +136,7 @@ public class CardManager : MonoBehaviour
             return false;
         }
         GlobalStats.expTonNextLevel = GlobalStats.expTonNextLevel * 1.33f;
-        Debug.Log(GlobalStats.expTonNextLevel);
+        Debug.Log("exp to nextLevel " + GlobalStats.expTonNextLevel);
         return true;
     }
 }
