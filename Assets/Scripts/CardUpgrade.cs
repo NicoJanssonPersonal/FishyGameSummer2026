@@ -7,8 +7,8 @@ public class CardUpgrade : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public TextMeshProUGUI cardText;
-    //private String[] upgrades = { "plop amount", "multi fish amount", "multi fish chance", "money gain", "xp gain", "fish rarity", "card rarity chance" };
-    private String[] upgrades = { "fish rarity"};
+    private String[] upgrades = { "plop amount", "multi fish amount", "multi fish chance", "money gain", "xp gain", "fish rarity", "card rarity chance" };
+    //private String[] upgrades = { "fish rarity"};
     float rarity;
     CardManager cardManager;
     void Start()
@@ -103,7 +103,6 @@ public class CardUpgrade : MonoBehaviour
             Debug.Log("current fish rarity = " + GlobalStats.fishRarity);
             GlobalStats.Experince = 0;
             GlobalStats.Level = GlobalStats.Level + 1;
-            // räknas ut nonstans att difficultin ökar ibland
         }
         if (Stat.StartsWith("card rarity chance"))
         {
@@ -111,7 +110,6 @@ public class CardUpgrade : MonoBehaviour
             Debug.Log("current card rarity chance = " + GlobalStats.rarityChance);
             GlobalStats.Experince = 0;
             GlobalStats.Level = GlobalStats.Level + 1;
-            // räknas ut nonstans att difficultin ökar ibland
         }
         Debug.Log(GlobalStats.Level);
     }

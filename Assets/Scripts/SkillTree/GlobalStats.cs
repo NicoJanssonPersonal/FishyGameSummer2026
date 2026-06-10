@@ -43,7 +43,7 @@ public static class GlobalStats
     public static int Level { get => _level; set => _level = value; }
     private static float _expTonNextLevel = 2;
     public static float expTonNextLevel { get => _expTonNextLevel; set => _expTonNextLevel = value; }
-    private static float _rarityChance = 10f;
+    private static float _rarityChance = 2f;
     public static float rarityChance { get => _rarityChance; set => _rarityChance = value; }
 
     // === Fishing ===
