@@ -74,6 +74,7 @@ public class FishMinigame : MonoBehaviour
         }
         if (spacePressedOnce)
         {
+            GlobalStats.constantSpeed = GlobalStats.constantSpeed * (GlobalStats.fishDifficulty);
             fishRB.linearVelocity = new Vector2(fishRB.linearVelocity.x, -GlobalStats.constantSpeed);
         }
 
@@ -127,8 +128,20 @@ public class FishMinigame : MonoBehaviour
 
     void CatchFish()
     {
-        Debug.Log("Fish caught");
-        GlobalStats.Experince = (GlobalStats.Experince + (GlobalStats.fishDifficulty * 3)) * GlobalStats.multiFishAmount;
+        //Debug.Log("Fish caught");
+        float roll = Random.Range(0f, 1f);
+        if (GlobalStats.multiFishChance > roll)
+        {
+            GlobalStats.Experince = ((GlobalStats.Experince + (GlobalStats.fishDifficulty * 3)) * GlobalStats.multiFishAmount) * GlobalStats.xpGain;
+            //Debug.Log("u caught " + GlobalStats.multiFishAmount + " fishes");
+        }
+        else
+        {
+            GlobalStats.Experince = (GlobalStats.Experince + (GlobalStats.fishDifficulty * 3)) * GlobalStats.xpGain;
+            //Debug.Log("u caught one fish");
+        }
+        //Debug.Log("chance for multi fish " + GlobalStats.multiFishChance + " Roll:" + roll);
+
         closeUI();
     }
 
@@ -149,8 +162,10 @@ public class FishMinigame : MonoBehaviour
         fishe.anchoredPosition = initialFishPos;
 
         uiPanel.SetActive(true);
+        int thisFishDiff = fishDifficultyBasedOfRarity();
+        Debug.Log("fiskens svårighet " + thisFishDiff);
+        generategreenZones(thisFishDiff, thisFishDiff);
 
-        generategreenZones(GlobalStats.fishDifficulty, 4);
         //debugfiskpos();
     }
 
@@ -162,10 +177,45 @@ public class FishMinigame : MonoBehaviour
 
         uiPanel.SetActive(false);
     }
+    int fishDifficultyBasedOfRarity()
+    {
+        float roll = Random.Range(0f, 100f);
+        if (GlobalStats.fishRarity > roll)
+        {
+            int fishDiff;
+            if (GlobalStats.fishRarity > 90)
+            {
+                fishDiff = GlobalStats.fishDifficulty + Random.Range(5, 10);
+                return fishDiff;
+            }
+            if (GlobalStats.fishRarity > 75)
+            {
+                fishDiff = GlobalStats.fishDifficulty + Random.Range(4, 5);
+                return fishDiff;
+            }
+            if (GlobalStats.fishRarity > 50)
+            {
+                fishDiff = GlobalStats.fishDifficulty + Random.Range(3, 4);
+                return fishDiff;
+            }
+            if (GlobalStats.fishRarity > 25)
+            {
+                fishDiff = GlobalStats.fishDifficulty + Random.Range(2, 3);
+                return fishDiff;
+            }
+            if (GlobalStats.fishRarity > 10)
+            {
+                fishDiff = GlobalStats.fishDifficulty + Random.Range(1, 2);
+                return fishDiff;
+            }
 
+        }
+        return GlobalStats.fishDifficulty;
+    }
     void generategreenZones(int difficulty, int greenZones)
     {
-        float yOffset = 65f;
+        greenZones = greenZones + 1;
+        float yOffset = 235f/greenZones;
 
         greenZoneObjects = new GameObject[greenZones];
 

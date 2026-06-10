@@ -7,7 +7,8 @@ public class CardUpgrade : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public TextMeshProUGUI cardText;
-    private String[] upgrades = {"plop amount", "fish amount"};
+    //private String[] upgrades = { "plop amount", "multi fish amount", "multi fish chance", "money gain", "xp gain", "fish rarity", "card rarity chance" };
+    private String[] upgrades = { "fish rarity"};
     float rarity;
     CardManager cardManager;
     void Start()
@@ -15,13 +16,13 @@ public class CardUpgrade : MonoBehaviour
         transform.Find("outline").gameObject.SetActive(false);
         rarity = getCardRarity();
         cardText.text = listOfUpgrades() + rarity.ToString() + "% increase";
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     string listOfUpgrades()
@@ -38,23 +39,23 @@ public class CardUpgrade : MonoBehaviour
     {
         if (transform.name.StartsWith("Common"))
         {
-            return UnityEngine.Random.Range(1,10);
+            return UnityEngine.Random.Range(1, 10);
         }
         if (transform.name.StartsWith("Uncommon"))
         {
-            return UnityEngine.Random.Range(10,20);
+            return UnityEngine.Random.Range(10, 20);
         }
         if (transform.name.StartsWith("Rare"))
         {
-            return UnityEngine.Random.Range(20,40);
+            return UnityEngine.Random.Range(20, 40);
         }
         if (transform.name.StartsWith("Legendary"))
         {
-            return  UnityEngine.Random.Range(40,75);
+            return UnityEngine.Random.Range(40, 75);
         }
         if (transform.name.StartsWith("Chaotic"))
         {
-            return UnityEngine.Random.Range(100,250);
+            return UnityEngine.Random.Range(100, 250);
         }
         return 0;
     }
@@ -63,27 +64,60 @@ public class CardUpgrade : MonoBehaviour
     {
         if (Stat.StartsWith("plop amount"))
         {
-            //Debug.Log("plop amount was upgrade by " + rarity + " %");
             GlobalStats.plopAmount *= (1f + (rarity / 100f));
-            Debug.Log("current plopamount = " + GlobalStats.plopAmount);
+            //Debug.Log("current plopamount = " + GlobalStats.plopAmount);
             GlobalStats.Experince = 0;
-            Debug.Log("current xp " + GlobalStats.Experince);
             GlobalStats.Level = GlobalStats.Level + 1;
         }
-        if (Stat.StartsWith("fish amount"))
+        if (Stat.StartsWith("multi fish amount"))
         {
-            //Debug.Log("plop amount was upgrade by " + rarity + " %");
             GlobalStats.multiFishAmount *= (1f + (rarity / 100f));
-            Debug.Log("current fish amount = " + GlobalStats.multiFishAmount);
-            GlobalStats.Experince =  0;
-            Debug.Log("current xp " + GlobalStats.Experince);
+            //Debug.Log("current fish amount = " + GlobalStats.multiFishAmount);
+            GlobalStats.Experince = 0;
             GlobalStats.Level = GlobalStats.Level + 1;
         }
-        
+        if (Stat.StartsWith("multi fish chance"))
+        {
+            GlobalStats.multiFishChance += rarity / 100f;
+            //Debug.Log("current multi fish chance = " + GlobalStats.multiFishChance);
+            GlobalStats.Experince = 0;
+            GlobalStats.Level = GlobalStats.Level + 1;
+        }
+        if (Stat.StartsWith("xp gain"))
+        {
+            GlobalStats.xpGain *= (1f + (rarity / 100f));
+            Debug.Log("current xp gain = " + GlobalStats.xpGain);
+            GlobalStats.Experince = 0;
+            GlobalStats.Level = GlobalStats.Level + 1;
+        }
+        if (Stat.StartsWith("money gain"))
+        {
+            GlobalStats.moneyGain *= (1f + (rarity / 100f));
+            Debug.Log("current money gain = " + GlobalStats.moneyGain);
+            GlobalStats.Experince = 0;
+            GlobalStats.Level = GlobalStats.Level + 1;
+        }
+        if (Stat.StartsWith("fish rarity"))
+        {
+            GlobalStats.fishRarity *= (1f + (rarity / 100f));
+            Debug.Log("current fish rarity = " + GlobalStats.fishRarity);
+            GlobalStats.Experince = 0;
+            GlobalStats.Level = GlobalStats.Level + 1;
+            // räknas ut nonstans att difficultin ökar ibland
+        }
+        if (Stat.StartsWith("card rarity chance"))
+        {
+            GlobalStats.rarityChance *= (1f + (rarity / 100f));
+            Debug.Log("current card rarity chance = " + GlobalStats.rarityChance);
+            GlobalStats.Experince = 0;
+            GlobalStats.Level = GlobalStats.Level + 1;
+            // räknas ut nonstans att difficultin ökar ibland
+        }
+        Debug.Log(GlobalStats.Level);
     }
     void OnMouseDown()
     {
-       upgradeStat(cardText.text);
+        upgradeStat(cardText.text);
     }
     void OnMouseEnter()
     {
