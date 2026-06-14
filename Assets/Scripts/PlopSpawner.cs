@@ -41,7 +41,6 @@ public class FishingController : MonoBehaviour
             Vector3 spawnLocation = boatPos + spawnOffset;
             GameObject spawnedPlop = Instantiate(plop, spawnLocation, Quaternion.identity);
             StartCoroutine(ChangeAllChildrenOpacityRoutine(spawnedPlop));
-            Destroy(spawnedPlop, 5f);
         }
 
     }
@@ -69,6 +68,11 @@ public class FishingController : MonoBehaviour
             }
 
             yield return null;
+        }
+        
+        if (parentObj != null)
+        {
+            Destroy(parentObj);
         }
     }
 }

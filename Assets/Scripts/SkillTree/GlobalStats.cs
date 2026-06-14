@@ -25,6 +25,9 @@ public static class GlobalStats
     public static float constantSpeed { get => _constantSpeed; set => _constantSpeed = value; }
     private static int _fishDifficulty = 1;
     public static int fishDifficulty { get => _fishDifficulty; set => _fishDifficulty = value; }
+    private static float _fishingRange = 5f;
+    public static float fishingRange  { get => _fishingRange ; set => _fishingRange  = value; }
+    
 
     // === PLOPS ===
     private static float _minRadius = 5f;

@@ -1,10 +1,13 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
     public Image xpBar;
-    
+    public TextMeshProUGUI levelText;
+
+    private bool isWaitingForUpgrade = false;    
     // Keeps track of the max XP from the previous frame
     private float lastMaxXp;
 
@@ -17,6 +20,7 @@ public class UiManager : MonoBehaviour
     void Update()
     {
         updateXpBar();
+        updateLevelDisplay();
     }
 
     void updateXpBar()
@@ -24,24 +28,39 @@ public class UiManager : MonoBehaviour
         float currentXp = GlobalStats.Experince;
         float currentMaxXp = GlobalStats.expTonNextLevel;
 
-        // IF the max XP suddenly jumped up, a level up happened this frame
-        if (currentMaxXp > lastMaxXp)
+        // 1. DETECT THE LEVEL UP
+        // If the max XP requirement jumped, or if XP suddenly dropped drastically
+        if (currentMaxXp > lastMaxXp || (currentXp < 5f && lastMaxXp > currentMaxXp))
         {
-            // Calculate percentage using the OLD max cap so it hits 100%+
-            float levelUpPercentage = currentXp / lastMaxXp;
-            xpBar.fillAmount = Mathf.Clamp01(levelUpPercentage);
+            isWaitingForUpgrade = true;
+            lastMaxXp = currentMaxXp; // Update our tracker
+        }
 
-            // Update our tracker to the new max XP for the next frame
-            lastMaxXp = currentMaxXp;
+        // 2. DETECT WHEN THE UPGRADE IS CHOSEN (RESET)
+        // If we were waiting for an upgrade, and XP is now perfectly 0, the menu closed!
+        if (isWaitingForUpgrade && currentXp == 0)
+        {
+            isWaitingForUpgrade = false;
+        }
+
+        // 3. APPLY THE VISUALS
+        if (isWaitingForUpgrade)
+        {
+            // Lock the bar at 100% while the player is picking their upgrade
+            xpBar.fillAmount = 1f;
         }
         else
         {
-            // Normal frame: calculate normally
+            // Normal state: Calculate the percentage perfectly
             float percentage = currentXp / currentMaxXp;
             xpBar.fillAmount = Mathf.Clamp01(percentage);
-
-            // Keep tracking the max XP
+            
+            // Keep our tracker updated during normal gameplay
             lastMaxXp = currentMaxXp;
         }
+    }
+    void updateLevelDisplay()
+    {
+        levelText.text = GlobalStats.Level.ToString();
     }
 }

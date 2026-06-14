@@ -45,6 +45,7 @@ public class CardManager : MonoBehaviour
 
     void TriggerCardDisplay()
     {
+        Time.timeScale = 0f;
         GameObject[] selectedPrefabs = pickCard(GlobalStats.rarityChance);
 
         for (int i = 0; i < 3; i++)
@@ -66,7 +67,7 @@ public class CardManager : MonoBehaviour
     public void HideCards()
     {
         StopAllCoroutines();
-
+        Time.timeScale = 1;
         for (int i = 0; i < activeSpawnedCards.Length; i++)
         {
             if (activeSpawnedCards[i] != null)
@@ -81,7 +82,7 @@ public class CardManager : MonoBehaviour
 
     IEnumerator ExecuteAfterDelay(GameObject card, int number)
     {
-        yield return new WaitForSeconds(0.25f * number);
+        yield return new WaitForSecondsRealtime(0.25f * number);
         StartCoroutine(RotateOverTime(1.0f, card));
     }
 
@@ -94,7 +95,7 @@ public class CardManager : MonoBehaviour
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
             float currentRotation = Mathf.Lerp(startRotation, targetRotation, t);
