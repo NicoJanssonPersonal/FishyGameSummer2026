@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class FishMinigame : MonoBehaviour
@@ -15,6 +16,11 @@ public class FishMinigame : MonoBehaviour
 
     private GameObject[] greenZoneObjects = new GameObject[4];
     private Vector2 initialFishPos;
+    public RectTransform killZone;
+
+    public TextMeshProUGUI timerText;
+    private float timeRemaining = 5;
+    bool isTimerRunning = false;
 
     void Start()
     {
@@ -33,6 +39,11 @@ public class FishMinigame : MonoBehaviour
     }
     void Update()
     {
+
+        if (isTimerRunning)
+        {
+            HandleCountdown();
+        }
         bool spacePressedOnce = false;
         bool fishInAnyZone = false;
         if (!isUIOpen)
@@ -67,6 +78,10 @@ public class FishMinigame : MonoBehaviour
                 }
                 break;
             }
+        }
+        if(IsOverlapping(fishe, killZone))
+        {
+            FishEscaped();
         }
         if (!fishInAnyZone && Input.GetKeyDown(KeyCode.Space))
         {
@@ -155,6 +170,8 @@ public class FishMinigame : MonoBehaviour
     {
         // called from fishinController
         closeUI();
+        timeRemaining = 5;
+        isTimerRunning = true;
         //GlobalStats.fishDifficulty = GlobalStats.fishDifficulty + 1;
         //Debug.Log(GlobalStats.fishDifficulty);
         isUIOpen = true;
@@ -245,7 +262,6 @@ public class FishMinigame : MonoBehaviour
             greenZoneObjects[i] = newGreenZone;
         }
     }
-
     void deletegreenZones()
     {
         foreach (GameObject zone in greenZoneObjects)
@@ -257,5 +273,40 @@ public class FishMinigame : MonoBehaviour
         }
 
         greenZoneObjects = new GameObject[0];
+    }
+    private void HandleCountdown()
+    {
+        if (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            UpdateTimerUI();
+        }
+        else
+        {
+            FinishTimer();
+        }
+    }
+
+    // 2. Handles updating the text element on the screen
+    private void UpdateTimerUI()
+    {
+        float seconds = Mathf.CeilToInt(timeRemaining);
+        timerText.text = seconds.ToString();
+    }
+
+    // 3. Handles what happens when the timer hits 0
+    private void FinishTimer()
+    {
+        timeRemaining = 0;
+        isTimerRunning = false;
+        timerText.text = "Fail";
+        
+        TriggerTimerEvents();
+    }
+
+    // 4. A dedicated place to put your gameplay events (e.g., enable player movement)
+    private void TriggerTimerEvents()
+    {
+        FishEscaped();
     }
 }
