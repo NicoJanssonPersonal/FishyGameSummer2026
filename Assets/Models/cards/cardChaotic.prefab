@@ -64,6 +64,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardChaotic
       objectReference: {fileID: 0}
+    - target: {fileID: 5522836984826067075, guid: 4e768b1ba189f2c44a5aa314795a08ef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678899021246485577, guid: 4e768b1ba189f2c44a5aa314795a08ef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.48
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

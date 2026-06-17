@@ -64,6 +64,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: cardUncommon
       objectReference: {fileID: 0}
+    - target: {fileID: 5522836984826067075, guid: efa7dbe5859cf2047842884e5af5ef2e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678899021246485577, guid: efa7dbe5859cf2047842884e5af5ef2e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.48
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
