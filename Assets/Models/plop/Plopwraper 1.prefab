@@ -167,4 +167,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48eabf7cf70b2c447900ed4859c455a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishingController1
-  minigameManager: {fileID: 0}
+  fishMinigame: {fileID: 0}
+  boat: {fileID: 0}
