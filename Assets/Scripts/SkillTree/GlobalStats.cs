@@ -27,6 +27,8 @@ public static class GlobalStats
     public static int fishDifficulty { get => _fishDifficulty; set => _fishDifficulty = value; }
     private static float _fishingRange = 5f;
     public static float fishingRange  { get => _fishingRange ; set => _fishingRange  = value; }
+    private static float _fishingStrength = 1f;
+    public static float fishingStrength  { get => _fishingStrength ; set => _fishingStrength  = value; }
     
 
     // === PLOPS ===
@@ -62,7 +64,7 @@ public static class GlobalStats
     private static float _moneyGain = 1f;
     public static float moneyGain { get => _moneyGain; set => _moneyGain = value; }
     // fish rarity chance
-    private static float _fishRarity = 1f;
+    private static float _fishRarity = 90f;
     public static float fishRarity { get => _fishRarity; set => _fishRarity = value; }
 
     // === Character specific ===

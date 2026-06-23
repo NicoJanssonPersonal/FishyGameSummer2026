@@ -89,7 +89,7 @@ public class FishMinigame : MonoBehaviour
         }
         if (spacePressedOnce)
         {
-            GlobalStats.constantSpeed = GlobalStats.constantSpeed * (GlobalStats.fishDifficulty);
+            GlobalStats.constantSpeed = (GlobalStats.constantSpeed * (GlobalStats.fishDifficulty)) - GlobalStats.fishingStrength;
             fishRB.linearVelocity = new Vector2(fishRB.linearVelocity.x, -GlobalStats.constantSpeed);
         }
 
@@ -166,7 +166,7 @@ public class FishMinigame : MonoBehaviour
         closeUI();
     }
 
-    public void openUi()
+    public void openUi(int fishDifficulty)
     {
         // called from fishinController
         closeUI();
@@ -179,9 +179,8 @@ public class FishMinigame : MonoBehaviour
         fishe.anchoredPosition = initialFishPos;
 
         uiPanel.SetActive(true);
-        int thisFishDiff = fishDifficultyBasedOfRarity();
-        Debug.Log("fiskens svårighet " + thisFishDiff);
-        generategreenZones(thisFishDiff, thisFishDiff);
+        Debug.Log("fiskens svårighet " + fishDifficulty);
+        generategreenZones(fishDifficulty, fishDifficulty);
 
         //debugfiskpos();
     }
@@ -193,41 +192,6 @@ public class FishMinigame : MonoBehaviour
         deletegreenZones();
 
         uiPanel.SetActive(false);
-    }
-    int fishDifficultyBasedOfRarity()
-    {
-        float roll = Random.Range(0f, 100f);
-        if (GlobalStats.fishRarity > roll)
-        {
-            int fishDiff;
-            if (GlobalStats.fishRarity > 90)
-            {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(5, 10);
-                return fishDiff;
-            }
-            if (GlobalStats.fishRarity > 75)
-            {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(4, 5);
-                return fishDiff;
-            }
-            if (GlobalStats.fishRarity > 50)
-            {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(3, 4);
-                return fishDiff;
-            }
-            if (GlobalStats.fishRarity > 25)
-            {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(2, 3);
-                return fishDiff;
-            }
-            if (GlobalStats.fishRarity > 10)
-            {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(1, 2);
-                return fishDiff;
-            }
-
-        }
-        return GlobalStats.fishDifficulty;
     }
     void generategreenZones(int difficulty, int greenZones)
     {
