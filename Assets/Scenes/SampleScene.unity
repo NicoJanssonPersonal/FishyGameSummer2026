@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!224 &10875826 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6924915564827463270, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 7097041501140922294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &16417509
 GameObject:
   m_ObjectHideFlags: 0
@@ -3198,6 +3203,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1022387375}
   m_CullTransparentMesh: 1
+--- !u!1 &1026640417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6633138390731995575, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 7097041501140922294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1041307044
 GameObject:
   m_ObjectHideFlags: 0
@@ -4006,6 +4016,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 52272928}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1512525576 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7576437392839976427, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 7097041501140922294}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1519355873 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4486732492041574979, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 7097041501140922294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1523020500
 GameObject:
   m_ObjectHideFlags: 0
@@ -4341,9 +4361,16 @@ MonoBehaviour:
   greenZoneHolder: {fileID: 181113612}
   greenZone: {fileID: 6224181379542586208, guid: 3fd77f3e69860ce4e9d7ace123e6b678, type: 3}
   fisheGameObject: {fileID: 1970376046}
+  fishesGameObjects:
+  - {fileID: 1836086831}
+  - {fileID: 1512525576}
+  - {fileID: 1966084708}
+  - {fileID: 1519355873}
+  - {fileID: 1026640417}
   fishRB: {fileID: 1970376051}
   killZone: {fileID: 1769883131}
   timerText: {fileID: 1964438926}
+  baitHitBox: {fileID: 10875826}
 --- !u!1 &1769883130
 GameObject:
   m_ObjectHideFlags: 0
@@ -4594,6 +4621,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1836086831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8931069267669704579, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 7097041501140922294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1867024616
 GameObject:
   m_ObjectHideFlags: 0
@@ -5155,6 +5187,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964438924}
   m_CullTransparentMesh: 1
+--- !u!1 &1966084708 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 702010070326740022, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 7097041501140922294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1970376046 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4471310805339237413, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
@@ -6072,9 +6109,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 714472047}
     m_Modifications:
+    - target: {fileID: 702010070326740022, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4471310805339237413, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
       propertyPath: m_Name
       value: fish
+      objectReference: {fileID: 0}
+    - target: {fileID: 4486732492041574979, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4963217975528794950, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
       propertyPath: m_Pivot.x
@@ -6156,11 +6201,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6633138390731995575, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7217043783096643717, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7576437392839976427, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7673814086011435858, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
       propertyPath: m_Texture
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7217043783096643717, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

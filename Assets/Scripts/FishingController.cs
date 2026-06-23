@@ -70,36 +70,30 @@ public class FishingController1 : MonoBehaviour
             int fishDiff;
             if (GlobalStats.fishRarity > 90)
             {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(5, 10);
+                fishDiff = GlobalStats.fishDifficulty + 4;
                 tubeRenderer.material.color = Color.red;
                 return fishDiff;
             }
             if (GlobalStats.fishRarity > 75)
             {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(4, 5);
+                fishDiff = GlobalStats.fishDifficulty + 3;
                 tubeRenderer.material.color = Color.yellow;
                 return fishDiff;
             }
             if (GlobalStats.fishRarity > 50)
             {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(3, 4);
+                fishDiff = GlobalStats.fishDifficulty + 2;
                 tubeRenderer.material.color = Color.pink;
                 return fishDiff;
             }
             if (GlobalStats.fishRarity > 25)
             {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(2, 3);
+                fishDiff = GlobalStats.fishDifficulty + 1;
                 tubeRenderer.material.color = Color.green;
                 return fishDiff;
             }
-            if (GlobalStats.fishRarity > 10)
-            {
-                fishDiff = GlobalStats.fishDifficulty + Random.Range(1, 2);
-                tubeRenderer.material.color = Color.cyan;
-                return fishDiff;
-            }
-
         }
+        tubeRenderer.material.color = Color.cyan;
         return GlobalStats.fishDifficulty;
     }
 }
