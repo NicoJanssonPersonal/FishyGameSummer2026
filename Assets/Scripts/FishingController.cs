@@ -25,11 +25,10 @@ public class FishingController1 : MonoBehaviour
 
             if (tubeRenderer != null)
             {
-                // Cache the instantiated material once here
+                
                 tubeMaterial = tubeRenderer.material;
                 tubeMaterial.EnableKeyword("_EMISSION");
 
-                // Calculate rarity and apply the color
                 fishDiff = fishDifficultyBasedOfRarity();
             }
         }
@@ -76,7 +75,6 @@ public class FishingController1 : MonoBehaviour
 
     int fishDifficultyBasedOfRarity()
     {
-        // Double-check that we actually have a material to change
         if (tubeMaterial == null) return GlobalStats.fishDifficulty;
 
         float roll = Random.Range(0f, 100f);
@@ -112,14 +110,12 @@ public class FishingController1 : MonoBehaviour
             }
         }
 
-        // Default to Common if no other check passes
         tubeMaterial.SetColor("_EmissionColor", CommonColor);
         return GlobalStats.fishDifficulty;
     }
 
     private void OnDestroy()
     {
-        // Clean up material to avoid memory leaks since we used tubeRenderer.material
         if (tubeMaterial != null)
         {
             Destroy(tubeMaterial);
@@ -128,10 +124,8 @@ public class FishingController1 : MonoBehaviour
     //kommentera bort när tonarn e nöjd
     private void OnValidate()
     {
-        // If the game is running and we have a material, update the color immediately when tweaked
         if (Application.isPlaying && tubeMaterial != null)
         {
-            // Re-run the method to apply the newly tweaked inspector colors
             fishDifficultyBasedOfRarity();
         }
     }
