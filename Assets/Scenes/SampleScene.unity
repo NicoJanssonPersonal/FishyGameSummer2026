@@ -5980,6 +5980,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2405035637702580934, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
+      propertyPath: CommonColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405035637702580934, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
+      propertyPath: CommonColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405035637702580934, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
       propertyPath: minigameManager
       value: 
       objectReference: {fileID: 0}
@@ -5989,15 +5997,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6967008665794205468, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 318.7103
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6967008665794205468, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 296.20868
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6967008665794205468, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 155.1311
+      value: 5.39
       objectReference: {fileID: 0}
     - target: {fileID: 6967008665794205468, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
       propertyPath: m_LocalRotation.w

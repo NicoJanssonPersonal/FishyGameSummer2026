@@ -2,7 +2,7 @@ using System.Collections;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class FishingController : MonoBehaviour
+public class PlopSpawner : MonoBehaviour
 {
     public Rigidbody rb;
     public GameObject plop;

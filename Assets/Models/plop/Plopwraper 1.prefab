@@ -169,3 +169,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishingController1
   fishMinigame: {fileID: 0}
   boat: {fileID: 0}
+  ChaoticColor: {r: 1, g: 0, b: 0, a: 1}
+  LegendaryColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  RareColor: {r: 1, g: 0.7529413, b: 0.7960785, a: 1}
+  UncommonColor: {r: 0, g: 1, b: 0, a: 1}
+  CommonColor: {r: 0, g: 1, b: 1, a: 1}

@@ -7,6 +7,14 @@ public class FishingController1 : MonoBehaviour
     public GameObject boat;
     private int fishDiff;
     private Renderer tubeRenderer;
+    private Material tubeMaterial;
+
+    [SerializeField][ColorUsage(true, true)] private Color ChaoticColor;
+    [SerializeField][ColorUsage(true, true)] private Color LegendaryColor;
+    [SerializeField][ColorUsage(true, true)] private Color RareColor;
+    [SerializeField][ColorUsage(true, true)] private Color UncommonColor;
+    [SerializeField][ColorUsage(true, true)] private Color CommonColor;
+
     void Start()
     {
         Transform tubeChild = transform.Find("tube");
@@ -17,6 +25,11 @@ public class FishingController1 : MonoBehaviour
 
             if (tubeRenderer != null)
             {
+                // Cache the instantiated material once here
+                tubeMaterial = tubeRenderer.material;
+                tubeMaterial.EnableKeyword("_EMISSION");
+
+                // Calculate rarity and apply the color
                 fishDiff = fishDifficultyBasedOfRarity();
             }
         }
@@ -30,6 +43,7 @@ public class FishingController1 : MonoBehaviour
             boat = GameObject.Find("BoatHolder");
         }
     }
+
     void OnMouseDown()
     {
         startFisingMinigame();
@@ -41,8 +55,6 @@ public class FishingController1 : MonoBehaviour
 
         if (fishMinigame != null)
         {
-            //fishMinigame.openUi();
-            //Debug.Log("boat pos " + boat.transform.position + " Plop location " + transform.position);
             float DistanceFromBoatToFish = Vector3.Distance(boat.transform.position, transform.position);
             Debug.Log(DistanceFromBoatToFish);
             if (DistanceFromBoatToFish <= GlobalStats.fishingRange)
@@ -60,41 +72,67 @@ public class FishingController1 : MonoBehaviour
         {
             Debug.LogError("CRITICAL: There is no MinigameManager present in the scene!");
         }
-
     }
+
     int fishDifficultyBasedOfRarity()
     {
+        // Double-check that we actually have a material to change
+        if (tubeMaterial == null) return GlobalStats.fishDifficulty;
+
         float roll = Random.Range(0f, 100f);
+
         if (GlobalStats.fishRarity > roll)
         {
             int fishDiff;
             if (GlobalStats.fishRarity > 90)
             {
                 fishDiff = GlobalStats.fishDifficulty + 4;
-                tubeRenderer.material.color = Color.red;
+                tubeMaterial.SetColor("_EmissionColor", ChaoticColor);
                 return fishDiff;
             }
             if (GlobalStats.fishRarity > 75)
             {
                 fishDiff = GlobalStats.fishDifficulty + 3;
-                tubeRenderer.material.color = Color.yellow;
+                // FIXED: Now correctly changes emission color
+                tubeMaterial.SetColor("_EmissionColor", LegendaryColor);
                 return fishDiff;
             }
             if (GlobalStats.fishRarity > 50)
             {
                 fishDiff = GlobalStats.fishDifficulty + 2;
-                tubeRenderer.material.color = Color.pink;
+                // FIXED: Now correctly changes emission color
+                tubeMaterial.SetColor("_EmissionColor", RareColor);
                 return fishDiff;
             }
             if (GlobalStats.fishRarity > 25)
             {
                 fishDiff = GlobalStats.fishDifficulty + 1;
-                tubeRenderer.material.color = Color.green;
+                tubeMaterial.SetColor("_EmissionColor", UncommonColor);
                 return fishDiff;
             }
         }
-        tubeRenderer.material.color = Color.cyan;
+
+        // Default to Common if no other check passes
+        tubeMaterial.SetColor("_EmissionColor", CommonColor);
         return GlobalStats.fishDifficulty;
     }
-}
 
+    private void OnDestroy()
+    {
+        // Clean up material to avoid memory leaks since we used tubeRenderer.material
+        if (tubeMaterial != null)
+        {
+            Destroy(tubeMaterial);
+        }
+    }
+    //kommentera bort när tonarn e nöjd
+    private void OnValidate()
+    {
+        // If the game is running and we have a material, update the color immediately when tweaked
+        if (Application.isPlaying && tubeMaterial != null)
+        {
+            // Re-run the method to apply the newly tweaked inspector colors
+            fishDifficultyBasedOfRarity();
+        }
+    }
+}
