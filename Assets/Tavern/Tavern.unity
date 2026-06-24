@@ -354,10 +354,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5875636039043656292, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dd4b1f5775fd8ac41aa67303ecaa8aef, type: 2}
+    - target: {fileID: -2231637650497013807, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dd4b1f5775fd8ac41aa67303ecaa8aef, type: 2}
+    - target: {fileID: -401430516883361193, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dd4b1f5775fd8ac41aa67303ecaa8aef, type: 2}
     - target: {fileID: 919132149155446097, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
       propertyPath: m_Name
       value: slotMachine
       objectReference: {fileID: 0}
+    - target: {fileID: 1814335013018118537, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dd4b1f5775fd8ac41aa67303ecaa8aef, type: 2}
+    - target: {fileID: 2857367010071848749, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dd4b1f5775fd8ac41aa67303ecaa8aef, type: 2}
+    - target: {fileID: 6535010364100777713, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: dd4b1f5775fd8ac41aa67303ecaa8aef, type: 2}
     - target: {fileID: 8867497527235558921, guid: 8438e734694bc3e419127d92dbabd59e, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -485,7 +509,7 @@ Transform:
   m_GameObject: {fileID: 930100868}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 6.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
