@@ -10,6 +10,10 @@ public class SlotMachine : MonoBehaviour
     [SerializeField] private float pressDepth = 0.05f;
     [SerializeField] private float pressSpeed = 0.5f;
 
+    [Header("3rd Spin Settings")]
+    [SerializeField] private float slowStrength = 6f;
+    [SerializeField] private float additionalSpins = 6f;
+
     private bool isAnimating = false;
     private float[] currentWheelAngles;
 
@@ -96,7 +100,7 @@ public class SlotMachine : MonoBehaviour
             
             if (i == 2 && Mathf.RoundToInt(targetAngles[1]) == Mathf.RoundToInt(targetAngles[0]))
             {
-                StartCoroutine(AnimateSpin(i, slotWheels[i], targetAngles[i], startDelay, duration + 3f));
+                StartCoroutine(AnimateSpin(i, slotWheels[i], targetAngles[i], startDelay, duration + slowStrength)); //3rd spin slow strength
             }
             else
             {
@@ -105,11 +109,12 @@ public class SlotMachine : MonoBehaviour
         }
     }
 
+
     IEnumerator AnimateSpin(int wheelIndex, GameObject wheel, float targetAngle, float delay, float duration)
     {
         yield return new WaitForSeconds(delay);
 
-        float extraSpins = 12f; 
+        float extraSpins = additionalSpins; 
         float elapsed = 0f;
 
         float startX = currentWheelAngles[wheelIndex];
