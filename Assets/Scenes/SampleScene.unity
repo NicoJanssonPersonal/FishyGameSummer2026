@@ -1415,6 +1415,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1489,13 +1490,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
+  m_LocalRotation: {x: 0.3420201, y: -0, z: -0, w: 0.9396927}
   m_LocalPosition: {x: 0, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 154430696}
-  m_Father: {fileID: 1867024617}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -1541,6 +1542,32 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd42b81ba07077b4ca9bd5007eacf9ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  boatTarget: {fileID: 1867024617}
+  distance: 15
+  heightOffset: 2
+  xSpeed: 120
+  ySpeed: 120
+  yMinLimit: 5
+  yMaxLimit: 70
+  returnSpeed: 3
+  movementThreshold: 0.5
+  defaultYRotation: 15
+  zoomSpeed: 50
+  minFOV: 20
+  maxFOV: 80
+  zoomSmoothness: 10
 --- !u!1 &367121782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,7 +1592,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 367121782}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4736,7 +4763,6 @@ Transform:
   m_Children:
   - {fileID: 1238315764}
   - {fileID: 138238021}
-  - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1867024619
@@ -6316,6 +6342,7 @@ SceneRoots:
   - {fileID: 2062153001}
   - {fileID: 832575519}
   - {fileID: 1867024617}
+  - {fileID: 330585546}
   - {fileID: 508317927}
   - {fileID: 1867079620}
   - {fileID: 1653483917}

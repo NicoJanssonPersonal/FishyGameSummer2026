@@ -168,8 +168,8 @@ public class BoatController : MonoBehaviour
     void CameraZoomer()
     {
         if (boatCam == null) return;
-
-        float targetFOV = Mathf.Lerp(minCamFOV, maxCamFOV, smoothSpeedPercentage);
+        
+        float targetFOV = Mathf.Lerp(boatCam.fieldOfView , boatCam.fieldOfView * 2f, smoothSpeedPercentage);
         boatCam.fieldOfView = Mathf.Lerp(boatCam.fieldOfView, targetFOV, Time.deltaTime * 2f);
 
         float targetXShift = -turnInput * 1.5f;
