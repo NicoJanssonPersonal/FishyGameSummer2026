@@ -83,8 +83,6 @@ public class BoatController : MonoBehaviour
 
     }
 
-
-
     void ApplySteering()
     {
         // 1. Calculate forward speed and speed factor

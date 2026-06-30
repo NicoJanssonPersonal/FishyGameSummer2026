@@ -1555,15 +1555,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   boatTarget: {fileID: 1867024617}
-  distance: 15
-  heightOffset: 2
   xSpeed: 120
   ySpeed: 120
-  yMinLimit: 5
-  yMaxLimit: 70
-  returnSpeed: 3
+  returnSpeed: 1.5
   movementThreshold: 0.5
-  defaultYRotation: 15
   zoomSpeed: 50
   minFOV: 20
   maxFOV: 80
@@ -2858,6 +2853,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 779595266}
   m_CullTransparentMesh: 1
+--- !u!1 &798913571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3491258378940142277, guid: 2c157a4e7f9731c4b8f02df525dddaf5, type: 3}
+  m_PrefabInstance: {fileID: 1065356085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -4741,6 +4741,7 @@ GameObject:
   - component: {fileID: 1867024617}
   - component: {fileID: 1867024619}
   - component: {fileID: 1867024620}
+  - component: {fileID: 1867024621}
   m_Layer: 0
   m_Name: BoatHolder
   m_TagString: Untagged
@@ -4819,6 +4820,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1867024621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867024616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86489e5d9e9ef104bb2840a499a0bc98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoatManager
+  fishradius: {fileID: 798913571}
 --- !u!1 &1867079617
 GameObject:
   m_ObjectHideFlags: 0
