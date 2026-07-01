@@ -51,6 +51,14 @@ public static class GlobalStats
     private static float _rarityChance = 2f;
     public static float rarityChance { get => _rarityChance; set => _rarityChance = value; }
 
+    // === Currency System ===
+    public static int _money = 3;
+    public static int money { get => _money; set => _money = value; }
+    public static int _skillpoints = 3;
+    public static int skillpoints { get => _skillpoints; set => _skillpoints = value; }
+    public static int _nodesUnlocked = 0;
+    public static int nodesUnlocked { get => _nodesUnlocked; set => _nodesUnlocked = value; }
+
     // === Fishing ===
     // multifish chance
     private static float _multiFishChance = 0f;
@@ -58,14 +66,18 @@ public static class GlobalStats
     // multi fish
     private static float _multiFishAmount = 1f;
     public static float multiFishAmount { get => _multiFishAmount; set => _multiFishAmount = value; }
+
     // xp and money gain
     private static float _xpGain = 1f;
     public static float xpGain { get => _xpGain; set => _xpGain = value; }
     private static float _moneyGain = 1f;
     public static float moneyGain { get => _moneyGain; set => _moneyGain = value; }
+
     // fish rarity chance
     private static float _fishRarity = 50f;
     public static float fishRarity { get => _fishRarity; set => _fishRarity = value; }
 
-    // === Character specific ===
+    // === SkillTree ===
+    private static bool _cannon = false;
+    public static bool cannon { get => _cannon; set => _cannon = value; }
 }
