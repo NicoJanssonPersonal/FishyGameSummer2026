@@ -77,7 +77,7 @@ public class ClickDetector : MonoBehaviour
     }
     void OnMouseEnter()
     {
-        Debug.Log(Titel + " " + Description);
+        //Debug.Log(Titel + " " + Description);
     }
     void OnMouseExit()
     {
