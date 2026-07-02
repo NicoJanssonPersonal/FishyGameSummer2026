@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using TMPro;
 
 public class ClickDetector : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ClickDetector : MonoBehaviour
     public string Titel;
     public string Description;
     public int SkillpointCost = 1;
+
     [Header("Line Settings")]
     public GameObject lineRendererPrefab;
     public Color lockedColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
@@ -21,10 +23,20 @@ public class ClickDetector : MonoBehaviour
     public bool buyable = false;
 
     private Dictionary<GameObject, LineRenderer> nodeLines = new Dictionary<GameObject, LineRenderer>();
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI descriptionText;
 
     void Start()
     {
-        DrawPaths();  
+        GlobalStats.LoadStats();
+        LoadNodeState();
+
+        DrawPaths();
+
+        //Invoke(nameof(SyncEntireNetworkVisuals), 0.02f);
+        SyncEntireNetworkVisuals();
+        titleText.text = "";
+        descriptionText.text = "";
     }
 
     private void OnMouseDown()
@@ -32,33 +44,13 @@ public class ClickDetector : MonoBehaviour
         if (onClickAction != null && !clickedOnce && buyable && GlobalStats.skillpoints >= SkillpointCost)
         {
             clickedOnce = true;
+            buyable = false; // Once purchased, this specific node is no longer "buyable"
+            
             GlobalStats.skillpoints = GlobalStats.skillpoints - SkillpointCost;
             GlobalStats.nodesUnlocked = GlobalStats.nodesUnlocked + 1;
             Debug.Log(gameObject.name + " was purchased!");
 
-            foreach (var kvp in nodeLines)
-            {
-                GameObject targetNode = kvp.Key;
-                LineRenderer line = kvp.Value;
-
-                if (line != null && targetNode != null)
-                {
-                    ClickDetector targetScript = targetNode.GetComponent<ClickDetector>();
-                    
-                    if (targetScript != null && targetScript.clickedOnce)
-                    {
-                        line.startColor = purchasedColor;
-                        line.endColor = purchasedColor;
-                    }
-                    else
-                    {
-                        line.startColor = unlockableColor;
-                        line.endColor = unlockableColor;
-                    }
-                }
-            }
-
-            NotifyIncomingConnections();
+            SaveNodeState();
 
             foreach (var node in nextNodes)
             {
@@ -68,37 +60,104 @@ public class ClickDetector : MonoBehaviour
                     if (nextNodeScript != null)
                     {
                         nextNodeScript.buyable = true;
+                        nextNodeScript.SaveNodeState();
                     }
                 }
             }
 
+            SyncEntireNetworkVisuals();
+            GlobalStats.SaveMoneyAndSkillpoints();
             onClickAction.Invoke();
         }
     }
-    void OnMouseEnter()
-    {
-        //Debug.Log(Titel + " " + Description);
-    }
-    void OnMouseExit()
-    {
-        
-    }
 
-    private void NotifyIncomingConnections()
+    public void SyncEntireNetworkVisuals()
     {
         ClickDetector[] allNodes = FindObjectsByType<ClickDetector>(FindObjectsSortMode.None);
         foreach (var node in allNodes)
         {
-            if (node.nodeLines.ContainsKey(gameObject))
+            if (node != null)
             {
-                LineRenderer incomingLine = node.nodeLines[gameObject];
-                if (incomingLine != null)
+                node.UpdateLineColors();
+            }
+        }
+    }
+
+    public void UpdateLineColors()
+    {
+        foreach (var kvp in nodeLines)
+        {
+            GameObject targetNode = kvp.Key;
+            LineRenderer line = kvp.Value;
+
+            if (line != null && targetNode != null)
+            {
+                ClickDetector targetScript = targetNode.GetComponent<ClickDetector>();
+
+                if (clickedOnce && targetScript != null && targetScript.clickedOnce)
                 {
-                    incomingLine.startColor = purchasedColor;
-                    incomingLine.endColor = purchasedColor;
+                    line.startColor = purchasedColor;
+                    line.endColor = purchasedColor;
+                }
+                else if (clickedOnce)
+                {
+                    line.startColor = unlockableColor;
+                    line.endColor = unlockableColor;
+                }
+                else
+                {
+                    line.startColor = lockedColor;
+                    line.endColor = lockedColor;
                 }
             }
         }
+    }
+
+    public void SaveNodeState()
+    {
+        if (string.IsNullOrEmpty(Titel))
+        {
+            Debug.LogWarning($"Node on {gameObject.name} is missing a Title! Cannot save.");
+            return;
+        }
+
+        PlayerPrefs.SetInt(Titel + "_clickedOnce", clickedOnce ? 1 : 0);
+        PlayerPrefs.SetInt(Titel + "_buyable", buyable ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadNodeState()
+    {
+        if (string.IsNullOrEmpty(Titel)) return;
+
+        if (PlayerPrefs.HasKey(Titel + "_clickedOnce"))
+        {
+            clickedOnce = PlayerPrefs.GetInt(Titel + "_clickedOnce") == 1;
+            
+
+            bool savedBuyable = PlayerPrefs.GetInt(Titel + "_buyable") == 1;
+
+            if (clickedOnce)
+            {
+                buyable = false;
+            }
+            else
+            {
+                buyable = savedBuyable;
+            }
+        }
+    }
+
+    void OnMouseEnter()
+    {
+        descriptionText.text = Description;
+        titleText.text = Titel;
+    }
+
+    void OnMouseExit()
+    {
+        descriptionText.text = "";
+        titleText.text = "";
     }
 
     void DrawPaths()

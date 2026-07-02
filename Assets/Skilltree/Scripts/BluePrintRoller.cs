@@ -18,7 +18,7 @@ public class BluePrintRoller : MonoBehaviour
         meshRenderer = background.GetComponent<MeshRenderer>();
         if (nodeManager == null)
         {
-            Debug.LogError("Node Manager is not assigned in the Inspector!", this);
+            //Debug.LogError("Node Manager is not assigned in the Inspector!", this);
             return;
         }
 
@@ -34,7 +34,7 @@ public class BluePrintRoller : MonoBehaviour
             }
         }
 
-        Debug.Log($"Found {matchingChildren.Count} nodes under NodeManager.");
+        //Debug.Log($"Found {matchingChildren.Count} nodes under NodeManager.");
     }
 
 
@@ -50,9 +50,9 @@ public class BluePrintRoller : MonoBehaviour
             Vector3 topRightCorner = new Vector3(rightEdgeX, topEdgeY, background.transform.position.z);
             Vector3 bottomRightCorner = new Vector3(rightEdgeX, bottomEdgeY, background.transform.position.z);
 
-            Debug.DrawLine(topRightCorner, bottomRightCorner, Color.red);
+            //Debug.DrawLine(topRightCorner, bottomRightCorner, Color.red);
 
-            Debug.Log($"Right Edge X: {rightEdgeX}");
+            //Debug.Log($"Right Edge X: {rightEdgeX}");
             
             float previousX = roll.transform.position.x;
             

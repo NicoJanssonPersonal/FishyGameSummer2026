@@ -1,3 +1,4 @@
+using UnityEngine;
 public static class GlobalStats
 {
     // === MOTOR ===
@@ -80,4 +81,96 @@ public static class GlobalStats
     // === SkillTree ===
     private static bool _cannon = false;
     public static bool cannon { get => _cannon; set => _cannon = value; }
+
+    public static void SaveStats()
+    {
+        PlayerPrefs.SetFloat("GS_thrustForce", thrustForce);
+        PlayerPrefs.SetFloat("GS_maxSpeed", maxSpeed);
+        PlayerPrefs.SetFloat("GS_reverseSpeedDebuff", reverseSpeedDebuff);
+        PlayerPrefs.SetFloat("GS_maxTurnTorque", maxTurnTorque);
+        PlayerPrefs.SetFloat("GS_turnTorque", turnTorque);
+        PlayerPrefs.SetFloat("GS_minTurningRadius", minTurningRadius);
+        PlayerPrefs.SetFloat("GS_maxAngularVelocity", maxAngularVelocity);
+        PlayerPrefs.SetFloat("GS_rudderTurnSpeed", rudderTurnSpeed);
+
+        PlayerPrefs.SetFloat("GS_constantSpeed", constantSpeed);
+        PlayerPrefs.SetInt("GS_fishDifficulty", fishDifficulty);
+        PlayerPrefs.SetFloat("GS_fishingRange", fishingRange);
+        PlayerPrefs.SetFloat("GS_fishingStrength", fishingStrength);
+        PlayerPrefs.SetFloat("GS_minRadius", minRadius);
+        PlayerPrefs.SetFloat("GS_maxRadius", maxRadius);
+        PlayerPrefs.SetFloat("GS_spawnIntervall", spawnIntervall);
+        PlayerPrefs.SetFloat("GS_plopAmount", plopAmount);
+
+        PlayerPrefs.SetFloat("GS_Experince", Experince);
+        PlayerPrefs.SetInt("GS_Level", Level);
+        PlayerPrefs.SetFloat("GS_expTonNextLevel", expTonNextLevel);
+        PlayerPrefs.SetFloat("GS_rarityChance", rarityChance);
+        PlayerPrefs.SetInt("GS_money", money);
+        PlayerPrefs.SetInt("GS_skillpoints", skillpoints);
+        PlayerPrefs.SetInt("GS_nodesUnlocked", nodesUnlocked);
+
+        PlayerPrefs.SetFloat("GS_multiFishChance", multiFishChance);
+        PlayerPrefs.SetFloat("GS_multiFishAmount", multiFishAmount);
+        PlayerPrefs.SetFloat("GS_xpGain", xpGain);
+        PlayerPrefs.SetFloat("GS_moneyGain", moneyGain);
+        PlayerPrefs.SetFloat("GS_fishRarity", fishRarity);
+
+        PlayerPrefs.SetInt("GS_cannon", cannon ? 1 : 0);
+
+        PlayerPrefs.Save();
+        Debug.Log("GlobalStats successfully saved!");
+    }
+    public static void SaveMoneyAndSkillpoints()
+    {
+        PlayerPrefs.SetInt("GS_money", money);
+        PlayerPrefs.SetInt("GS_skillpoints", skillpoints);
+
+        PlayerPrefs.Save();
+        Debug.Log("money and skillpoints successfully saved!");
+    }
+    public static void LoadStats()
+    {
+        if (!PlayerPrefs.HasKey("GS_money")) 
+        {
+            Debug.Log("No GlobalStats save data found. Using class defaults.");
+            return; 
+        }
+
+        thrustForce = PlayerPrefs.GetFloat("GS_thrustForce");
+        maxSpeed = PlayerPrefs.GetFloat("GS_maxSpeed");
+        reverseSpeedDebuff = PlayerPrefs.GetFloat("GS_reverseSpeedDebuff");
+        maxTurnTorque = PlayerPrefs.GetFloat("GS_maxTurnTorque");
+        turnTorque = PlayerPrefs.GetFloat("GS_turnTorque");
+        minTurningRadius = PlayerPrefs.GetFloat("GS_minTurningRadius");
+        maxAngularVelocity = PlayerPrefs.GetFloat("GS_maxAngularVelocity");
+        rudderTurnSpeed = PlayerPrefs.GetFloat("GS_rudderTurnSpeed");
+
+        constantSpeed = PlayerPrefs.GetFloat("GS_constantSpeed");
+        fishDifficulty = PlayerPrefs.GetInt("GS_fishDifficulty");
+        fishingRange = PlayerPrefs.GetFloat("GS_fishingRange");
+        fishingStrength = PlayerPrefs.GetFloat("GS_fishingStrength");
+        minRadius = PlayerPrefs.GetFloat("GS_minRadius");
+        maxRadius = PlayerPrefs.GetFloat("GS_maxRadius");
+        spawnIntervall = PlayerPrefs.GetFloat("GS_spawnIntervall");
+        plopAmount = PlayerPrefs.GetFloat("GS_plopAmount");
+
+        Experince = PlayerPrefs.GetFloat("GS_Experince");
+        Level = PlayerPrefs.GetInt("GS_Level");
+        expTonNextLevel = PlayerPrefs.GetFloat("GS_expTonNextLevel");
+        rarityChance = PlayerPrefs.GetFloat("GS_rarityChance");
+        money = PlayerPrefs.GetInt("GS_money");
+        skillpoints = PlayerPrefs.GetInt("GS_skillpoints");
+        nodesUnlocked = PlayerPrefs.GetInt("GS_nodesUnlocked");
+
+        multiFishChance = PlayerPrefs.GetFloat("GS_multiFishChance");
+        multiFishAmount = PlayerPrefs.GetFloat("GS_multiFishAmount");
+        xpGain = PlayerPrefs.GetFloat("GS_xpGain");
+        moneyGain = PlayerPrefs.GetFloat("GS_moneyGain");
+        fishRarity = PlayerPrefs.GetFloat("GS_fishRarity");
+
+        cannon = PlayerPrefs.GetInt("GS_cannon") == 1;
+
+        Debug.Log("GlobalStats successfully loaded!");
+    }
 }

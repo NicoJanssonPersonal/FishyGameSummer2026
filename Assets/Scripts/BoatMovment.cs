@@ -27,6 +27,7 @@ public class BoatController : MonoBehaviour
 
     void Start()
     {
+        GlobalStats.LoadStats();
         getStatsFromGlobalStats();
 
         rb = GetComponent<Rigidbody>();
