@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - greenzones
+  - enemy
+  - Cannon
   layers:
   - Default
   - TransparentFX
