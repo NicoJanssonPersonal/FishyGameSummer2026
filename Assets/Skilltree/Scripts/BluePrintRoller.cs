@@ -75,7 +75,7 @@ public class BluePrintRoller : MonoBehaviour
             }
         }
         
-       scaleBackground(background, -2f, 1f);
+       scaleBackground(background, -5f, 1f);
         if (Input.GetKeyDown(KeyCode.R))
         {
             background.transform.localScale = new Vector3(0,1,1);

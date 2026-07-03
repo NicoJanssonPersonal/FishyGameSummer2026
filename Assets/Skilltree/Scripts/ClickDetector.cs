@@ -11,7 +11,7 @@ public class ClickDetector : MonoBehaviour
     public string Description;
     public int SkillpointCost = 1;
 
-    [Header("Line Settings")]
+    [Header("Line & Node Colors")]
     public GameObject lineRendererPrefab;
     public Color lockedColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
     public Color unlockableColor = Color.white;
@@ -26,17 +26,25 @@ public class ClickDetector : MonoBehaviour
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
 
+    // Cache the renderer to change the node's visual color
+    private Renderer nodeRenderer; 
+    private SpriteRenderer spriteRenderer; 
+
     void Start()
     {
+        // Cache visual components
+        nodeRenderer = GetComponent<Renderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         GlobalStats.LoadStats();
         LoadNodeState();
 
         DrawPaths();
 
-        //Invoke(nameof(SyncEntireNetworkVisuals), 0.02f);
         SyncEntireNetworkVisuals();
-        titleText.text = "";
-        descriptionText.text = "";
+        
+        if (titleText != null) titleText.text = "";
+        if (descriptionText != null) descriptionText.text = "";
     }
 
     private void OnMouseDown()
@@ -50,6 +58,9 @@ public class ClickDetector : MonoBehaviour
             GlobalStats.nodesUnlocked = GlobalStats.nodesUnlocked + 1;
             Debug.Log(gameObject.name + " was purchased!");
 
+            // Updates its own material color immediately
+            UpdateNodeSelfColor();
+
             SaveNodeState();
 
             foreach (var node in nextNodes)
@@ -60,6 +71,7 @@ public class ClickDetector : MonoBehaviour
                     if (nextNodeScript != null)
                     {
                         nextNodeScript.buyable = true;
+                        nextNodeScript.UpdateNodeSelfColor(); // Refresh the neighbor's color (e.g. from locked to unlockable)
                         nextNodeScript.SaveNodeState();
                     }
                 }
@@ -79,7 +91,36 @@ public class ClickDetector : MonoBehaviour
             if (node != null)
             {
                 node.UpdateLineColors();
+                node.UpdateNodeSelfColor(); // Ensure node materials update dynamically across the network
             }
+        }
+    }
+
+    /// <summary>
+    /// Updates the material color of this specific node depending on its current state.
+    /// </summary>
+    public void UpdateNodeSelfColor()
+    {
+        Color targetColor = lockedColor;
+
+        if (clickedOnce)
+        {
+            targetColor = purchasedColor;
+        }
+        else if (buyable)
+        {
+            targetColor = unlockableColor;
+        }
+
+        // Apply to 3D Mesh Renderer if it exists
+        if (nodeRenderer != null)
+        {
+            nodeRenderer.material.color = targetColor;
+        }
+        // Apply to 2D Sprite Renderer if it exists
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = targetColor;
         }
     }
 
@@ -133,7 +174,6 @@ public class ClickDetector : MonoBehaviour
         if (PlayerPrefs.HasKey(Titel + "_clickedOnce"))
         {
             clickedOnce = PlayerPrefs.GetInt(Titel + "_clickedOnce") == 1;
-            
 
             bool savedBuyable = PlayerPrefs.GetInt(Titel + "_buyable") == 1;
 
@@ -146,18 +186,21 @@ public class ClickDetector : MonoBehaviour
                 buyable = savedBuyable;
             }
         }
+
+        // Apply loaded states to visual nodes immediately after setup
+        UpdateNodeSelfColor(); 
     }
 
     void OnMouseEnter()
     {
-        descriptionText.text = Description;
-        titleText.text = Titel;
+        if (descriptionText != null) descriptionText.text = Description;
+        if (titleText != null) titleText.text = Titel;
     }
 
     void OnMouseExit()
     {
-        descriptionText.text = "";
-        titleText.text = "";
+        if (descriptionText != null) descriptionText.text = "";
+        if (titleText != null) titleText.text = "";
     }
 
     void DrawPaths()

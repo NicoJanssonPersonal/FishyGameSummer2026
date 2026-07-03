@@ -55,7 +55,7 @@ public static class GlobalStats
     // === Currency System ===
     public static int _money = 3;
     public static int money { get => _money; set => _money = value; }
-    public static int _skillpoints = 3;
+    public static int _skillpoints = 300;
     public static int skillpoints { get => _skillpoints; set => _skillpoints = value; }
     public static int _nodesUnlocked = 0;
     public static int nodesUnlocked { get => _nodesUnlocked; set => _nodesUnlocked = value; }

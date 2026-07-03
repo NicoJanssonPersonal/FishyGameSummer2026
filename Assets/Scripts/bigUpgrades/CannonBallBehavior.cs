@@ -12,7 +12,6 @@ public class CannonBallBehavior : MonoBehaviour
     private bool isInitialized = false;
 
     [Header("Effects")]
-    // Drag your Particle System Prefab into this slot in the Inspector
     public GameObject impactParticlePrefab; 
 
     public void Initialize(Vector3 start, Vector3 target, float speedValue, float height)
@@ -52,21 +51,16 @@ public class CannonBallBehavior : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("Cannon")) return;
         
-        // Pass the current position to spawn the particles right where it hit
         TriggerImpact(transform.position);
     }
 
     void TriggerImpact(Vector3 impactPosition)
     {
-        // 1. Check if a particle effect was actually assigned
         if (impactParticlePrefab != null)
         {
-            // 2. Spawn the particles at the impact location
-            // We use Quaternion.identity because an explosion looks fine facing default world rotation
             Instantiate(impactParticlePrefab, impactPosition, Quaternion.identity);
         }
 
-        // 3. Destroy the cannonball
         Destroy(gameObject);
     }
 }
