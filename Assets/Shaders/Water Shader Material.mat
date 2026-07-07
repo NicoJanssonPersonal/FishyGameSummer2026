@@ -321,15 +321,15 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _InterSec_Dissolve: 1.73
+    - _InterSec_Dissolve: 1.2
     - _InterSec_Edge_Dissolve: 1
-    - _InterSec_Edge_Fade: 0
+    - _InterSec_Edge_Fade: 1
     - _InterSec_Foam_Distortion: 0.5
     - _InterSec_Foam_Invert: 0
-    - _InterSec_Foam_Scale: 0.57
+    - _InterSec_Foam_Scale: 0.25
     - _InterSec_Foam_Smooth: 1
     - _InterSec_GradientDissolve: 0
-    - _InterSec_Width: 2.81
+    - _InterSec_Width: 2
     - _IntersectionDistanceCutoff: 2.5
     - _IntersectionDistanceDepth: 0.5
     - _IntersectionFoamCutoff: 1
@@ -363,7 +363,7 @@ Material:
     - _ReflectionFresnelStrength: 1.13
     - _Reflection_Distortion: 0
     - _Reflection_Fresnel: 4
-    - _Reflection_Strength: 1
+    - _Reflection_Strength: 0
     - _RefractionFadeDistance: 0.5
     - _RefractionStrength: 0.5
     - _Refraction_Distace_Mask: 0.5
@@ -491,8 +491,8 @@ Material:
     - _FarColor: {r: 0.15966535, g: 0.6787135, b: 0.8679245, a: 0}
     - _FoamDistortionSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _FresnelColor: {r: 0.2647297, g: 0.116945416, b: 0.82641506, a: 1}
-    - _InterSec_Color: {r: 0, g: 0, b: 0, a: 0.5686275}
-    - _InterSec_Foam_Pan: {r: 0.16, g: 0.16, b: 0, a: 0}
+    - _InterSec_Color: {r: 0, g: 0, b: 0, a: 0.3254902}
+    - _InterSec_Foam_Pan: {r: 0.06, g: 0.06, b: 0, a: 0}
     - _InterSec_Foam_Tile: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _IntersectionDistanceTile: {r: 1, g: 1, b: 0, a: 0}
     - _IntersectionFoamColor: {r: 1, g: 1, b: 1, a: 1}

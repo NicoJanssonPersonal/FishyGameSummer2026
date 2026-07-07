@@ -17,6 +17,6 @@ public class BoatManager : MonoBehaviour
     void updateFishingRange()
     {
         float fishRange = GlobalStats.fishingRange * fishrangeRatio;
-        fishradius.transform.localScale = new Vector3(fishRange, fishRange, fishRange);
+        fishradius.transform.localScale = new Vector3(fishRange, 1, fishRange);
     }
 }
