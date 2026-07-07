@@ -83,8 +83,8 @@ public class SlotMachine : MonoBehaviour
 
         for (int i = 0; i < slotWheels.Length; i++)
         {
-            targetAngles[i] = 0;
-            //targetAngles[i] = possiblestops[Random.Range(0, possiblestops.Length)];
+            //targetAngles[i] = 0;
+            targetAngles[i] = possiblestops[Random.Range(0, possiblestops.Length)];
         }
 
         if (Mathf.RoundToInt(targetAngles[1]) == Mathf.RoundToInt(targetAngles[0]))

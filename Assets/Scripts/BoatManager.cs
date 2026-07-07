@@ -7,7 +7,7 @@ public class BoatManager : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     void Update()

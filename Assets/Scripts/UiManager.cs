@@ -1,3 +1,4 @@
+using System.Collections.Generic; // Added for List support
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +13,16 @@ public class UiManager : MonoBehaviour
     public RectTransform compassWheel;
 
     private bool isWaitingForUpgrade = false;
-    // Keeps track of the max XP from the previous frame
     private float lastMaxXp;
+
+    public RectTransform caughtFishHolder;
+    public TextMeshProUGUI fishCaughtPrefab; // Use this as the prefab template
+
+    // Tracks the current active text elements on screen
+    private List<TextMeshProUGUI> activeFishTexts = new List<TextMeshProUGUI>();
 
     void Start()
     {
-        // Initialize it so it doesn't start at 0
         lastMaxXp = GlobalStats.expTonNextLevel;
     }
 
@@ -34,50 +39,44 @@ public class UiManager : MonoBehaviour
         float currentXp = GlobalStats.Experince;
         float currentMaxXp = GlobalStats.expTonNextLevel;
 
-        // 1. DETECT THE LEVEL UP
-        // If the max XP requirement jumped, or if XP suddenly dropped drastically
         if (currentMaxXp > lastMaxXp || (currentXp < 5f && lastMaxXp > currentMaxXp))
         {
             isWaitingForUpgrade = true;
-            lastMaxXp = currentMaxXp; // Update our tracker
+            lastMaxXp = currentMaxXp;
         }
 
-        // 2. DETECT WHEN THE UPGRADE IS CHOSEN (RESET)
-        // If we were waiting for an upgrade, and XP is now perfectly 0, the menu closed!
         if (isWaitingForUpgrade && currentXp == 0)
         {
             isWaitingForUpgrade = false;
         }
 
-        // 3. APPLY THE VISUALS
         if (isWaitingForUpgrade)
         {
-            // Lock the bar at 100% while the player is picking their upgrade
             xpBar.fillAmount = 1f;
         }
         else
         {
-            // Normal state: Calculate the percentage perfectly
             float percentage = currentXp / currentMaxXp;
             xpBar.fillAmount = Mathf.Clamp01(percentage);
-
-            // Keep our tracker updated during normal gameplay
             lastMaxXp = currentMaxXp;
         }
     }
+
     void updateLevelDisplay()
     {
         levelText.text = GlobalStats.Level.ToString();
     }
+
     void SpeedOmeter()
     {
         float currentSpeed = boatRB.linearVelocity.magnitude;
         currentSpeed = Mathf.Clamp(currentSpeed, 0, GlobalStats.maxSpeed);
 
         float t = currentSpeed / GlobalStats.maxSpeed;
-        float desiredAngle = Mathf.Lerp(112, -105, t);// 112min -105max
+        float desiredAngle = Mathf.Lerp(112, -105, t);
         speedometerNeedle.localRotation = Quaternion.Euler(0, 0, desiredAngle);
     }
+
     void compass()
     {
         Vector3 forward = boatRB.transform.forward;
@@ -85,5 +84,26 @@ public class UiManager : MonoBehaviour
 
         float angle = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
         compassWheel.localRotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public void updateFishCaught(string fishText)
+    {
+        TextMeshProUGUI newFishText = Instantiate(fishCaughtPrefab, caughtFishHolder);
+        newFishText.text = fishText;
+
+        activeFishTexts.Add(newFishText);
+
+        if (activeFishTexts.Count > 5)
+        {
+            Destroy(activeFishTexts[0].gameObject);
+            activeFishTexts.RemoveAt(0);
+        }
+
+        for (int i = 0; i < activeFishTexts.Count; i++)
+        {
+            float newYPosition = 40f - (20f * i);
+
+            activeFishTexts[i].rectTransform.anchoredPosition = new Vector2(0, newYPosition);
+        }
     }
 }

@@ -136,6 +136,10 @@ public class CardManager : MonoBehaviour
         {
             return false;
         }
+        if (FishMinigame.isUIOpen)
+        {
+            return false;
+        }
         GlobalStats.expTonNextLevel = GlobalStats.expTonNextLevel * 1.33f;
         Debug.Log("exp to nextLevel " + GlobalStats.expTonNextLevel);
         return true;
