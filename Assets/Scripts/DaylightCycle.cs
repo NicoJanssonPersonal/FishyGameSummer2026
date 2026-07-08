@@ -15,6 +15,10 @@ public class DayNightCycle : MonoBehaviour
     [Header("Sun Aesthetics")]
     [SerializeField] private Gradient sunColorGradient;
 
+    [Header("Atmosphere Aesthetics")]
+    [Tooltip("Gradient to control the global unity fog color throughout the day")]
+    [SerializeField] private Gradient fogColorGradient;
+
     [Header("Water Aesthetics (Individual Gradients Mode)")]
     [Tooltip("Drop your Water Material asset directly from the Project/Assets folder here")]
     [SerializeField] private Material waterMaterialAsset;
@@ -146,6 +150,9 @@ public class DayNightCycle : MonoBehaviour
         float xRotation = (overallDayPercent * 360f) - 90f;
         transform.rotation = Quaternion.Euler(xRotation, 0f, 0f);
 
+        // Note: Your current logic uses a Cosine wave for water/sun progress, 
+        // meaning it transitions back and forth rather than a linear 0->1 loop.
+        // The fog will follow this exact same rhythm nicely.
         TimeValue = Mathf.Cos((overallDayPercent - 0.5f) * 2f * Mathf.PI);
         float waterSwayProgress = (TimeValue * 0.5f) + 0.5f;
 
@@ -188,6 +195,12 @@ public class DayNightCycle : MonoBehaviour
 
     private void UpdateWaterLayerFilter(float progress)
     {
+        // Update global Unity fog color dynamically
+        if (fogColorGradient != null)
+        {
+            RenderSettings.fogColor = fogColorGradient.Evaluate(progress);
+        }
+
         if (runtimeWaterMaterial != null)
         {
             if (shallowColorGradient != null) runtimeWaterMaterial.SetColor(shallowColorID, shallowColorGradient.Evaluate(progress));
