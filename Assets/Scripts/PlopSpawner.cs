@@ -1,5 +1,4 @@
 using System.Collections;
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlopSpawner : MonoBehaviour
@@ -7,7 +6,6 @@ public class PlopSpawner : MonoBehaviour
     public Rigidbody rb;
     public GameObject plop;
     Vector3 boatPos;
-
 
     void Start()
     {
@@ -20,18 +18,20 @@ public class PlopSpawner : MonoBehaviour
         while (true)
         {
             float randomDelay = Random.Range(GlobalStats.spawnIntervall, GlobalStats.spawnIntervall + 1);
-            yield return new WaitForSeconds(randomDelay);
-
-            boatPos = rb.position;
-
-            SpawnPlop(GlobalStats.minRadius, GlobalStats.maxRadius, Mathf.RoundToInt(GlobalStats.plopAmount));
+            
+            int totalPlopsToSpawn = Mathf.RoundToInt(GlobalStats.plopAmount) * 5;
+            
+            yield return StartCoroutine(SpawnPlopRoutine(GlobalStats.minRadius, GlobalStats.maxRadius, totalPlopsToSpawn, randomDelay));
         }
     }
-
-    void SpawnPlop(float minSpawnRadius, float maxSpawnRadius, int SpawnAmount)
+    IEnumerator SpawnPlopRoutine(float minSpawnRadius, float maxSpawnRadius, int totalAmount, float waveDuration)
     {
-        for (int i = 0; i < SpawnAmount; i++)
+        float delayBetweenSpawns = waveDuration / totalAmount;
+
+        for (int i = 0; i < totalAmount; i++)
         {
+            boatPos = rb.position; 
+
             float randomAngle = Random.Range(0f, Mathf.PI * 2f);
             float randomDistance = Random.Range(minSpawnRadius, maxSpawnRadius);
             float xOffset = Mathf.Cos(randomAngle) * randomDistance;
@@ -39,11 +39,14 @@ public class PlopSpawner : MonoBehaviour
 
             Vector3 spawnOffset = new Vector3(xOffset, 0.1f, zOffset);
             Vector3 spawnLocation = boatPos + spawnOffset;
+            
             GameObject spawnedPlop = Instantiate(plop, spawnLocation, Quaternion.identity);
             StartCoroutine(ChangeAllChildrenOpacityRoutine(spawnedPlop));
-        }
 
+            yield return new WaitForSeconds(delayBetweenSpawns);
+        }
     }
+
     private IEnumerator ChangeAllChildrenOpacityRoutine(GameObject parentObj)
     {
         float currentTime = 0;

@@ -35,7 +35,7 @@ public static class GlobalStats
     // === PLOPS ===
     private static float _minRadius = 5f;
     public static float minRadius { get => _minRadius; set => _minRadius = value; }
-    private static float _maxRadius = 15f;
+    private static float _maxRadius = 100f;
     public static float maxRadius { get => _maxRadius; set => _maxRadius = value; }
     private static float _spawnIntervall = 2f;
     public static float spawnIntervall { get => _spawnIntervall; set => _spawnIntervall = value; }

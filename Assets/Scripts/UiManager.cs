@@ -1,5 +1,8 @@
+using System;
+using System.Collections;
 using System.Collections.Generic; // Added for List support
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +20,11 @@ public class UiManager : MonoBehaviour
 
     public RectTransform caughtFishHolder;
     public TextMeshProUGUI fishCaughtPrefab; // Use this as the prefab template
-
+    public RectTransform peng;
     // Tracks the current active text elements on screen
     private List<TextMeshProUGUI> activeFishTexts = new List<TextMeshProUGUI>();
 
+    public GameObject coinSpawnPoint;
     void Start()
     {
         lastMaxXp = GlobalStats.expTonNextLevel;
@@ -86,10 +90,10 @@ public class UiManager : MonoBehaviour
         compassWheel.localRotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void updateFishCaught(string fishText)
+    public void updateFishCaught(int moneyFromFish, int xpFromFish)
     {
         TextMeshProUGUI newFishText = Instantiate(fishCaughtPrefab, caughtFishHolder);
-        newFishText.text = fishText;
+        newFishText.text = "YOU CAUGHT A EMILBERT, " + moneyFromFish + " GOLD " + xpFromFish + " XP";
 
         activeFishTexts.Add(newFishText);
 
@@ -105,5 +109,41 @@ public class UiManager : MonoBehaviour
 
             activeFishTexts[i].rectTransform.anchoredPosition = new Vector2(0, newYPosition);
         }
+        coinsFallInChest(moneyFromFish);
+
+    }
+    void coinsFallInChest(int coinAmount)
+    {
+        for (int i = 0; i < coinAmount; i++)
+        {
+            RectTransform rt = Instantiate(peng, coinSpawnPoint.transform);
+            rt.anchoredPosition = new Vector2(
+                UnityEngine.Random.Range(-40f, 40f),
+                40f
+            );
+
+            StartCoroutine(FallCoin(rt));
+        }
+    }
+    IEnumerator FallCoin(RectTransform coin)
+    {
+        float speed = UnityEngine.Random.Range(200f, 350f);      // Different fall speed
+        float drift = UnityEngine.Random.Range(-30f, 30f);       // Horizontal drift
+        float rotation = UnityEngine.Random.Range(-180f, 180f);  // Spin
+
+        while (coin != null && coin.anchoredPosition.y > -650f)
+        {
+            coin.anchoredPosition += new Vector2(
+                drift * Time.deltaTime,
+                -speed * Time.deltaTime
+            );
+
+            coin.Rotate(0, 0, rotation * Time.deltaTime);
+
+            yield return null;
+        }
+
+        if (coin != null)
+            Destroy(coin.gameObject);
     }
 }

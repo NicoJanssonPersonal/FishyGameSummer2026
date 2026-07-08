@@ -168,8 +168,8 @@ public class FishMinigame : MonoBehaviour
             //Debug.Log("u caught one fish");
         }
         //Debug.Log("chance for multi fish " + GlobalStats.multiFishChance + " Roll:" + roll);
-        string text = "YOU CAUGHT A EMILBERT, " + Mathf.RoundToInt(moneyFromFish) + " GOLD " + Mathf.RoundToInt(xpFromFish) + " XP";
-        uiManagerScript.updateFishCaught(text);
+        
+        uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish));
         StartCoroutine(delay());
     }
     IEnumerator delay()
