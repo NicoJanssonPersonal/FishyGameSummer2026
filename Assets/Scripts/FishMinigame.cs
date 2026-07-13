@@ -205,7 +205,7 @@ public class FishMinigame : MonoBehaviour
         fishe.anchoredPosition = initialFishPos;
 
         uiPanel.SetActive(true);
-        Debug.Log("fiskens svårighet " + fishDifficulty);
+        //Debug.Log("fiskens svårighet " + fishDifficulty);
         generategreenZones(fishDifficulty, fishDifficulty);
 
         //debugfiskpos();

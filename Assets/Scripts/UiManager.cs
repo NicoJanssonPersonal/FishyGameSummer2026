@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
-    public Image xpBar;
     public TextMeshProUGUI levelText;
     public Rigidbody boatRB;
 
@@ -17,6 +16,7 @@ public class UiManager : MonoBehaviour
 
     private bool isWaitingForUpgrade = false;
     private float lastMaxXp;
+    private int lastLevel;
 
     public RectTransform caughtFishHolder;
     public TextMeshProUGUI fishCaughtPrefab; // Use this as the prefab template
@@ -25,9 +25,14 @@ public class UiManager : MonoBehaviour
     private List<TextMeshProUGUI> activeFishTexts = new List<TextMeshProUGUI>();
 
     public GameObject coinSpawnPoint;
+    [Header("XP Bar")]
+    public Image xpBarGreen; // The main bar that fills smoothly
+    public Image xpBarWhite; // The background bar that snaps instantly
+    public float fillLerpSpeed = 10f; // How fast the green catches up to the white
     void Start()
     {
         lastMaxXp = GlobalStats.expTonNextLevel;
+        lastLevel = GlobalStats.Level; // Track the starting level
     }
 
     void Update()
@@ -39,32 +44,36 @@ public class UiManager : MonoBehaviour
     }
 
     void updateXpBar()
+{
+    float currentXp = GlobalStats.Experince;
+    float currentMaxXp = GlobalStats.expTonNextLevel;
+    
+    if (GlobalStats.Level > lastLevel)
     {
-        float currentXp = GlobalStats.Experince;
-        float currentMaxXp = GlobalStats.expTonNextLevel;
+        xpBarWhite.fillAmount = 1f;
+        xpBarGreen.fillAmount = Mathf.Lerp(xpBarGreen.fillAmount, 1f, Time.deltaTime * fillLerpSpeed);
 
-        if (currentMaxXp > lastMaxXp || (currentXp < 5f && lastMaxXp > currentMaxXp))
+        if (1f - xpBarGreen.fillAmount < 0.1f)
         {
-            isWaitingForUpgrade = true;
-            lastMaxXp = currentMaxXp;
-        }
-
-        if (isWaitingForUpgrade && currentXp == 0)
-        {
-            isWaitingForUpgrade = false;
-        }
-
-        if (isWaitingForUpgrade)
-        {
-            xpBar.fillAmount = 1f;
-        }
-        else
-        {
-            float percentage = currentXp / currentMaxXp;
-            xpBar.fillAmount = Mathf.Clamp01(percentage);
-            lastMaxXp = currentMaxXp;
+            xpBarGreen.fillAmount = 0f;
+            xpBarWhite.fillAmount = 0f;
+            lastLevel = GlobalStats.Level;
         }
     }
+    else
+    {
+        float targetPercentage = Mathf.Clamp01(currentXp / currentMaxXp);
+
+        xpBarWhite.fillAmount = targetPercentage;
+
+        xpBarGreen.fillAmount = Mathf.Lerp(xpBarGreen.fillAmount, targetPercentage, Time.deltaTime * fillLerpSpeed);
+        
+        if (Mathf.Abs(xpBarGreen.fillAmount - targetPercentage) < 0.001f)
+        {
+            xpBarGreen.fillAmount = targetPercentage;
+        }
+    }
+}
 
     void updateLevelDisplay()
     {

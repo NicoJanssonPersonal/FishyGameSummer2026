@@ -5,17 +5,15 @@ public class wheelDescriber : MonoBehaviour
 {
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
-    void Start()
-    {
-        title.text = "";
-        description.text = "";
-    }
+
     void OnMouseEnter()
     {
         Vector3 upDirection = transform.up;
-        Vector3 forwardDirection = transform.forward;
 
-        float angleRad = Mathf.Atan2(Vector3.Dot(upDirection, Vector3.forward), Vector3.Dot(upDirection, Vector3.up));
+        Vector3 referenceUp = transform.parent != null ? transform.parent.up : Vector3.up;
+        Vector3 referenceForward = transform.parent != null ? transform.parent.forward : Vector3.forward;
+
+        float angleRad = Mathf.Atan2(Vector3.Dot(upDirection, referenceForward), Vector3.Dot(upDirection, referenceUp));
         float cleanAngle = angleRad * Mathf.Rad2Deg;
 
         if (cleanAngle < 0) cleanAngle += 360f;

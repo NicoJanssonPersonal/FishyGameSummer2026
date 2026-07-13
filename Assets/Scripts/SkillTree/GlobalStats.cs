@@ -39,7 +39,7 @@ public static class GlobalStats
     public static float maxRadius { get => _maxRadius; set => _maxRadius = value; }
     private static float _spawnIntervall = 2f;
     public static float spawnIntervall { get => _spawnIntervall; set => _spawnIntervall = value; }
-    private static float _plopAmount = 1;
+    private static float _plopAmount = 2;
     public static float plopAmount { get => _plopAmount; set => _plopAmount = value; }
 
     // === Levelup System ===

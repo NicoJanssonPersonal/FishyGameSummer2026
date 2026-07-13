@@ -8,7 +8,7 @@ public class CardManager : MonoBehaviour
     public Transform container;
     private GameObject[] activeSpawnedCards = new GameObject[3];
 
-    bool calledOnce = false;
+    private bool calledOnce = false;
 
     void Start()
     {
@@ -29,23 +29,20 @@ public class CardManager : MonoBehaviour
 
     void Update()
     {
-        if (checkLevel())
+        // Only run checkLevel if the upgrade screen isn't already active
+        if (!calledOnce)
         {
-            if (!calledOnce)
+            if (checkLevel())
             {
                 TriggerCardDisplay();
                 calledOnce = true;
             }
         }
-        else if (GlobalStats.Experince == 0 && calledOnce)
-        {
-            HideCards();
-        }
     }
 
     void TriggerCardDisplay()
     {
-        Time.timeScale = 0f;
+        Time.timeScale = 1f;
         GameObject[] selectedPrefabs = pickCard(GlobalStats.rarityChance);
 
         for (int i = 0; i < 3; i++)
@@ -55,29 +52,41 @@ public class CardManager : MonoBehaviour
                 Destroy(activeSpawnedCards[i]);
             }
 
+            // 1. Spawn the 3D card prefab
             activeSpawnedCards[i] = Instantiate(selectedPrefabs[i], cards[i].transform.position, cards[i].transform.rotation);
-            activeSpawnedCards[i].transform.localScale = selectedPrefabs[i].transform.localScale * 2f; 
+            activeSpawnedCards[i].transform.localScale = selectedPrefabs[i].transform.localScale * 2f;
             activeSpawnedCards[i].SetActive(false);
 
-            cards[i].SetActive(false);
+            // 2. WIRED CONNECTION: Find your CardUpgrade script on the spawned object and give it this manager instance
+            CardUpgrade upgradeScript = activeSpawnedCards[i].GetComponent<CardUpgrade>();
+            if (upgradeScript != null)
+            {
+                upgradeScript.SetupCard(this);
+            }
+            else
+            {
+                Debug.LogWarning($"CardUpgrade script missing on prefab: {activeSpawnedCards[i].name}!");
+            }
 
+            cards[i].SetActive(false);
             StartCoroutine(ExecuteAfterDelay(activeSpawnedCards[i], i));
         }
     }
+
     public void HideCards()
     {
         StopAllCoroutines();
         Time.timeScale = 1;
+        
         for (int i = 0; i < activeSpawnedCards.Length; i++)
         {
             if (activeSpawnedCards[i] != null)
             {
-                Destroy(activeSpawnedCards[i]); 
-                
+                Destroy(activeSpawnedCards[i]);
             }
         }
 
-        calledOnce = false;
+        calledOnce = false; 
     }
 
     IEnumerator ExecuteAfterDelay(GameObject card, int number)
@@ -99,7 +108,7 @@ public class CardManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
 
             float currentRotation = Mathf.Lerp(startRotation, targetRotation, t);
-            if (card == null) yield break; 
+            if (card == null) yield break;
             card.transform.eulerAngles = new Vector3(0, currentRotation, 0);
 
             yield return null;
@@ -119,7 +128,7 @@ public class CardManager : MonoBehaviour
         {
             float roll = Random.Range(0f, 1f);
             float finalScore = roll * cardRarityChance;
-            
+
             if (finalScore >= 0.97f) { selected[i] = rarityPrefabs[4]; }
             else if (finalScore >= 0.9f) { selected[i] = rarityPrefabs[3]; }
             else if (finalScore >= 0.75f) { selected[i] = rarityPrefabs[2]; }
@@ -140,8 +149,12 @@ public class CardManager : MonoBehaviour
         {
             return false;
         }
+
+        GlobalStats.Level++;
+        GlobalStats.Experince -= GlobalStats.expTonNextLevel;
         GlobalStats.expTonNextLevel = GlobalStats.expTonNextLevel * 1.33f;
-        Debug.Log("exp to nextLevel " + GlobalStats.expTonNextLevel);
+
+        Debug.Log("Leveled up to " + GlobalStats.Level + "! Exp needed for next: " + GlobalStats.expTonNextLevel);
         return true;
     }
 }

@@ -55,7 +55,7 @@ public class FishingController1 : MonoBehaviour
         if (fishMinigame != null)
         {
             float DistanceFromBoatToFish = Vector3.Distance(boat.transform.position, transform.position);
-            Debug.Log(DistanceFromBoatToFish);
+            //Debug.Log(DistanceFromBoatToFish);
             if (DistanceFromBoatToFish <= GlobalStats.fishingRange)
             {
                 Destroy(gameObject);

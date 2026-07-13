@@ -481,12 +481,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 263009844}
   - {fileID: 601833381}
-  m_Father: {fileID: 594541339}
+  m_Father: {fileID: 758211511}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -357}
+  m_AnchoredPosition: {x: 0, y: -86}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &138238021 stripped
@@ -984,6 +985,81 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: -1
   m_Mesh: {fileID: -8670151273213183110, guid: 4d1bfb1e01380a847b2f4dc8f1fe8e50, type: 3}
+--- !u!1 &263009841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 263009844}
+  - component: {fileID: 263009843}
+  - component: {fileID: 263009842}
+  m_Layer: 5
+  m_Name: XPBAR WHITE
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &263009842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263009841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 0f1d1541abff16b4fbc32e4f52962cdc, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 0
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &263009843
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263009841}
+  m_CullTransparentMesh: 1
+--- !u!224 &263009844
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 263009841}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 0.33, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 128380203}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -199.6, y: 107.7}
+  m_SizeDelta: {x: 79.5, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &267514478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f45ab5ee1e0eff48bf9b2542bd4e08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UiManager
-  xpBar: {fileID: 601833382}
   levelText: {fileID: 882181922}
   boatRB: {fileID: 1867024620}
   speedometerNeedle: {fileID: 779595267}
@@ -1097,6 +1172,9 @@ MonoBehaviour:
   fishCaughtPrefab: {fileID: 631170055708560454, guid: ea7946fa497b1724f926fef6d4134fff, type: 3}
   peng: {fileID: 2666555983085672529, guid: a5ce7d985a2dca1469de3439ee9db6e2, type: 3}
   coinSpawnPoint: {fileID: 1266085409}
+  xpBarGreen: {fileID: 601833382}
+  xpBarWhite: {fileID: 263009842}
+  fillLerpSpeed: 5
 --- !u!4 &287809555
 Transform:
   m_ObjectHideFlags: 0
@@ -2401,7 +2479,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 758211511}
-  - {fileID: 128380203}
   - {fileID: 1083608855}
   - {fileID: 16417510}
   - {fileID: 267514479}
@@ -2427,7 +2504,7 @@ GameObject:
   - component: {fileID: 601833383}
   - component: {fileID: 601833382}
   m_Layer: 5
-  m_Name: XPBAR
+  m_Name: XPBAR GREEN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2449,7 +2526,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -199.6, y: 30}
+  m_AnchoredPosition: {x: -199.6, y: 107.70001}
   m_SizeDelta: {x: 79.5, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &601833382
@@ -2477,7 +2554,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -2784,7 +2861,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 128380203}
   m_Father: {fileID: 594541339}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -5948,6 +6026,36 @@ MonoBehaviour:
     m_Mode: 0
     m_ColorSpace: -1
     m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  fogColorGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   waterMaterialAsset: {fileID: 2100000, guid: 682628b7cfd0d45489ad3a2ff7d1a0af, type: 2}
   waterSceneRenderers:
