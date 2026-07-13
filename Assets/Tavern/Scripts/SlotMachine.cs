@@ -93,16 +93,18 @@ public class SlotMachine : MonoBehaviour
             if (Random.value < 0.5f)
             {
                 targetAngles[2] = targetAngles[0];
-                Debug.Log("JACKPOT FORCED!");
+                //Debug.Log("JACKPOT FORCED!");
 
 
                 if (targetAngles[0] == 0)
                 {
                     StartCoroutine(JACKPOT());
+                    reward(Mathf.RoundToInt(targetAngles[2]));
                 }
                 else
                 {
                     StartCoroutine(WINLights());
+                    reward(Mathf.RoundToInt(targetAngles[2]));
                 }
 
             }
@@ -110,7 +112,7 @@ public class SlotMachine : MonoBehaviour
             {
                 targetAngles[2] = (targetAngles[0] + 45f) % 360f;
                 StartCoroutine(AnimateLights(8f));
-                Debug.Log("UNLUCKY");
+                //Debug.Log("UNLUCKY");
             }
 
         }
@@ -256,6 +258,42 @@ public class SlotMachine : MonoBehaviour
             }
 
             yield return new WaitForSeconds(delayBetweenLights);
+        }
+    }
+    void reward(int angle)
+    {
+        if (angle == 0)
+        {
+            print("JACKPOT");
+           //"Jackpot";
+        }
+        else if (angle == 45)
+        {
+            //"Flaskpost";
+        }
+        else if (angle == 90)
+        {
+            //"Skillpoint";
+        }
+        else if (angle == 135)
+        {
+           //"3 Coins";
+        }
+        else if (angle == 180)
+        {
+            //"Anchor";
+        }
+        else if (angle == 225)
+        {
+            //"1 coin";
+        }
+        else if (angle == 270)
+        {
+           //"skillpoints";
+        }
+        else if (angle == 315)
+        {
+            //"Crab";
         }
     }
 }
