@@ -131,7 +131,7 @@ public static class GlobalStats
     }
     public static void LoadStats()
     {
-        if (!PlayerPrefs.HasKey("GS_money")) 
+        if (!PlayerPrefs.HasKey("GS_thrustForce")) 
         {
             Debug.Log("No GlobalStats save data found. Using class defaults.");
             return; 
