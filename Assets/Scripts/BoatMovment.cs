@@ -69,7 +69,9 @@ public class BoatController : MonoBehaviour
     void ApplyThrust()
     {
         float currentSpeed = rb.linearVelocity.magnitude;
-        float thrustFactor = Mathf.Clamp01(1f - (currentSpeed / maxSpeed));
+
+        // Safety check: if maxSpeed is 0 or less, set thrustFactor to 0 to prevent division by zero
+        float thrustFactor = (maxSpeed > 0f) ? Mathf.Clamp01(1f - (currentSpeed / maxSpeed)) : 0f;
 
         if (moveInput >= 0)
         {
@@ -81,14 +83,15 @@ public class BoatController : MonoBehaviour
             Vector3 forwardThrust = (transform.forward * moveInput * thrustForce * thrustFactor) * reverseSpeedDebuff;
             rb.AddForce(forwardThrust, ForceMode.Force);
         }
-
     }
 
     void ApplySteering()
     {
         // 1. Calculate forward speed and speed factor
         float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-        float speedFactor = Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed);
+
+        // Safety check: if maxSpeed is 0 or less, set speedFactor to 0
+        float speedFactor = (maxSpeed > 0f) ? Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed) : 0f;
 
         // 2. Determine steering direction based on forward/backward movement
         float currentTurnInput = turnInput;
@@ -101,8 +104,11 @@ public class BoatController : MonoBehaviour
         float turnAmount = currentTurnInput * turnTorque * speedFactor;
         turnAmount = Mathf.Clamp(turnAmount, -maxTurnTorque, maxTurnTorque);
 
-        // 4. Apply the torque
-        rb.AddTorque(transform.up * turnAmount, ForceMode.Force);
+        // 4. Apply the torque (Safety check: only apply if turnAmount is a valid number)
+        if (!float.IsNaN(turnAmount))
+        {
+            rb.AddTorque(transform.up * turnAmount, ForceMode.Force);
+        }
 
         // 5. Enforce Max Turn Speed & Max Turn Radius
         LimitRotationSpeed(forwardSpeed);
@@ -167,8 +173,8 @@ public class BoatController : MonoBehaviour
     void CameraZoomer()
     {
         if (boatCam == null) return;
-        
-        float targetFOV = Mathf.Lerp(boatCam.fieldOfView , boatCam.fieldOfView * 2f, smoothSpeedPercentage);
+
+        float targetFOV = Mathf.Lerp(boatCam.fieldOfView, boatCam.fieldOfView * 2f, smoothSpeedPercentage);
         boatCam.fieldOfView = Mathf.Lerp(boatCam.fieldOfView, targetFOV, Time.deltaTime * 2f);
 
         float targetXShift = -turnInput * 1.5f;

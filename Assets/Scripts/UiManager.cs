@@ -44,36 +44,36 @@ public class UiManager : MonoBehaviour
     }
 
     void updateXpBar()
-{
-    float currentXp = GlobalStats.Experince;
-    float currentMaxXp = GlobalStats.expTonNextLevel;
-    
-    if (GlobalStats.Level > lastLevel)
     {
-        xpBarWhite.fillAmount = 1f;
-        xpBarGreen.fillAmount = Mathf.Lerp(xpBarGreen.fillAmount, 1f, Time.deltaTime * fillLerpSpeed);
+        float currentXp = GlobalStats.Experince;
+        float currentMaxXp = GlobalStats.expTonNextLevel;
 
-        if (1f - xpBarGreen.fillAmount < 0.1f)
+        if (GlobalStats.Level > lastLevel)
         {
-            xpBarGreen.fillAmount = 0f;
-            xpBarWhite.fillAmount = 0f;
-            lastLevel = GlobalStats.Level;
+            xpBarWhite.fillAmount = 1f;
+            xpBarGreen.fillAmount = Mathf.Lerp(xpBarGreen.fillAmount, 1f, Time.deltaTime * fillLerpSpeed);
+
+            if (1f - xpBarGreen.fillAmount < 0.1f)
+            {
+                xpBarGreen.fillAmount = 0f;
+                xpBarWhite.fillAmount = 0f;
+                lastLevel = GlobalStats.Level;
+            }
+        }
+        else
+        {
+            float targetPercentage = Mathf.Clamp01(currentXp / currentMaxXp);
+
+            xpBarWhite.fillAmount = targetPercentage;
+
+            xpBarGreen.fillAmount = Mathf.Lerp(xpBarGreen.fillAmount, targetPercentage, Time.deltaTime * fillLerpSpeed);
+
+            if (Mathf.Abs(xpBarGreen.fillAmount - targetPercentage) < 0.001f)
+            {
+                xpBarGreen.fillAmount = targetPercentage;
+            }
         }
     }
-    else
-    {
-        float targetPercentage = Mathf.Clamp01(currentXp / currentMaxXp);
-
-        xpBarWhite.fillAmount = targetPercentage;
-
-        xpBarGreen.fillAmount = Mathf.Lerp(xpBarGreen.fillAmount, targetPercentage, Time.deltaTime * fillLerpSpeed);
-        
-        if (Mathf.Abs(xpBarGreen.fillAmount - targetPercentage) < 0.001f)
-        {
-            xpBarGreen.fillAmount = targetPercentage;
-        }
-    }
-}
 
     void updateLevelDisplay()
     {
@@ -82,12 +82,37 @@ public class UiManager : MonoBehaviour
 
     void SpeedOmeter()
     {
-        float currentSpeed = boatRB.linearVelocity.magnitude;
-        currentSpeed = Mathf.Clamp(currentSpeed, 0, GlobalStats.maxSpeed);
+        // 1. Get the boat's speed (fallback to 0 if the rigidbody is missing or speed is NaN)
+        float currentSpeed = (boatRB != null) ? boatRB.linearVelocity.magnitude : 0f;
+        if (float.IsNaN(currentSpeed) || float.IsInfinity(currentSpeed))
+        {
+            currentSpeed = 0f;
+        }
 
-        float t = currentSpeed / GlobalStats.maxSpeed;
-        float desiredAngle = Mathf.Lerp(112, -105, t);
-        speedometerNeedle.localRotation = Quaternion.Euler(0, 0, desiredAngle);
+        // 2. Fetch the max speed safely
+        float maxSpeed = GlobalStats.maxSpeed;
+
+        // 3. Prevent division by zero if maxSpeed is 0 or negative
+        float t = 0f;
+        if (maxSpeed > 0f)
+        {
+            currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
+            t = currentSpeed / maxSpeed;
+        }
+
+        // 4. Interpolate the angle
+        float desiredAngle = Mathf.Lerp(112f, -105f, t);
+
+        // 5. Final safety check: only assign the rotation if it is a valid number
+        if (!float.IsNaN(desiredAngle) && !float.IsInfinity(desiredAngle))
+        {
+            speedometerNeedle.localRotation = Quaternion.Euler(0, 0, desiredAngle);
+        }
+        else
+        {
+            // Fallback to the default starting angle (112 degrees) if something goes wrong
+            speedometerNeedle.localRotation = Quaternion.Euler(0, 0, 112f);
+        }
     }
 
     void compass()
