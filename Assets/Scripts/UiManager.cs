@@ -29,15 +29,20 @@ public class UiManager : MonoBehaviour
     public Image xpBarGreen; // The main bar that fills smoothly
     public Image xpBarWhite; // The background bar that snaps instantly
     public float fillLerpSpeed = 10f; // How fast the green catches up to the white
+
+    public Image hpBarWhite;
+    public Image hpBarRed;
+
     void Start()
     {
         lastMaxXp = GlobalStats.expTonNextLevel;
-        lastLevel = GlobalStats.Level; // Track the starting level
+        lastLevel = GlobalStats.Level;
     }
 
     void Update()
     {
         updateXpBar();
+        updateHpBar();
         updateLevelDisplay();
         SpeedOmeter();
         compass();
@@ -74,6 +79,25 @@ public class UiManager : MonoBehaviour
             }
         }
     }
+    void updateHpBar()
+    {
+        float currentHp = GlobalStats.currentHealth;
+        float MaxHp = GlobalStats.maxHealth;
+
+        float targetPercentage = Mathf.Clamp01(currentHp / MaxHp);
+
+        // Red bar instantly drops to your new lower health
+        hpBarRed.fillAmount = targetPercentage;
+
+        // White bar slowly slides down to catch up to the red bar
+        hpBarWhite.fillAmount = Mathf.Lerp(hpBarWhite.fillAmount, targetPercentage, Time.deltaTime * fillLerpSpeed);
+
+        // Snap the white bar when it gets close enough
+        if (Mathf.Abs(hpBarWhite.fillAmount - targetPercentage) < 0.001f)
+        {
+            hpBarWhite.fillAmount = targetPercentage;
+        }
+    }
 
     void updateLevelDisplay()
     {
@@ -82,17 +106,14 @@ public class UiManager : MonoBehaviour
 
     void SpeedOmeter()
     {
-        // 1. Get the boat's speed (fallback to 0 if the rigidbody is missing or speed is NaN)
         float currentSpeed = (boatRB != null) ? boatRB.linearVelocity.magnitude : 0f;
         if (float.IsNaN(currentSpeed) || float.IsInfinity(currentSpeed))
         {
             currentSpeed = 0f;
         }
 
-        // 2. Fetch the max speed safely
         float maxSpeed = GlobalStats.maxSpeed;
 
-        // 3. Prevent division by zero if maxSpeed is 0 or negative
         float t = 0f;
         if (maxSpeed > 0f)
         {
@@ -100,17 +121,14 @@ public class UiManager : MonoBehaviour
             t = currentSpeed / maxSpeed;
         }
 
-        // 4. Interpolate the angle
         float desiredAngle = Mathf.Lerp(112f, -105f, t);
 
-        // 5. Final safety check: only assign the rotation if it is a valid number
         if (!float.IsNaN(desiredAngle) && !float.IsInfinity(desiredAngle))
         {
             speedometerNeedle.localRotation = Quaternion.Euler(0, 0, desiredAngle);
         }
         else
         {
-            // Fallback to the default starting angle (112 degrees) if something goes wrong
             speedometerNeedle.localRotation = Quaternion.Euler(0, 0, 112f);
         }
     }

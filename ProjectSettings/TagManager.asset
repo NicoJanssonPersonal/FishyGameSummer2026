@@ -7,6 +7,7 @@ TagManager:
   - greenzones
   - enemy
   - Cannon
+  - CannonBall
   layers:
   - Default
   - TransparentFX

@@ -82,6 +82,11 @@ public static class GlobalStats
     private static bool _cannon = false;
     public static bool cannon { get => _cannon; set => _cannon = value; }
 
+    private static float _maxHealth = 100;
+    public static float maxHealth { get => _maxHealth; set => _maxHealth = value; }
+    private static float _currentHealth = 100;
+    public static float currentHealth { get => _currentHealth; set => _currentHealth = value; }
+
     public static void SaveStats()
     {
         PlayerPrefs.SetFloat("GS_thrustForce", thrustForce);
@@ -115,6 +120,8 @@ public static class GlobalStats
         PlayerPrefs.SetFloat("GS_xpGain", xpGain);
         PlayerPrefs.SetFloat("GS_moneyGain", moneyGain);
         PlayerPrefs.SetFloat("GS_fishRarity", fishRarity);
+
+        PlayerPrefs.SetFloat("GS_maxHealth", maxHealth);
 
         PlayerPrefs.SetInt("GS_cannon", cannon ? 1 : 0);
 
@@ -168,6 +175,9 @@ public static class GlobalStats
         xpGain = PlayerPrefs.GetFloat("GS_xpGain");
         moneyGain = PlayerPrefs.GetFloat("GS_moneyGain");
         fishRarity = PlayerPrefs.GetFloat("GS_fishRarity");
+
+        PlayerPrefs.GetFloat("GS_maxHealth", maxHealth);
+
 
         cannon = PlayerPrefs.GetInt("GS_cannon") == 1;
 
