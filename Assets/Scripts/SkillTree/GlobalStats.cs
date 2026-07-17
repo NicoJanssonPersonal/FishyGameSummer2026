@@ -53,7 +53,7 @@ public static class GlobalStats
     public static float rarityChance { get => _rarityChance; set => _rarityChance = value; }
 
     // === Currency System ===
-    public static int _money = 3;
+    public static int _money = 1000;
     public static int money { get => _money; set => _money = value; }
     public static int _skillpoints = 300;
     public static int skillpoints { get => _skillpoints; set => _skillpoints = value; }
