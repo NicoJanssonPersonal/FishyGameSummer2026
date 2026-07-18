@@ -5406,6 +5406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoatManager
   fishradius: {fileID: 798913571}
+  boatCollider: {fileID: 258332507}
 --- !u!1 &1867079617
 GameObject:
   m_ObjectHideFlags: 0
