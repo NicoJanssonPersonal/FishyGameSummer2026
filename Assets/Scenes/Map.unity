@@ -32,11 +32,11 @@ RenderSettings:
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 1
+  m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 512
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
-  m_CustomReflection: {fileID: 2800000, guid: f1555b31bebb94d4fa8192eff16149ef, type: 3}
+  m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -2406,6 +2406,8 @@ MonoBehaviour:
   xpBarGreen: {fileID: 0}
   xpBarWhite: {fileID: 0}
   fillLerpSpeed: 10
+  hpBarWhite: {fileID: 0}
+  hpBarRed: {fileID: 0}
 --- !u!4 &287809555
 Transform:
   m_ObjectHideFlags: 0
@@ -16105,6 +16107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoatManager
   fishradius: {fileID: 798913571}
+  boatCollider: {fileID: 0}
 --- !u!1 &1867079617
 GameObject:
   m_ObjectHideFlags: 0

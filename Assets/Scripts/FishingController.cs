@@ -129,4 +129,5 @@ public class FishingController1 : MonoBehaviour
             fishDifficultyBasedOfRarity();
         }
     }
+
 }
