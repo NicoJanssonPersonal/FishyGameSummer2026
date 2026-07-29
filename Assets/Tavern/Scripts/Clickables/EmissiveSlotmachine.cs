@@ -9,7 +9,7 @@ public class EmissiveSlotmachine : MonoBehaviour
     public GameObject decoySlotMachine;
     public GameObject[] slotmachineWheels;
     public GameObject[] decoySlotmachineWheels;
-
+    public float emissionIntensity = 0.1f;
     void Start()
     {
         targetRenderer = GetComponent<Renderer>();
@@ -41,7 +41,7 @@ public class EmissiveSlotmachine : MonoBehaviour
     }
     void OnMouseEnter()
     {
-        SetEmission(Color.gray, 1);
+        SetEmission(Color.gray, emissionIntensity);
     }
     void OnMouseExit()
     {

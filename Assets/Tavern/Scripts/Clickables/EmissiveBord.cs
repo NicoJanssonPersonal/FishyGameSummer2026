@@ -5,6 +5,7 @@ public class EmissiveBord : MonoBehaviour
     public sceneManager sceneManager;
     private Renderer[] childRenderers;
     private Material[] childMaterials;
+    public float emissionIntensity = 0.5f; 
     Vector3 originalPos;
     public GameObject decoyTable;
 
@@ -45,7 +46,7 @@ public class EmissiveBord : MonoBehaviour
     }
     void OnMouseEnter()
     {
-        SetEmission(Color.gray, 1);
+        SetEmission(Color.gray, emissionIntensity);
     }
     void OnMouseExit()
     {
