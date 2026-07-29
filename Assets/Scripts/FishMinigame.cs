@@ -150,25 +150,12 @@ public class FishMinigame : MonoBehaviour
         float roll = Random.Range(0f, 1f);
         float xpFromFish;
         float moneyFromFish;
-        if (GlobalStats.multiFishChance > roll)
-        {
-            xpFromFish = GlobalStats.fishDifficulty * 3 * GlobalStats.multiFishAmount * GlobalStats.xpGain;
-            GlobalStats.Experince = GlobalStats.Experince + xpFromFish;
-            //Debug.Log("u caught " + GlobalStats.multiFishAmount + " fishes");
-            moneyFromFish = GlobalStats.fishDifficulty * 5 * GlobalStats.multiFishAmount * GlobalStats.moneyGain;
-            GlobalStats.money = GlobalStats.money + Mathf.RoundToInt(moneyFromFish);
-        }
-        else
-        {
-            xpFromFish = GlobalStats.fishDifficulty * 3 * GlobalStats.xpGain;
-            GlobalStats.Experince = GlobalStats.Experince + xpFromFish;
-            moneyFromFish = GlobalStats.fishDifficulty * 2 * GlobalStats.moneyGain;
-            GlobalStats.money = GlobalStats.money + Mathf.RoundToInt(moneyFromFish);
-            
-            //Debug.Log("u caught one fish");
-        }
-        //Debug.Log("chance for multi fish " + GlobalStats.multiFishChance + " Roll:" + roll);
-        
+
+        xpFromFish = GlobalStats.fishDifficulty * 3 * GlobalStats.xpGain;
+        GlobalStats.Experince = GlobalStats.Experince + xpFromFish;
+        moneyFromFish = GlobalStats.fishDifficulty * 2 * GlobalStats.moneyGain;
+        GlobalStats.money = GlobalStats.money + Mathf.RoundToInt(moneyFromFish);
+
         uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish));
         StartCoroutine(delay());
     }

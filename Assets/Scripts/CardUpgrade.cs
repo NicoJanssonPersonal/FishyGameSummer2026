@@ -7,7 +7,7 @@ public class CardUpgrade : MonoBehaviour
 {
     public TextMeshProUGUI cardText;
     private CardManager manager;
-    private String[] upgrades = { "plop amount", "multi fish amount", "multi fish chance", "money gain", "xp gain", "fish rarity", "card rarity chance", "fishing range" };
+    private String[] upgrades = { "plop amount", "money gain", "xp gain", "fish rarity", "card rarity chance", "fishing range" };
     //private String[] upgrades = { "fish rarity"};
     float rarity;
     CardManager cardManager;
@@ -65,16 +65,6 @@ public class CardUpgrade : MonoBehaviour
         {
             GlobalStats.plopAmount *= (1f + (rarity / 100f));
             //Debug.Log("current plopamount = " + GlobalStats.plopAmount);
-        }
-        if (Stat.StartsWith("multi fish amount"))
-        {
-            GlobalStats.multiFishAmount *= (1f + (rarity / 100f));
-            //Debug.Log("current fish amount = " + GlobalStats.multiFishAmount);
-        }
-        if (Stat.StartsWith("multi fish chance"))
-        {
-            GlobalStats.multiFishChance += rarity / 100f;
-            //Debug.Log("current multi fish chance = " + GlobalStats.multiFishChance);
         }
         if (Stat.StartsWith("xp gain"))
         {

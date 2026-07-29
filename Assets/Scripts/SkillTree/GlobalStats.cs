@@ -61,12 +61,7 @@ public static class GlobalStats
     public static int nodesUnlocked { get => _nodesUnlocked; set => _nodesUnlocked = value; }
 
     // === Fishing ===
-    // multifish chance
-    private static float _multiFishChance = 0f;
-    public static float multiFishChance { get => _multiFishChance; set => _multiFishChance = value; }
-    // multi fish
-    private static float _multiFishAmount = 1f;
-    public static float multiFishAmount { get => _multiFishAmount; set => _multiFishAmount = value; }
+
 
     // xp and money gain
     private static float _xpGain = 1f;
@@ -115,8 +110,6 @@ public static class GlobalStats
         PlayerPrefs.SetInt("GS_skillpoints", skillpoints);
         PlayerPrefs.SetInt("GS_nodesUnlocked", nodesUnlocked);
 
-        PlayerPrefs.SetFloat("GS_multiFishChance", multiFishChance);
-        PlayerPrefs.SetFloat("GS_multiFishAmount", multiFishAmount);
         PlayerPrefs.SetFloat("GS_xpGain", xpGain);
         PlayerPrefs.SetFloat("GS_moneyGain", moneyGain);
         PlayerPrefs.SetFloat("GS_fishRarity", fishRarity);
@@ -170,8 +163,6 @@ public static class GlobalStats
         skillpoints = PlayerPrefs.GetInt("GS_skillpoints");
         nodesUnlocked = PlayerPrefs.GetInt("GS_nodesUnlocked");
 
-        multiFishChance = PlayerPrefs.GetFloat("GS_multiFishChance");
-        multiFishAmount = PlayerPrefs.GetFloat("GS_multiFishAmount");
         xpGain = PlayerPrefs.GetFloat("GS_xpGain");
         moneyGain = PlayerPrefs.GetFloat("GS_moneyGain");
         fishRarity = PlayerPrefs.GetFloat("GS_fishRarity");

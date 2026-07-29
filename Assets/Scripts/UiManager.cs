@@ -166,7 +166,7 @@ public class UiManager : MonoBehaviour
     }
     void coinsFallInChest(int coinAmount)
     {
-        for (int i = 0; i < coinAmount; i++)
+        for (int i = 0; i < Mathf.Min(coinAmount, 1000); i++)
         {
             RectTransform rt = Instantiate(peng, coinSpawnPoint.transform);
             rt.anchoredPosition = new Vector2(
