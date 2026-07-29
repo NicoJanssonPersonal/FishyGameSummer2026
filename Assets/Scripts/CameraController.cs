@@ -51,7 +51,7 @@ public class CameraController : MonoBehaviour
 
         if (boatRb == null) boatRb = boatTarget.GetComponent<Rigidbody>();
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && !CardManager.isUpgrading)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

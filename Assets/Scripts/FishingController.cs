@@ -45,7 +45,10 @@ public class FishingController1 : MonoBehaviour
 
     void OnMouseDown()
     {
-        startFisingMinigame();
+        if (!CardManager.isUpgrading)
+        {
+            startFisingMinigame();
+        }
     }
 
     void startFisingMinigame()

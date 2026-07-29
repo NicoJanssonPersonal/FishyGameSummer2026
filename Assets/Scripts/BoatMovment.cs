@@ -59,8 +59,11 @@ public class BoatController : MonoBehaviour
     void FixedUpdate()
     {
         getStatsFromGlobalStats();
-        ApplyThrust();
-        ApplySteering();
+        if (!CardManager.isUpgrading)
+        {
+            ApplyThrust();
+            ApplySteering();
+        }
         ApplyWaterResistance();
         float currentSpeed = rb.linearVelocity.magnitude;
         smoothSpeedPercentage = Mathf.Clamp01(currentSpeed / maxSpeed);

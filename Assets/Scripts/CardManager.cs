@@ -7,6 +7,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private GameObject[] rarityPrefabs;
     public Transform container;
     private GameObject[] activeSpawnedCards = new GameObject[3];
+    public static bool isUpgrading = false; // if (!CardManager.isUpgrading){} om controllen skall vara avsätng i card viewn
 
     private bool calledOnce = false;
 
@@ -19,17 +20,11 @@ public class CardManager : MonoBehaviour
             cards[i] = container.GetChild(i).gameObject;
         }
 
-        foreach (var card in cards)
-        {
-            card.SetActive(false);
-        }
-
         calledOnce = false;
     }
 
     void Update()
     {
-        // Only run checkLevel if the upgrade screen isn't already active
         if (!calledOnce)
         {
             if (checkLevel())
@@ -42,6 +37,7 @@ public class CardManager : MonoBehaviour
 
     void TriggerCardDisplay()
     {
+        isUpgrading = true;
         Time.timeScale = 1f;
         GameObject[] selectedPrefabs = pickCard(GlobalStats.rarityChance);
 
@@ -52,12 +48,13 @@ public class CardManager : MonoBehaviour
                 Destroy(activeSpawnedCards[i]);
             }
 
-            // 1. Spawn the 3D card prefab
-            activeSpawnedCards[i] = Instantiate(selectedPrefabs[i], cards[i].transform.position, cards[i].transform.rotation);
-            activeSpawnedCards[i].transform.localScale = selectedPrefabs[i].transform.localScale * 2f;
-            activeSpawnedCards[i].SetActive(false);
+            activeSpawnedCards[i] = Instantiate(selectedPrefabs[i], cards[i].transform);
 
-            // 2. WIRED CONNECTION: Find your CardUpgrade script on the spawned object and give it this manager instance
+            activeSpawnedCards[i].transform.localPosition = Vector3.zero;
+            activeSpawnedCards[i].transform.localRotation = Quaternion.identity;
+
+            activeSpawnedCards[i].transform.localScale = selectedPrefabs[i].transform.localScale * 0.5f;
+
             CardUpgrade upgradeScript = activeSpawnedCards[i].GetComponent<CardUpgrade>();
             if (upgradeScript != null)
             {
@@ -68,16 +65,16 @@ public class CardManager : MonoBehaviour
                 Debug.LogWarning($"CardUpgrade script missing on prefab: {activeSpawnedCards[i].name}!");
             }
 
-            cards[i].SetActive(false);
             StartCoroutine(ExecuteAfterDelay(activeSpawnedCards[i], i));
         }
     }
 
     public void HideCards()
     {
+        isUpgrading = false;
         StopAllCoroutines();
         Time.timeScale = 1;
-        
+
         for (int i = 0; i < activeSpawnedCards.Length; i++)
         {
             if (activeSpawnedCards[i] != null)
@@ -86,7 +83,7 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        calledOnce = false; 
+        calledOnce = false;
     }
 
     IEnumerator ExecuteAfterDelay(GameObject card, int number)
@@ -97,7 +94,6 @@ public class CardManager : MonoBehaviour
 
     IEnumerator RotateOverTime(float duration, GameObject card)
     {
-        card.SetActive(true);
         float elapsed = 0f;
         float startRotation = card.transform.eulerAngles.y;
         float targetRotation = startRotation + 360f;
