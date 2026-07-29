@@ -2506,6 +2506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 508317927}
   - component: {fileID: 508317928}
+  - component: {fileID: 508317929}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -2543,6 +2544,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishingController
   rb: {fileID: 1867024620}
   plop: {fileID: 3935305661142784557, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
+--- !u!114 &508317929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508317926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8af6a528a81e02e418b2d26089ac28ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFishSpawner
+  SharkPrefab: {fileID: 5407922024736866701, guid: 158b8e3024e22254980a88e9c65243f8, type: 3}
+  waterPlane: {fileID: 2077428782}
 --- !u!1001 &520250854
 PrefabInstance:
   m_ObjectHideFlags: 0
