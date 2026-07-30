@@ -6868,15 +6868,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::lampDimmer
   baseIntensity: 20
   intensityVariance: 5
-  flickerSpeed: 0.5
-  baseRange: 15
-  rangeVariance: 5
-  coolColor: {r: 0.9, g: 0.25, b: 0.05, a: 1}
-  midColor: {r: 1, g: 0.55, b: 0.1, a: 1}
-  hotColor: {r: 1, g: 0.85, b: 0.3, a: 1}
+  flickerSpeed: 1
+  baseRange: 20
+  rangeVariance: 10
+  coolColor: {r: 1, g: 0.6104053, b: 0.062745094, a: 1}
+  midColor: {r: 1, g: 0.67031866, b: 0, a: 1}
+  hotColor: {r: 1, g: 0.8724341, b: 0, a: 1}
   colorShiftSpeed: 0.25
   enableJitter: 1
-  jitterAmount: 0.01
+  jitterAmount: 0.0025
 --- !u!1001 &1161787771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13286,6 +13286,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1938440641}
   - {fileID: 1238452377}
   - {fileID: 683912081}
   - {fileID: 529290892}
@@ -13320,4 +13321,3 @@ SceneRoots:
   - {fileID: 1774082321}
   - {fileID: 1422002424}
   - {fileID: 1655666222}
-  - {fileID: 1938440641}

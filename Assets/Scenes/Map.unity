@@ -802,8 +802,8 @@ Light:
   serializedVersion: 13
   m_Type: 2
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 23.19
-  m_Range: 19.15
+  m_Intensity: 20
+  m_Range: 30
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}
@@ -2777,7 +2777,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &287809554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4747,6 +4747,7 @@ GameObject:
   m_Component:
   - component: {fileID: 508317927}
   - component: {fileID: 508317928}
+  - component: {fileID: 508317929}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -4785,6 +4786,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishingController
   rb: {fileID: 1867024620}
   plop: {fileID: 3935305661142784557, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
+--- !u!114 &508317929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508317926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8af6a528a81e02e418b2d26089ac28ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyFishSpawner
+  SharkPrefab: {fileID: 5407922024736866701, guid: 158b8e3024e22254980a88e9c65243f8, type: 3}
+  waterPlane: {fileID: 2077428782}
+  totalSharks: 50
+  minDistanceBetweenSharks: 5
+  maxAttemptsPerShark: 100
 --- !u!1 &510690592
 GameObject:
   m_ObjectHideFlags: 0
@@ -19694,7 +19712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DaylightCycle
   targetDayLengthInMinutes: 3
   targetNightLengthInMinutes: 3
-  startHour: 8
+  startHour: 21
   sunColorGradient:
     serializedVersion: 2
     key0: {r: 0.15216066, g: 0, b: 0.23584908, a: 1}
