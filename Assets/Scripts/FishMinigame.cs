@@ -15,22 +15,27 @@ public class FishMinigame : MonoBehaviour
     public static bool isUIOpen = false;
 
     [Header("Fish Stats")]
-
-    private GameObject[] greenZoneObjects = new GameObject[4];
+    private GameObject[] greenZoneObjects = new GameObject[0];
+    private Vector3[] zoneBasePositions = new Vector3[0];
     private Vector2 initialFishPos;
     public RectTransform killZone;
 
     public TextMeshProUGUI timerText;
     private float timeRemaining = 5;
-    bool isTimerRunning = false;
+    private bool isTimerRunning = false;
     public RectTransform baitHitBox;
     public UiManager uiManagerScript;
+
+    [Header("Zone Movement Settings")]
+    public float zoneMoveSpeed = 1.5f;       // Speed of moving zones
+    public float zoneMoveAmplitude = 15f;    // Pixels moved up/down
+    private int currentDifficulty = 1;
+
     void Start()
     {
         fishe = fisheGameObject.GetComponent<RectTransform>();
         fishRB = fisheGameObject.GetComponent<Rigidbody2D>();
         initialFishPos = fishe.anchoredPosition;
-        //debugfiskpos();
         closeUI();
     }
 
@@ -40,32 +45,37 @@ public class FishMinigame : MonoBehaviour
         Debug.Log("Local: " + fishe.localPosition);
         Debug.Log("Anchored: " + fishe.anchoredPosition);
     }
+
     void Update()
     {
-
         if (isTimerRunning)
         {
             HandleCountdown();
         }
-        bool spacePressedOnce = false;
-        bool fishInAnyZone = false;
+
         if (!isUIOpen)
             return;
 
+        // Animate middle green zones at difficulty 5+
+        if (currentDifficulty >= 5)
+        {
+            AnimateZones(currentDifficulty);
+        }
+
+        bool spacePressedOnce = false;
+        bool fishInAnyZone = false;
 
         for (int i = 0; i < greenZoneObjects.Length; i++)
         {
             if (greenZoneObjects[i] == null)
                 continue;
 
-            RectTransform zoneRect =
-                greenZoneObjects[i].GetComponent<RectTransform>();
+            RectTransform zoneRect = greenZoneObjects[i].GetComponent<RectTransform>();
 
             if (zoneRect != null && IsOverlapping(fishe, zoneRect))
             {
                 fishInAnyZone = true;
 
-                //Debug.Log($"Fish touching zone {i}");
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     spacePressedOnce = true;
@@ -82,20 +92,41 @@ public class FishMinigame : MonoBehaviour
                 break;
             }
         }
+
         if (IsOverlapping(baitHitBox, killZone))
         {
             FishEscaped();
         }
+
         if (!fishInAnyZone && Input.GetKeyDown(KeyCode.Space))
         {
             FishEscaped();
         }
+
         if (spacePressedOnce)
         {
-            //GlobalStats.constantSpeed = (GlobalStats.constantSpeed * (GlobalStats.fishDifficulty)) - GlobalStats.fishingStrength;
             fishRB.linearVelocity = new Vector2(fishRB.linearVelocity.x, -GlobalStats.constantSpeed);
         }
+    }
 
+    void AnimateZones(int level)
+    {
+        float levelMultiplier = level / 5;
+        int zoneCount = greenZoneObjects.Length;
+        if (zoneCount <= 2) return;
+
+        for (int i = 1; i < zoneCount - 1; i++)
+        {
+            if (greenZoneObjects[i] == null) continue;
+
+            float phaseOffset = i * 1.5f;
+            float yOffset = Mathf.Sin(Time.time * zoneMoveSpeed * levelMultiplier + phaseOffset) * zoneMoveAmplitude;
+
+            Vector3 newPos = zoneBasePositions[i];
+            newPos.y += yOffset;
+
+            greenZoneObjects[i].transform.localPosition = newPos;
+        }
     }
 
     void MoveFishToZone(int zoneIndex)
@@ -106,13 +137,9 @@ public class FishMinigame : MonoBehaviour
             return;
         }
 
-        RectTransform zone =
-            greenZoneObjects[zoneIndex].GetComponent<RectTransform>();
-
+        RectTransform zone = greenZoneObjects[zoneIndex].GetComponent<RectTransform>();
         Vector3 targetPos = zone.position;
-
         targetPos.y += Random.Range(5f, 30f);
-
         fishe.position = targetPos;
     }
 
@@ -146,22 +173,20 @@ public class FishMinigame : MonoBehaviour
 
     void CatchFish()
     {
-        //Debug.Log("Fish caught");
         float roll = Random.Range(0f, 1f);
-        float xpFromFish;
-        float moneyFromFish;
-
-        xpFromFish = GlobalStats.fishDifficulty * 3 * GlobalStats.xpGain;
-        GlobalStats.Experince = GlobalStats.Experince + xpFromFish;
-        moneyFromFish = GlobalStats.fishDifficulty * 2 * GlobalStats.moneyGain;
-        GlobalStats.money = GlobalStats.money + Mathf.RoundToInt(moneyFromFish);
+        float xpFromFish = GlobalStats.fishDifficulty * 3 * GlobalStats.xpGain;
+        GlobalStats.Experince += xpFromFish;
+        
+        float moneyFromFish = GlobalStats.fishDifficulty * 2 * GlobalStats.moneyGain;
+        GlobalStats.money += Mathf.RoundToInt(moneyFromFish);
 
         uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish));
         StartCoroutine(delay());
     }
+
     IEnumerator delay()
     {
-        fishRB.linearVelocity = new Vector3(0, 0, 0);
+        fishRB.linearVelocity = Vector3.zero;
         yield return new WaitForSeconds(0.5f);
         closeUI();
     }
@@ -174,75 +199,76 @@ public class FishMinigame : MonoBehaviour
 
     public void openUi(int fishDifficulty)
     {
-        // called from fishinController
         closeUI();
         timeRemaining = 5;
         isTimerRunning = true;
-        //GlobalStats.fishDifficulty = GlobalStats.fishDifficulty + 1;
-        //Debug.Log(GlobalStats.fishDifficulty);
         isUIOpen = true;
-        Debug.Log(fishesGameObjects[fishDifficulty - 1]);
+
         foreach (var fish in fishesGameObjects)
         {
             fish.SetActive(false);
         }
+
         GameObject activeFish = fishesGameObjects[fishDifficulty - 1];
         activeFish.SetActive(true);
-        //fishe = fishesGameObjects[fishDifficulty-1].GetComponent<RectTransform>();;
         fishe.anchoredPosition = initialFishPos;
 
         uiPanel.SetActive(true);
-        //Debug.Log("fiskens svårighet " + fishDifficulty);
         generategreenZones(fishDifficulty, fishDifficulty);
-
-        //debugfiskpos();
     }
 
     void closeUI()
     {
         isUIOpen = false;
-
         deletegreenZones();
-
         uiPanel.SetActive(false);
+
         foreach (var fish in fishesGameObjects)
         {
             fish.SetActive(false);
         }
     }
+
     void generategreenZones(int difficulty, int greenZones)
     {
-        greenZones = greenZones + 1;
-        float yOffset = 235f / greenZones;
+        currentDifficulty = difficulty;
+        int zoneCount = greenZones + 1;
 
-        greenZoneObjects = new GameObject[greenZones];
+        greenZoneObjects = new GameObject[zoneCount];
+        zoneBasePositions = new Vector3[zoneCount];
 
-        float scaleShrinkFactor =
-            0.075f * (difficulty * Random.Range(0.5f, 1.5f));
+        float minY = 140.5f;
+        float maxY = 435.0f;
+        float totalDistance = maxY - minY;
 
-        for (int i = 0; i < greenZones; i++)
+        float scaleShrinkFactor = 0.075f * (difficulty * Random.Range(0.5f, 1.2f));
+
+        for (int i = 0; i < zoneCount; i++)
         {
-            GameObject newGreenZone =
-                Instantiate(greenZone, greenZoneHolder, false);
-
-            float dynamicY =
-                140.5f + (i * yOffset) + Random.Range(0f, 15f);
-
-            newGreenZone.transform.localPosition =
-                new Vector3(1127f, dynamicY, 0f);
-
-            float dynamicScaleY =
-                0.45f - (i * scaleShrinkFactor);
-
+            float dynamicScaleY = 0.45f - (i * scaleShrinkFactor);
             if (dynamicScaleY < 0.05f)
                 dynamicScaleY = 0.05f;
 
-            newGreenZone.transform.localScale =
-                new Vector3(1f, dynamicScaleY, 1f);
+            GameObject newGreenZone = Instantiate(greenZone, greenZoneHolder, false);
+            newGreenZone.transform.localScale = new Vector3(1f, dynamicScaleY, 1f);
+
+            float t = (zoneCount > 1) ? (float)i / (zoneCount - 1) : 0f;
+            float targetY = Mathf.Lerp(minY, maxY, t);
+
+            if (i > 0 && i < zoneCount - 1)
+            {
+                float maxJitter = (totalDistance / (zoneCount - 1)) * 0.15f;
+                targetY += Random.Range(-maxJitter, maxJitter);
+            }
+
+            Vector3 position = new Vector3(1127f, targetY, 0f);
+            newGreenZone.transform.localPosition = position;
 
             greenZoneObjects[i] = newGreenZone;
+            zoneBasePositions[i] = position;
         }
     }
+
     void deletegreenZones()
     {
         foreach (GameObject zone in greenZoneObjects)
@@ -254,7 +280,9 @@ public class FishMinigame : MonoBehaviour
         }
 
         greenZoneObjects = new GameObject[0];
+        zoneBasePositions = new Vector3[0];
     }
+
     private void HandleCountdown()
     {
         if (timeRemaining > 0)
@@ -268,24 +296,20 @@ public class FishMinigame : MonoBehaviour
         }
     }
 
-    // 2. Handles updating the text element on the screen
     private void UpdateTimerUI()
     {
         float seconds = Mathf.CeilToInt(timeRemaining);
         timerText.text = seconds.ToString();
     }
 
-    // 3. Handles what happens when the timer hits 0
     private void FinishTimer()
     {
         timeRemaining = 0;
         isTimerRunning = false;
         timerText.text = "Fail";
-
         TriggerTimerEvents();
     }
 
-    // 4. A dedicated place to put your gameplay events (e.g., enable player movement)
     private void TriggerTimerEvents()
     {
         FishEscaped();
