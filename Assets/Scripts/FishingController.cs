@@ -32,7 +32,6 @@ public class FishingController1 : MonoBehaviour
                 fishDiff = CalculateFishDifficultyAndColor();
             }
         }
-
         if (fishMinigame == null)
         {
             fishMinigame = FindAnyObjectByType<FishMinigame>();
@@ -42,7 +41,16 @@ public class FishingController1 : MonoBehaviour
             boat = GameObject.Find("BoatHolder");
         }
     }
+    void Awake()
+    {
+        GameObject playerObj = GameObject.FindWithTag("fiskarDude");
 
+        if (playerObj != null)
+        {
+            // Search child objects for a specific child named "ModelAnimator"
+            animator = playerObj.GetComponent<Animator>();
+        }
+    }
     void OnMouseDown()
     {
         if (!CardManager.isUpgrading)
@@ -81,36 +89,42 @@ public class FishingController1 : MonoBehaviour
     {
         if (tubeMaterial == null) return GlobalStats.fishDifficulty;
 
-        // Roll a random value between 0 and 100
-        float roll = Random.Range(0f, 100f);
+        // Roll baseline (0-100) + luck bonus, capped cleanly at 100
+        float luckBonus = GlobalStats.fishRarity * 0.5f;
+        float roll = Mathf.Clamp(Random.Range(0f, 100f) + luckBonus, 0f, 100f);
 
-        // Check if the rolled number falls within the player's fishRarity stat boost
-        // The higher GlobalStats.fishRarity is, the higher the chance to get rare tiers
-        float effectiveRoll = roll + (GlobalStats.fishRarity * 0.5f); // Example scaling factor
+        int difficultyBoost = 0;
+        Color targetColor = CommonColor;
 
-        if (effectiveRoll > 95f)
+        // EXACT BASE PERCENTAGES (when fishRarity = 0):
+        if (roll >= 99.5f)        // 0.5% Chance (Rolls 99.5 to 100.0)
         {
-            tubeMaterial.SetColor("_EmissionColor", ChaoticColor);
-            return GlobalStats.fishDifficulty + 4;
+            difficultyBoost = 10;
+            targetColor = ChaoticColor;
         }
-        if (effectiveRoll > 80f)
+        else if (roll >= 97.5f)   // 2.0% Chance (Rolls 97.5 to 99.49)
         {
-            tubeMaterial.SetColor("_EmissionColor", LegendaryColor);
-            return GlobalStats.fishDifficulty + 3;
+            difficultyBoost = 7;
+            targetColor = LegendaryColor;
         }
-        if (effectiveRoll > 60f)
+        else if (roll >= 85.0f)   // 12.5% Chance (Rolls 85.0 to 97.49)
         {
-            tubeMaterial.SetColor("_EmissionColor", RareColor);
-            return GlobalStats.fishDifficulty + 2;
+            difficultyBoost = 4;
+            targetColor = RareColor;
         }
-        if (effectiveRoll > 35f)
+        else if (roll >= 50.0f)   // 35.0% Chance (Rolls 50.0 to 84.99)
         {
-            tubeMaterial.SetColor("_EmissionColor", UncommonColor);
-            return GlobalStats.fishDifficulty + 1;
+            difficultyBoost = 2;
+            targetColor = UncommonColor;
+        }
+        else                      // 50.0% Chance (Rolls 0.0 to 49.99)
+        {
+            difficultyBoost = 0;
+            targetColor = CommonColor;
         }
 
-        tubeMaterial.SetColor("_EmissionColor", CommonColor);
-        return GlobalStats.fishDifficulty;
+        tubeMaterial.SetColor("_EmissionColor", targetColor);
+        return GlobalStats.fishDifficulty + difficultyBoost;
     }
 
     private void OnDestroy()
