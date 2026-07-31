@@ -25,8 +25,21 @@ public class BoatController : MonoBehaviour
     private float currentXRotation = 40f;
     public float reverseTiltAngle = 45f;
 
+    [Header("Visual Tilt Settings")]
+    [SerializeField] private Transform visualMesh; // Drag your child mesh object here
+    [SerializeField] private float rollAngle = 15f;  // Maximum banking angle when turning
+    [SerializeField] private float pitchAngle = 10f; // Maximum nose-up/down angle when accelerating
+    [SerializeField] private float tiltSpeed = 5f;  // How fast the boat tilts (smoothness)
+    
+    private Vector3 lastVelocity;
+    private Quaternion meshInitialRotation;
+
     void Start()
     {
+        if (visualMesh != null)
+        {
+            meshInitialRotation = visualMesh.localRotation;
+        }
         GlobalStats.LoadStats();
         getStatsFromGlobalStats();
 
@@ -63,17 +76,36 @@ public class BoatController : MonoBehaviour
         {
             ApplyThrust();
             ApplySteering();
+            ApplyVisualTilt();
         }
         ApplyWaterResistance();
         float currentSpeed = rb.linearVelocity.magnitude;
         smoothSpeedPercentage = Mathf.Clamp01(currentSpeed / maxSpeed);
+    }
+    void ApplyVisualTilt()
+    {
+        if (visualMesh == null) return;
+
+        float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
+        float normalizedSpeed = (maxSpeed > 0f) ? Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed) : 0f;
+
+        float targetPitch = moveInput * pitchAngle * normalizedSpeed;
+        float targetRoll = turnInput * rollAngle * normalizedSpeed;
+
+        Quaternion tiltRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
+        Quaternion targetRotation = meshInitialRotation * tiltRotation;
+
+        visualMesh.localRotation = Quaternion.Slerp(
+            visualMesh.localRotation,
+            targetRotation,
+            Time.fixedDeltaTime * tiltSpeed
+        );
     }
 
     void ApplyThrust()
     {
         float currentSpeed = rb.linearVelocity.magnitude;
 
-        // Safety check: if maxSpeed is 0 or less, set thrustFactor to 0 to prevent division by zero
         float thrustFactor = (maxSpeed > 0f) ? Mathf.Clamp01(1f - (currentSpeed / maxSpeed)) : 0f;
 
         if (moveInput >= 0)

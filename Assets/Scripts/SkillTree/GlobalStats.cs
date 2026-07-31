@@ -70,7 +70,7 @@ public static class GlobalStats
     public static float moneyGain { get => _moneyGain; set => _moneyGain = value; }
 
     // fish rarity chance
-    private static float _fishRarity = 50f;
+    private static float _fishRarity = 1f;
     public static float fishRarity { get => _fishRarity; set => _fishRarity = value; }
 
     // === SkillTree ===

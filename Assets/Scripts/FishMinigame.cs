@@ -20,9 +20,6 @@ public class FishMinigame : MonoBehaviour
     private Vector2 initialFishPos;
     public RectTransform killZone;
 
-    public TextMeshProUGUI timerText;
-    private float timeRemaining = 5;
-    private bool isTimerRunning = false;
     public RectTransform baitHitBox;
     public UiManager uiManagerScript;
 
@@ -48,10 +45,6 @@ public class FishMinigame : MonoBehaviour
 
     void Update()
     {
-        if (isTimerRunning)
-        {
-            HandleCountdown();
-        }
 
         if (!isUIOpen)
             return;
@@ -173,7 +166,6 @@ public class FishMinigame : MonoBehaviour
 
     void CatchFish()
     {
-        float roll = Random.Range(0f, 1f);
         float xpFromFish = GlobalStats.fishDifficulty * 3 * GlobalStats.xpGain;
         GlobalStats.Experince += xpFromFish;
         
@@ -200,8 +192,6 @@ public class FishMinigame : MonoBehaviour
     public void openUi(int fishDifficulty)
     {
         closeUI();
-        timeRemaining = 5;
-        isTimerRunning = true;
         isUIOpen = true;
 
         foreach (var fish in fishesGameObjects)
@@ -209,7 +199,8 @@ public class FishMinigame : MonoBehaviour
             fish.SetActive(false);
         }
 
-        GameObject activeFish = fishesGameObjects[fishDifficulty - 1];
+        //GameObject activeFish = fishesGameObjects[fishDifficulty - 1]; ta tibaka när det finns 10 olika sprites
+        GameObject activeFish = fishesGameObjects[0];
         activeFish.SetActive(true);
         fishe.anchoredPosition = initialFishPos;
 
@@ -283,35 +274,4 @@ public class FishMinigame : MonoBehaviour
         zoneBasePositions = new Vector3[0];
     }
 
-    private void HandleCountdown()
-    {
-        if (timeRemaining > 0)
-        {
-            timeRemaining -= Time.deltaTime;
-            UpdateTimerUI();
-        }
-        else
-        {
-            FinishTimer();
-        }
-    }
-
-    private void UpdateTimerUI()
-    {
-        float seconds = Mathf.CeilToInt(timeRemaining);
-        timerText.text = seconds.ToString();
-    }
-
-    private void FinishTimer()
-    {
-        timeRemaining = 0;
-        isTimerRunning = false;
-        timerText.text = "Fail";
-        TriggerTimerEvents();
-    }
-
-    private void TriggerTimerEvents()
-    {
-        FishEscaped();
-    }
 }
