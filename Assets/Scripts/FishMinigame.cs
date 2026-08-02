@@ -27,6 +27,7 @@ public class FishMinigame : MonoBehaviour
     public float zoneMoveSpeed = 1.5f;       // Speed of moving zones
     public float zoneMoveAmplitude = 15f;    // Pixels moved up/down
     private int currentDifficulty = 1;
+    private int thisFishDifficulty;
 
     void Start()
     {
@@ -166,10 +167,10 @@ public class FishMinigame : MonoBehaviour
 
     void CatchFish()
     {
-        float xpFromFish = GlobalStats.fishDifficulty * 3 * GlobalStats.xpGain;
+        float xpFromFish = thisFishDifficulty * 3 * GlobalStats.xpGain;
         GlobalStats.Experince += xpFromFish;
-        
-        float moneyFromFish = GlobalStats.fishDifficulty * 2 * GlobalStats.moneyGain;
+
+        float moneyFromFish = thisFishDifficulty* 2 * GlobalStats.moneyGain;
         GlobalStats.money += Mathf.RoundToInt(moneyFromFish);
 
         uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish));
@@ -191,6 +192,7 @@ public class FishMinigame : MonoBehaviour
 
     public void openUi(int fishDifficulty)
     {
+        thisFishDifficulty = fishDifficulty;
         closeUI();
         isUIOpen = true;
 

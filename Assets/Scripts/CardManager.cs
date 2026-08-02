@@ -117,23 +117,39 @@ public class CardManager : MonoBehaviour
     }
 
     GameObject[] pickCard(float cardRarityChance)
+{
+    GameObject[] selected = new GameObject[3];
+
+    float luckBonus = cardRarityChance * 0.5f;
+
+    for (int i = 0; i < 3; i++)
     {
-        GameObject[] selected = new GameObject[3];
+        float roll = Mathf.Clamp(Random.Range(0f, 100f) + luckBonus, 0f, 100f);
 
-        for (int i = 0; i < 3; i++)
-        {
-            float roll = Random.Range(0f, 1f);
-            float finalScore = roll * cardRarityChance;
-
-            if (finalScore >= 0.97f) { selected[i] = rarityPrefabs[4]; }
-            else if (finalScore >= 0.9f) { selected[i] = rarityPrefabs[3]; }
-            else if (finalScore >= 0.75f) { selected[i] = rarityPrefabs[2]; }
-            else if (finalScore >= 0.45f) { selected[i] = rarityPrefabs[1]; }
-            else { selected[i] = rarityPrefabs[0]; }
+        if (roll >= 99.5f)      // 0.5% Chance
+        { 
+            selected[i] = rarityPrefabs[4]; // Chaotic
         }
-
-        return selected;
+        else if (roll >= 97.5f) // 2.0% Chance
+        { 
+            selected[i] = rarityPrefabs[3]; // Legendary
+        }
+        else if (roll >= 85.0f) // 12.5% Chance
+        { 
+            selected[i] = rarityPrefabs[2]; // Rare
+        }
+        else if (roll >= 50.0f) // 35.0% Chance
+        { 
+            selected[i] = rarityPrefabs[1]; // Uncommon
+        }
+        else                  // 50.0% Chance
+        { 
+            selected[i] = rarityPrefabs[0]; // Common
+        }
     }
+
+    return selected;
+}
 
     bool checkLevel()
     {

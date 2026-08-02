@@ -28,7 +28,6 @@ public class FishingController1 : MonoBehaviour
             {
                 tubeMaterial = tubeRenderer.material;
                 tubeMaterial.EnableKeyword("_EMISSION");
-
                 fishDiff = CalculateFishDifficultyAndColor();
             }
         }
@@ -89,10 +88,9 @@ public class FishingController1 : MonoBehaviour
     {
         if (tubeMaterial == null) return GlobalStats.fishDifficulty;
 
-        // Roll baseline (0-100) + luck bonus, capped cleanly at 100
         float luckBonus = GlobalStats.fishRarity * 0.5f;
         float roll = Mathf.Clamp(Random.Range(0f, 100f) + luckBonus, 0f, 100f);
-
+        // add crazy special legendary fishes if in specific area
         int difficultyBoost = 0;
         Color targetColor = CommonColor;
 
