@@ -15,6 +15,11 @@ public class railgun : MonoBehaviour
     [SerializeField] private float minTilt = -10f;
     [SerializeField] private float maxTilt = 45f;
 
+    [Header("Shooting Settings")]
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float bulletForce = 100f;
+    [SerializeField] private float destroyDelay = 5f;
     private float currentTiltRotation = 0f;
     private Vector3 originalRecoilPosition;
     private bool isRecoiling = false;
@@ -35,16 +40,16 @@ public class railgun : MonoBehaviour
 
     void devMovement()
     {
-        float horizontalInput = Input.GetAxis("Horizontal"); 
+        float horizontalInput = Input.GetAxis("Horizontal");
         float swivelAmount = horizontalInput * swivelSpeed * Time.deltaTime;
-        
+
         if (gunSwivel != null)
         {
             gunSwivel.transform.Rotate(Vector3.up, swivelAmount);
         }
 
         float verticalInput = Input.GetAxis("Vertical");
-        
+
         if (gunTilt != null)
         {
             currentTiltRotation -= verticalInput * tiltSpeed * Time.deltaTime;
@@ -56,16 +61,34 @@ public class railgun : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            shoot();
+            Shoot();
         }
     }
 
-    public void shoot()
+    public void Shoot()
     {
         if (!isRecoiling && recoil != null)
         {
             StartCoroutine(PlayRecoil());
+            spawnBullet();
         }
+    }
+    void spawnBullet()
+    {
+        // 1. Spawn the bullet prefab at firePoint position and rotation
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+        // 2. Get the Rigidbody attached to the instantiated bullet
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+
+        // 3. Add impulse force pushing forward relative to firePoint direction
+        if (rb != null)
+        {
+            rb.AddForce(firePoint.forward * bulletForce, ForceMode.Impulse);
+        }
+
+        // 4. Clean up bullet to prevent memory bloat
+        Destroy(bullet, destroyDelay);
     }
 
     private IEnumerator PlayRecoil()
