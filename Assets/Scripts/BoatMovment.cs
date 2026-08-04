@@ -30,9 +30,10 @@ public class BoatController : MonoBehaviour
     [SerializeField] private float rollAngle = 15f;  // Maximum banking angle when turning
     [SerializeField] private float pitchAngle = 10f; // Maximum nose-up/down angle when accelerating
     [SerializeField] private float tiltSpeed = 5f;  // How fast the boat tilts (smoothness)
-    
+
     private Vector3 lastVelocity;
     private Quaternion meshInitialRotation;
+    private float targetY;
 
     void Start()
     {
@@ -46,6 +47,7 @@ public class BoatController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         originalLocalPosition = boatCam.transform.localPosition;
+        targetY = transform.position.y;
     }
 
     void Update()
@@ -122,30 +124,35 @@ public class BoatController : MonoBehaviour
 
     void ApplySteering()
     {
-        // 1. Calculate forward speed and speed factor
         float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-
-        // Safety check: if maxSpeed is 0 or less, set speedFactor to 0
         float speedFactor = (maxSpeed > 0f) ? Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed) : 0f;
 
-        // 2. Determine steering direction based on forward/backward movement
         float currentTurnInput = turnInput;
         if (forwardSpeed < 0f)
         {
-            currentTurnInput = -turnInput; // Inverts the steering when going in reverse
+            currentTurnInput = -turnInput;
         }
 
-        // 3. Calculate and clamp the torque (Max Turn Thrust) using the adjusted input
-        float turnAmount = currentTurnInput * turnTorque * speedFactor;
-        turnAmount = Mathf.Clamp(turnAmount, -maxTurnTorque, maxTurnTorque);
-
-        // 4. Apply the torque (Safety check: only apply if turnAmount is a valid number)
-        if (!float.IsNaN(turnAmount))
+        // --- ADDED: Active Straightening / Steering Damping ---
+        if (Mathf.Abs(turnInput) < 0.05f)
         {
-            rb.AddTorque(transform.up * turnAmount, ForceMode.Force);
+            // When not turning, rapidly bleed off Y angular velocity so the boat travels straight
+            Vector3 angVel = rb.angularVelocity;
+            angVel.y = Mathf.Lerp(angVel.y, 0f, Time.fixedDeltaTime * 10f);
+            rb.angularVelocity = angVel;
+        }
+        else
+        {
+            // Calculate and apply turn torque only when actively pressing turn keys
+            float turnAmount = currentTurnInput * turnTorque * speedFactor;
+            turnAmount = Mathf.Clamp(turnAmount, -maxTurnTorque, maxTurnTorque);
+
+            if (!float.IsNaN(turnAmount))
+            {
+                rb.AddTorque(transform.up * turnAmount, ForceMode.Force);
+            }
         }
 
-        // 5. Enforce Max Turn Speed & Max Turn Radius
         LimitRotationSpeed(forwardSpeed);
     }
 
@@ -155,17 +162,14 @@ public class BoatController : MonoBehaviour
 
         float allowedAngularSpeed = maxAngularVelocity;
 
-        // We only calculate this if the boat is actually moving to avoid dividing by zero
         if (Mathf.Abs(forwardSpeed) > 0.2f && minTurningRadius > 0f)
         {
             float radiusLimitedAngularSpeed = Mathf.Abs(forwardSpeed) / minTurningRadius;
             allowedAngularSpeed = Mathf.Min(allowedAngularSpeed, radiusLimitedAngularSpeed);
         }
 
-        // Clamp the Y-axis angular velocity (the steering axis)
         float clampedYRotation = Mathf.Clamp(currentAngularVelocity.y, -allowedAngularSpeed, allowedAngularSpeed);
 
-        // Apply the clamped velocity back to the rigidbody
         rb.angularVelocity = new Vector3(currentAngularVelocity.x, clampedYRotation, currentAngularVelocity.z);
     }
 
@@ -229,7 +233,7 @@ public class BoatController : MonoBehaviour
 
         float targetXRotation = 40f;
 
-        // 1. Check if moving backward. 
+
         if (forwardSpeed < -0.2f)
         {
             targetXRotation = reverseTiltAngle;
@@ -239,8 +243,6 @@ public class BoatController : MonoBehaviour
         float maxChangePerSecond = Mathf.Abs(reverseTiltAngle) / 10f;
         currentXRotation = Mathf.MoveTowards(currentXRotation, targetXRotation, maxChangePerSecond * Time.deltaTime);
 
-        // 3. Directly force the local X angle while preserving your camera's current Y and Z.
-        // This overrides basic rotation conflicts.
         Vector3 currentAngles = boatCam.transform.localEulerAngles;
         boatCam.transform.localEulerAngles = new Vector3(currentXRotation, currentAngles.y, currentAngles.z);
     }

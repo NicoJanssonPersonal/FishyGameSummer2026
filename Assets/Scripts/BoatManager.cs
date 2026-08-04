@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Mathematics;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,7 +19,7 @@ public class BoatManager : MonoBehaviour
     }
     void Start()
     {
-        
+
     }
 
     void Update()
@@ -30,6 +31,7 @@ public class BoatManager : MonoBehaviour
     {
         float fishRange = GlobalStats.fishingRange * fishrangeRatio;
         fishradius.transform.localScale = new Vector3(fishRange, 1, fishRange);
+        fishradius.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
     }
     void checkHp()
     {
@@ -39,7 +41,7 @@ public class BoatManager : MonoBehaviour
             StartSinking();
             fishradius.SetActive(false);
         }
-        if(transform.position.y <= -10)
+        if (transform.position.y <= -10)
         {
             //Time.timeScale = 0;
             //pause game popup window u died return to tavern
@@ -49,8 +51,8 @@ public class BoatManager : MonoBehaviour
     public void StartSinking()
     {
         isSinking = true;
-        
-        if (boatCollider!= null)
+
+        if (boatCollider != null)
         {
             boatCollider.enabled = false;
         }

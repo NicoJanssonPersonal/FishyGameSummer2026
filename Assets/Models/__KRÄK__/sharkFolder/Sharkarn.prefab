@@ -104,6 +104,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d278ac44b2e8f84c97c6f20da795676, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5489992479126278107}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d278ac44b2e8f84c97c6f20da795676, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5802729708934661493}
   m_SourcePrefab: {fileID: 100100000, guid: 4d278ac44b2e8f84c97c6f20da795676, type: 3}
 --- !u!1 &5407922024736866701 stripped
 GameObject:
@@ -146,9 +149,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SharkController
   target: {fileID: 0}
   normalSpeed: 5
+  wanderSpeed: 2.5
   rotationSpeed: 720
+  detectionRange: 15
   attackRange: 2
   attackCooldown: 1.5
+  figureEightWidth: 10
+  figureEightLength: 15
+  figureEightSpeed: 0.5
+  sizeVariance: 3
+  speedVariance: 0.15
+  randomizeRotation: 1
   maxHits: 5
   slowDuration: 3
   slowMultiplier: 0.5
@@ -196,9 +207,22 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 5}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &5802729708934661493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5407922024736866701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07ca2a59042e8954ebbbe42d672f3b50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 100

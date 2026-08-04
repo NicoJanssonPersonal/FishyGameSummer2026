@@ -1,4 +1,4 @@
-using System.Collections; // Required for Coroutines
+using System.Collections;
 using UnityEngine;
 
 public class railgun : MonoBehaviour
@@ -7,88 +7,196 @@ public class railgun : MonoBehaviour
     public GameObject gunTilt;
     public GameObject recoil; // The moving barrel part
 
-    [Header("Movement Settings")]
-    [SerializeField] private float swivelSpeed = 100f;
-    [SerializeField] private float tiltSpeed = 75f;
+    public enum TiltAxis { AxisX, AxisZ }
 
-    [Header("Clamping (Optional)")]
-    [SerializeField] private float minTilt = -10f;
-    [SerializeField] private float maxTilt = 45f;
+    [Header("Auto Aim Settings")]
+    [SerializeField] private string enemyTag = "enemy";
+    [SerializeField] private float swivelSpeed = 10f;
+    [SerializeField] private float tiltSpeed = 10f;
+    [SerializeField] private float range = 50f;
 
-    [Header("Shooting Settings")]
-    [SerializeField] private GameObject bulletPrefab;
+    [Header("Model Offset Fixes")]
+    [Tooltip("If the swivel faces the wrong direction, adjust this offset (e.g., 45, 90, -90, 180).")]
+    [SerializeField] private float swivelAngleOffset = 0f;
+
+    [Tooltip("Select which axis your tilt pivot rotates around.")]
+    [SerializeField] private TiltAxis tiltAxis = TiltAxis.AxisZ;
+
+    [Tooltip("Invert tilt direction if the gun points up when target goes down.")]
+    [SerializeField] private bool invertTilt = false;
+
+    [Header("Clamping")]
+    [SerializeField] private float maxTiltUp = 45f;
+    [SerializeField] private float maxTiltDown = 10f;
+
+    [Header("Shooting & Raycast Settings")]
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float bulletForce = 100f;
-    [SerializeField] private float destroyDelay = 5f;
-    private float currentTiltRotation = 0f;
+    [SerializeField] private LayerMask hitLayers = ~0; // Set to ignore player layer if needed
+    [SerializeField] private GameObject beamPrefab; // Cylinder primitive or custom visual mesh
+    [SerializeField] private GameObject impactEffectPrefab;
+    [SerializeField] private float beamThickness = 0.1f;
+    [SerializeField] private float impactEffectLifetime = 2f;
+
+    [Header("Auto Fire Settings")]
+    [SerializeField] private bool autoFire = true;
+    [SerializeField] private float fireRate = 1f; // Shots per second
+    private float nextTimeToFire = 0f;
+
     private Vector3 originalRecoilPosition;
     private bool isRecoiling = false;
+    private Transform currentTarget;
 
     void Start()
     {
-        // Store the starting position of the recoil piece so we know where to return to
         if (recoil != null)
         {
             originalRecoilPosition = recoil.transform.localPosition;
         }
+
+        InvokeRepeating(nameof(UpdateTarget), 0f, 0.2f);
+    }
+
+    void UpdateTarget()
+    {
+        GameObject closestEnemy = FindClosestEnemy();
+        currentTarget = closestEnemy != null ? closestEnemy.transform : null;
     }
 
     void Update()
     {
-        devMovement();
+        if (currentTarget == null) return;
+
+        AimAtTarget();
+
+        if (autoFire && Time.time >= nextTimeToFire)
+        {
+            nextTimeToFire = Time.time + (1f / fireRate);
+            Shoot();
+        }
     }
 
-    void devMovement()
+    void AimAtTarget()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float swivelAmount = horizontalInput * swivelSpeed * Time.deltaTime;
-
         if (gunSwivel != null)
         {
-            gunSwivel.transform.Rotate(Vector3.up, swivelAmount);
-        }
+            Vector3 targetDirSwivel = currentTarget.position - gunSwivel.transform.position;
+            targetDirSwivel.y = 0;
 
-        float verticalInput = Input.GetAxis("Vertical");
+            if (targetDirSwivel != Vector3.zero)
+            {
+                Quaternion rawTargetRotation = Quaternion.LookRotation(targetDirSwivel);
+                Quaternion targetSwivelRotation = rawTargetRotation * Quaternion.Euler(0f, -90f, 0f);
+
+                gunSwivel.transform.rotation = Quaternion.Slerp(
+                    gunSwivel.transform.rotation,
+                    targetSwivelRotation,
+                    Time.deltaTime * swivelSpeed
+                );
+            }
+        }
 
         if (gunTilt != null)
         {
-            currentTiltRotation -= verticalInput * tiltSpeed * Time.deltaTime;
-            currentTiltRotation = Mathf.Clamp(currentTiltRotation, minTilt, maxTilt);
+            Vector3 localTargetDir = gunTilt.transform.parent.InverseTransformPoint(currentTarget.position) - gunTilt.transform.localPosition;
+            float distance = new Vector2(localTargetDir.x, localTargetDir.z).magnitude;
+            float targetPitch = Mathf.Atan2(localTargetDir.y, distance) * Mathf.Rad2Deg;
 
-            // Note: Changed back to X axis for standard tilt, change to Z if your model requires it!
-            gunTilt.transform.localRotation = Quaternion.Euler(0f, 0f, currentTiltRotation);
-        }
+            targetPitch = Mathf.Clamp(targetPitch, -maxTiltDown, maxTiltUp);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Shoot();
+            Quaternion targetTiltRotation = Quaternion.Euler(0f, 0f, targetPitch);
+
+            gunTilt.transform.localRotation = Quaternion.Slerp(
+                gunTilt.transform.localRotation,
+                targetTiltRotation,
+                Time.deltaTime * tiltSpeed
+            );
         }
     }
 
     public void Shoot()
     {
-        if (!isRecoiling && recoil != null)
+        if (!isRecoiling && recoil != null && firePoint != null)
         {
             StartCoroutine(PlayRecoil());
-            spawnBullet();
+            FireRaycast();
         }
     }
-    void spawnBullet()
+
+    void FireRaycast()
     {
-        // 1. Spawn the bullet prefab at firePoint position and rotation
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        RaycastHit hit;
+        Vector3 endPoint = firePoint.position + (firePoint.forward * range);
+        bool hitSomething = Physics.Raycast(firePoint.position, firePoint.forward, out hit, range, hitLayers);
 
-        // 2. Get the Rigidbody attached to the instantiated bullet
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-
-        // 3. Add impulse force pushing forward relative to firePoint direction
-        if (rb != null)
+        if (hitSomething)
         {
-            rb.AddForce(firePoint.forward * bulletForce, ForceMode.Impulse);
+            endPoint = hit.point;
+
+            // Damage logic
+            if (hit.collider.CompareTag(enemyTag))
+            {
+                EnemyHealth enemy = hit.collider.GetComponent<EnemyHealth>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(50f);
+                }
+            }
         }
 
-        // 4. Clean up bullet to prevent memory bloat
-        Destroy(bullet, destroyDelay);
+        if (beamPrefab != null)
+        {
+            // Pass hitSomething along with firePoint.position, endPoint, and hit
+            StartCoroutine(AnimateTracer(firePoint.position, endPoint, hitSomething, hit));
+        }
+    }
+
+    private IEnumerator AnimateTracer(Vector3 start, Vector3 end, bool hitSomething, RaycastHit hit)
+    {
+        GameObject tracer = Instantiate(beamPrefab, start, Quaternion.LookRotation(end - start));
+        tracer.transform.Rotate(90f, 0f, 0f, Space.Self);
+        tracer.transform.localScale = new Vector3(beamThickness, 1f, beamThickness);
+
+        float tracerSpeed = 250f;
+        float distance = Vector3.Distance(start, end);
+        float travelTime = distance / tracerSpeed;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < travelTime)
+        {
+            if (tracer == null) yield break;
+
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / travelTime;
+            tracer.transform.position = Vector3.Lerp(start, end, t);
+            yield return null;
+        }
+
+        if (hitSomething && impactEffectPrefab != null)
+        {
+            GameObject impact = Instantiate(impactEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(impact, impactEffectLifetime);
+        }
+
+        Destroy(tracer);
+    }
+
+    GameObject FindClosestEnemy()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
+        GameObject closest = null;
+        float shortestDistance = range;
+        Vector3 currentPosition = transform.position;
+
+        foreach (GameObject enemy in enemies)
+        {
+            float distanceToEnemy = Vector3.Distance(enemy.transform.position, currentPosition);
+            if (distanceToEnemy < shortestDistance)
+            {
+                shortestDistance = distanceToEnemy;
+                closest = enemy;
+            }
+        }
+        return closest;
     }
 
     private IEnumerator PlayRecoil()
@@ -98,7 +206,7 @@ public class railgun : MonoBehaviour
         Vector3 targetRecoilPosition = originalRecoilPosition - (Vector3.right * 0.1f);
 
         float elapsedTime = 0f;
-        while (elapsedTime < 0.04)
+        while (elapsedTime < 0.04f)
         {
             elapsedTime += Time.deltaTime;
             recoil.transform.localPosition = Vector3.Lerp(originalRecoilPosition, targetRecoilPosition, elapsedTime / 0.04f);

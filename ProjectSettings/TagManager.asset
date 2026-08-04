@@ -9,6 +9,7 @@ TagManager:
   - Cannon
   - CannonBall
   - fiskarDude
+  - RailGunShot
   layers:
   - Default
   - TransparentFX
