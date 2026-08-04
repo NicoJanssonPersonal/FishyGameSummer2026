@@ -4,13 +4,25 @@ public class BoatController : MonoBehaviour
 {
     [Header("Motor Settings")]
     public float thrustForce, maxSpeed, reverseSpeedDebuff;
-    public float sidewaysGrip = 2.5f; // ??? (De s�ger PANG om den e f� l�g)
+    public float sidewaysGrip = 2.5f; 
     public float forwardDrag = 0.5f; // Water resistance
+
     [Header("Steering Limits")]
     public float minTurningRadius, maxAngularVelocity, turnTorque, maxTurnTorque;
     private Rigidbody rb;
     private float moveInput;
     private float turnInput;
+
+    [Header("Nitro / Boost Tank Settings")]
+    [Tooltip("Maximum Nitro Capacity (seconds of continuous boost)")]
+    public float nitroRegenRate = 15f; 
+    [Tooltip("Delay in seconds before Nitro starts regenerating after release")]
+    public float regenDelay = 0.5f;
+    private float regenTimer = 0f;
+
+    // Internal state
+    public bool isBoosting { get; private set; }
+    private float activeBoostFactor = 0f;
 
     [Header("Rudder Settings (Visual)")]
     public Transform rudderTransform;
@@ -26,10 +38,10 @@ public class BoatController : MonoBehaviour
     public float reverseTiltAngle = 45f;
 
     [Header("Visual Tilt Settings")]
-    [SerializeField] private Transform visualMesh; // Drag your child mesh object here
-    [SerializeField] private float rollAngle = 15f;  // Maximum banking angle when turning
-    [SerializeField] private float pitchAngle = 10f; // Maximum nose-up/down angle when accelerating
-    [SerializeField] private float tiltSpeed = 5f;  // How fast the boat tilts (smoothness)
+    [SerializeField] private Transform visualMesh; 
+    [SerializeField] private float rollAngle = 15f;  
+    [SerializeField] private float pitchAngle = 10f; 
+    [SerializeField] private float tiltSpeed = 5f;  
 
     private Vector3 lastVelocity;
     private Quaternion meshInitialRotation;
@@ -37,6 +49,8 @@ public class BoatController : MonoBehaviour
 
     void Start()
     {
+        GlobalStats.currentNitro = GlobalStats.maxNitro; // Fill nitro tank on spawn
+
         if (visualMesh != null)
         {
             meshInitialRotation = visualMesh.localRotation;
@@ -46,7 +60,10 @@ public class BoatController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
-        originalLocalPosition = boatCam.transform.localPosition;
+        if (boatCam != null)
+        {
+            originalLocalPosition = boatCam.transform.localPosition;
+        }
         targetY = transform.position.y;
     }
 
@@ -55,18 +72,47 @@ public class BoatController : MonoBehaviour
         moveInput = Input.GetAxis("Vertical");     // W/S or Up/Down
         turnInput = Input.GetAxis("Horizontal");   // A/D or Left/Right
 
+        HandleNitroInput();
         AnimateVisuals();
         CameraZoomer();
     }
+
+    void HandleNitroInput()
+    {
+        bool wantsToBoost = Input.GetKey(KeyCode.LeftShift) && GlobalStats.currentNitro > 0f && moveInput >= 0f;
+
+        if (wantsToBoost)
+        {
+            isBoosting = true;
+            regenTimer = regenDelay;
+
+            GlobalStats.currentNitro -= GlobalStats.nitroDrainRate * Time.deltaTime;
+            GlobalStats.currentNitro = Mathf.Max(0f, GlobalStats.currentNitro);
+        }
+        else
+        {
+            isBoosting = false;
+
+            if (regenTimer > 0f)
+            {
+                regenTimer -= Time.deltaTime;
+            }
+            else if (GlobalStats.currentNitro < GlobalStats.maxNitro)
+            {
+                GlobalStats.currentNitro += nitroRegenRate * Time.deltaTime;
+                GlobalStats.currentNitro = Mathf.Min(GlobalStats.maxNitro, GlobalStats.currentNitro);
+            }
+        }
+    }
+
     void getStatsFromGlobalStats()
     {
-        maxTurnTorque = GlobalStats.maxTurnTorque; // Caps the raw force applied
-        turnTorque = GlobalStats.turnTorque; // Turn acceleration
-        minTurningRadius = GlobalStats.minTurningRadius; // The tightest circle the boat can make
+        maxTurnTorque = GlobalStats.maxTurnTorque; 
+        turnTorque = GlobalStats.turnTorque; 
+        minTurningRadius = GlobalStats.minTurningRadius; 
         maxAngularVelocity = GlobalStats.maxAngularVelocity;
-        thrustForce = GlobalStats.thrustForce; // Acceleration
-        maxSpeed = GlobalStats.maxSpeed; // Top speed
-        reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff;
+        thrustForce = GlobalStats.thrustForce; 
+        maxSpeed = GlobalStats.maxSpeed; 
         reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff;
         rudderTurnSpeed = GlobalStats.rudderTurnSpeed;
     }
@@ -74,45 +120,39 @@ public class BoatController : MonoBehaviour
     void FixedUpdate()
     {
         getStatsFromGlobalStats();
+
+        // Smooth transitions into and out of boost state
+        float targetBoostFactor = isBoosting ? (GlobalStats.nitroSpeedMultiplier - 1.0f) : 0f;
+        activeBoostFactor = Mathf.Lerp(activeBoostFactor, targetBoostFactor, Time.fixedDeltaTime * 6f);
+
         if (!CardManager.isUpgrading)
         {
             ApplyThrust();
             ApplySteering();
             ApplyVisualTilt();
         }
+        
         ApplyWaterResistance();
+
+        float effectiveMaxSpeed = maxSpeed * (1f + activeBoostFactor);
         float currentSpeed = rb.linearVelocity.magnitude;
-        smoothSpeedPercentage = Mathf.Clamp01(currentSpeed / maxSpeed);
-    }
-    void ApplyVisualTilt()
-    {
-        if (visualMesh == null) return;
-
-        float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-        float normalizedSpeed = (maxSpeed > 0f) ? Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed) : 0f;
-
-        float targetPitch = moveInput * pitchAngle * normalizedSpeed;
-        float targetRoll = turnInput * rollAngle * normalizedSpeed;
-
-        Quaternion tiltRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
-        Quaternion targetRotation = meshInitialRotation * tiltRotation;
-
-        visualMesh.localRotation = Quaternion.Slerp(
-            visualMesh.localRotation,
-            targetRotation,
-            Time.fixedDeltaTime * tiltSpeed
-        );
+        smoothSpeedPercentage = Mathf.Clamp01(currentSpeed / effectiveMaxSpeed);
     }
 
     void ApplyThrust()
     {
         float currentSpeed = rb.linearVelocity.magnitude;
 
-        float thrustFactor = (maxSpeed > 0f) ? Mathf.Clamp01(1f - (currentSpeed / maxSpeed)) : 0f;
+        // Calculate dynamic maximum top speed ceiling while boosting
+        float effectiveMaxSpeed = maxSpeed * (1f + activeBoostFactor);
+        float dynamicThrustForce = thrustForce * (isBoosting ? GlobalStats.nitroThrustMultiplier : 1.0f);
+
+        float thrustFactor = (effectiveMaxSpeed > 0f) ? Mathf.Clamp01(1f - (currentSpeed / effectiveMaxSpeed)) : 0f;
 
         if (moveInput >= 0)
         {
-            Vector3 forwardThrust = transform.forward * moveInput * thrustForce * thrustFactor;
+            // Continuous forward force while boosting
+            Vector3 forwardThrust = transform.forward * (moveInput > 0 ? moveInput : (isBoosting ? 1f : 0f)) * dynamicThrustForce * thrustFactor;
             rb.AddForce(forwardThrust, ForceMode.Force);
         }
         else
@@ -122,10 +162,23 @@ public class BoatController : MonoBehaviour
         }
     }
 
+    void ApplyWaterResistance()
+    {
+        Vector3 forwardVelocity = transform.forward * Vector3.Dot(rb.linearVelocity, transform.forward);
+        Vector3 rightVelocity = transform.right * Vector3.Dot(rb.linearVelocity, transform.right);
+
+        // Dynamically lower drag while nitro is engaged so speed builds up smooth and fast
+        float dragFactor = Mathf.Lerp(1.0f, 0.4f, activeBoostFactor / (GlobalStats.nitroSpeedMultiplier - 1.0f + 0.0001f));
+        
+        rb.AddForce(-forwardVelocity * (forwardDrag * dragFactor), ForceMode.Force);
+        rb.AddForce(-rightVelocity * sidewaysGrip, ForceMode.Force);
+    }
+
     void ApplySteering()
     {
         float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-        float speedFactor = (maxSpeed > 0f) ? Mathf.Clamp01(Mathf.Abs(forwardSpeed) / maxSpeed) : 0f;
+        float effectiveMaxSpeed = maxSpeed * (1f + activeBoostFactor);
+        float speedFactor = (effectiveMaxSpeed > 0f) ? Mathf.Clamp01(Mathf.Abs(forwardSpeed) / effectiveMaxSpeed) : 0f;
 
         float currentTurnInput = turnInput;
         if (forwardSpeed < 0f)
@@ -133,17 +186,14 @@ public class BoatController : MonoBehaviour
             currentTurnInput = -turnInput;
         }
 
-        // --- ADDED: Active Straightening / Steering Damping ---
         if (Mathf.Abs(turnInput) < 0.05f)
         {
-            // When not turning, rapidly bleed off Y angular velocity so the boat travels straight
             Vector3 angVel = rb.angularVelocity;
             angVel.y = Mathf.Lerp(angVel.y, 0f, Time.fixedDeltaTime * 10f);
             rb.angularVelocity = angVel;
         }
         else
         {
-            // Calculate and apply turn torque only when actively pressing turn keys
             float turnAmount = currentTurnInput * turnTorque * speedFactor;
             turnAmount = Mathf.Clamp(turnAmount, -maxTurnTorque, maxTurnTorque);
 
@@ -159,7 +209,6 @@ public class BoatController : MonoBehaviour
     void LimitRotationSpeed(float forwardSpeed)
     {
         Vector3 currentAngularVelocity = rb.angularVelocity;
-
         float allowedAngularSpeed = maxAngularVelocity;
 
         if (Mathf.Abs(forwardSpeed) > 0.2f && minTurningRadius > 0f)
@@ -169,39 +218,39 @@ public class BoatController : MonoBehaviour
         }
 
         float clampedYRotation = Mathf.Clamp(currentAngularVelocity.y, -allowedAngularSpeed, allowedAngularSpeed);
-
         rb.angularVelocity = new Vector3(currentAngularVelocity.x, clampedYRotation, currentAngularVelocity.z);
     }
 
-    void ApplyWaterResistance()
+    void ApplyVisualTilt()
     {
-        Vector3 forwardVelocity = transform.forward * Vector3.Dot(rb.linearVelocity, transform.forward);
-        rb.AddForce(-forwardVelocity * forwardDrag, ForceMode.Force);
+        if (visualMesh == null) return;
 
-        Vector3 rightVelocity = transform.right * Vector3.Dot(rb.linearVelocity, transform.right);
+        float effectiveMaxSpeed = maxSpeed * (1f + activeBoostFactor);
+        float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
+        float normalizedSpeed = (effectiveMaxSpeed > 0f) ? Mathf.Clamp01(Mathf.Abs(forwardSpeed) / effectiveMaxSpeed) : 0f;
 
-        rb.AddForce(-rightVelocity * sidewaysGrip, ForceMode.Force);
+        float targetPitch = moveInput * pitchAngle * normalizedSpeed;
+        float targetRoll = turnInput * rollAngle * normalizedSpeed;
+
+        Quaternion tiltRotation = Quaternion.Euler(targetPitch, 0f, targetRoll);
+        Quaternion targetRotation = meshInitialRotation * tiltRotation;
+
+        visualMesh.localRotation = Quaternion.Slerp(
+            visualMesh.localRotation,
+            targetRotation,
+            Time.fixedDeltaTime * tiltSpeed
+        );
     }
 
     void AnimateVisuals()
     {
         if (rudderTransform != null)
         {
-
-            float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-            float directionMultiplier;
-            if (forwardSpeed >= 0f)
-            {
-                directionMultiplier = -1f;
-            }
-            else
-            {
-                directionMultiplier = -1f;
-            }
+            float directionMultiplier = -1f;
 
             float targetYRotation = turnInput * minTurningRadius * directionMultiplier;
-
             Quaternion targetRudderRot = Quaternion.Euler(0f, targetYRotation, 0f);
+            
             rudderTransform.localRotation = Quaternion.Lerp(
                 rudderTransform.localRotation,
                 targetRudderRot,
@@ -209,12 +258,15 @@ public class BoatController : MonoBehaviour
             );
         }
     }
+
     void CameraZoomer()
     {
         if (boatCam == null) return;
 
-        float targetFOV = Mathf.Lerp(boatCam.fieldOfView, boatCam.fieldOfView * 2f, smoothSpeedPercentage);
-        boatCam.fieldOfView = Mathf.Lerp(boatCam.fieldOfView, targetFOV, Time.deltaTime * 2f);
+        // FOV expands wider when nitro is burning
+        float extraNitroFOV = isBoosting ? 10f : 0f;
+        float targetFOV = Mathf.Lerp(minCamFOV, maxCamFOV + extraNitroFOV, smoothSpeedPercentage);
+        boatCam.fieldOfView = Mathf.Lerp(boatCam.fieldOfView, targetFOV, Time.deltaTime * 3f);
 
         float targetXShift = -turnInput * 1.5f;
 
@@ -230,15 +282,12 @@ public class BoatController : MonoBehaviour
             Time.deltaTime * 0.5f
         );
 
-
         float targetXRotation = 40f;
-
 
         if (forwardSpeed < -0.2f)
         {
             targetXRotation = reverseTiltAngle;
         }
-
 
         float maxChangePerSecond = Mathf.Abs(reverseTiltAngle) / 10f;
         currentXRotation = Mathf.MoveTowards(currentXRotation, targetXRotation, maxChangePerSecond * Time.deltaTime);
@@ -246,5 +295,4 @@ public class BoatController : MonoBehaviour
         Vector3 currentAngles = boatCam.transform.localEulerAngles;
         boatCam.transform.localEulerAngles = new Vector3(currentXRotation, currentAngles.y, currentAngles.z);
     }
-
 }

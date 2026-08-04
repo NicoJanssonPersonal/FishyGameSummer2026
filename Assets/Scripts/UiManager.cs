@@ -33,6 +33,9 @@ public class UiManager : MonoBehaviour
     public Image hpBarWhite;
     public Image hpBarRed;
 
+    public Image NitroBar;
+
+
     void Start()
     {
         lastMaxXp = GlobalStats.expTonNextLevel;
@@ -46,6 +49,7 @@ public class UiManager : MonoBehaviour
         updateLevelDisplay();
         SpeedOmeter();
         compass();
+        updateNitroBar();
     }
 
     void updateXpBar()
@@ -97,6 +101,11 @@ public class UiManager : MonoBehaviour
         {
             hpBarWhite.fillAmount = targetPercentage;
         }
+    }
+    void updateNitroBar()
+    {
+        float targetPercentage = Mathf.Clamp01(GlobalStats.currentNitro / GlobalStats.maxNitro);
+        NitroBar.fillAmount = targetPercentage;
     }
 
     void updateLevelDisplay()

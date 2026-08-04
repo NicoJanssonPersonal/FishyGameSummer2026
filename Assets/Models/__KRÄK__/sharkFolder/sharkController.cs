@@ -16,15 +16,15 @@ public class SharkController : MonoBehaviour
     public float attackCooldown = 1.5f;
 
     [Header("Figure-8 Idle Settings")]
-    public float figureEightWidth = 10f;  
-    public float figureEightLength = 15f; 
-    public float figureEightSpeed = 0.5f;  
+    public float figureEightWidth = 10f;
+    public float figureEightLength = 15f;
+    public float figureEightSpeed = 0.5f;
 
     [Header("Randomization Settings")]
     [Tooltip("Vary the size of the pattern per shark")]
-    public float sizeVariance = 3f; 
+    public float sizeVariance = 3f;
     [Tooltip("Vary the swimming speed per shark")]
-    public float speedVariance = 0.15f; 
+    public float speedVariance = 0.15f;
     [Tooltip("Randomly rotate the figure-8 path angle")]
     public bool randomizeRotation = true;
 
@@ -205,6 +205,17 @@ public class SharkController : MonoBehaviour
         {
             StartCoroutine(SlowDownRoutine());
         }
+    }
+    public static void SharkDeath(SharkController shark)
+    {
+        if (shark == null) return;
+
+        GameObject blood = Instantiate(shark.bloodPuddlePredaf, shark.transform.position, shark.transform.rotation);
+        GameObject explosion = Instantiate(shark.sharkExplodePrefab, shark.transform.position, shark.transform.rotation);
+
+        Destroy(blood, 3f);
+        Destroy(explosion, 3f);
+        Destroy(shark.gameObject);
     }
 
     IEnumerator SlowDownRoutine()

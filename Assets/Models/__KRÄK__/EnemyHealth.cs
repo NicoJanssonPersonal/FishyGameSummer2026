@@ -22,7 +22,13 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        // Add death FX, score increment, etc.
+        if (TryGetComponent<SharkController>(out SharkController shark))
+        {
+            SharkController.SharkDeath(shark);
+            return; 
+        }
+
+        // 2. Default death logic for non-shark enemies
         Destroy(gameObject);
     }
 }

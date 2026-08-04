@@ -1,4 +1,5 @@
 using UnityEngine;
+
 public static class GlobalStats
 {
     // === MOTOR ===
@@ -9,6 +10,7 @@ public static class GlobalStats
 
     private static float _reverseSpeedDebuff = 0.5f; // Reversing speed decrease (50% by default)
     public static float reverseSpeedDebuff { get => _reverseSpeedDebuff; set => _reverseSpeedDebuff = value; }
+    
     // === STEERING ===
     private static float _maxTurnTorque = 50f; // Caps the raw force applied
     public static float maxTurnTorque { get => _maxTurnTorque; set => _maxTurnTorque = value; }
@@ -27,10 +29,9 @@ public static class GlobalStats
     private static int _fishDifficulty = 1;
     public static int fishDifficulty { get => _fishDifficulty; set => _fishDifficulty = value; }
     private static float _fishingRange = 5f;
-    public static float fishingRange  { get => _fishingRange ; set => _fishingRange  = value; }
+    public static float fishingRange { get => _fishingRange; set => _fishingRange = value; }
     private static float _fishingStrength = 1f;
-    public static float fishingStrength  { get => _fishingStrength ; set => _fishingStrength  = value; }
-    
+    public static float fishingStrength { get => _fishingStrength; set => _fishingStrength = value; }
 
     // === PLOPS ===
     private static float _minRadius = 5f;
@@ -61,15 +62,10 @@ public static class GlobalStats
     public static int nodesUnlocked { get => _nodesUnlocked; set => _nodesUnlocked = value; }
 
     // === Fishing ===
-
-
-    // xp and money gain
     private static float _xpGain = 1f;
     public static float xpGain { get => _xpGain; set => _xpGain = value; }
     private static float _moneyGain = 1f;
     public static float moneyGain { get => _moneyGain; set => _moneyGain = value; }
-
-    // fish rarity chance
     private static float _fishRarity = 1f;
     public static float fishRarity { get => _fishRarity; set => _fishRarity = value; }
 
@@ -81,6 +77,19 @@ public static class GlobalStats
     public static float maxHealth { get => _maxHealth; set => _maxHealth = value; }
     private static float _currentHealth = 100;
     public static float currentHealth { get => _currentHealth; set => _currentHealth = value; }
+
+    // === NITRO SYSTEM ===
+    private static float _maxNitro = 100;
+    public static float maxNitro { get => _maxNitro; set => _maxNitro = value; }
+    private static float _currentNitro = 100; // Initialized to default maxNitro
+    public static float currentNitro { get => _currentNitro; set => _currentNitro = value; }
+    private static float _nitroDrainRate = 50;
+    public static float nitroDrainRate { get => _nitroDrainRate; set => _nitroDrainRate = value; }
+    private static float _nitroSpeedMultiplier = 1.35f;
+    public static float nitroSpeedMultiplier { get => _nitroSpeedMultiplier; set => _nitroSpeedMultiplier = value; }
+    private static float _nitroThrustMultiplier = 1.5f;
+    public static float nitroThrustMultiplier { get => _nitroThrustMultiplier; set => _nitroThrustMultiplier = value; }
+
 
     public static void SaveStats()
     {
@@ -116,11 +125,18 @@ public static class GlobalStats
 
         PlayerPrefs.SetFloat("GS_maxHealth", maxHealth);
 
+        // === SAVE NITRO SYSTEM STATS ===
+        PlayerPrefs.SetFloat("GS_maxNitro", maxNitro);
+        PlayerPrefs.SetFloat("GS_nitroDrainRate", nitroDrainRate);
+        PlayerPrefs.SetFloat("GS_nitroSpeedMultiplier", nitroSpeedMultiplier);
+        PlayerPrefs.SetFloat("GS_nitroThrustMultiplier", nitroThrustMultiplier);
+
         PlayerPrefs.SetInt("GS_cannon", cannon ? 1 : 0);
 
         PlayerPrefs.Save();
         Debug.Log("GlobalStats successfully saved!");
     }
+
     public static void SaveMoneyAndSkillpoints()
     {
         PlayerPrefs.SetInt("GS_money", money);
@@ -129,12 +145,13 @@ public static class GlobalStats
         PlayerPrefs.Save();
         Debug.Log("money and skillpoints successfully saved!");
     }
+
     public static void LoadStats()
     {
-        if (!PlayerPrefs.HasKey("GS_thrustForce")) 
+        if (!PlayerPrefs.HasKey("GS_thrustForce"))
         {
             Debug.Log("No GlobalStats save data found. Using class defaults.");
-            return; 
+            return;
         }
 
         thrustForce = PlayerPrefs.GetFloat("GS_thrustForce");
@@ -167,8 +184,14 @@ public static class GlobalStats
         moneyGain = PlayerPrefs.GetFloat("GS_moneyGain");
         fishRarity = PlayerPrefs.GetFloat("GS_fishRarity");
 
-        PlayerPrefs.GetFloat("GS_maxHealth", maxHealth);
+        maxHealth = PlayerPrefs.GetFloat("GS_maxHealth", maxHealth);
 
+        // === LOAD NITRO SYSTEM STATS (with default fallbacks) ===
+        maxNitro = PlayerPrefs.GetFloat("GS_maxNitro", maxNitro);
+        currentNitro = PlayerPrefs.GetFloat("GS_currentNitro", maxNitro); // Defaults to full tank if missing
+        nitroDrainRate = PlayerPrefs.GetFloat("GS_nitroDrainRate", nitroDrainRate);
+        nitroSpeedMultiplier = PlayerPrefs.GetFloat("GS_nitroSpeedMultiplier", nitroSpeedMultiplier);
+        nitroThrustMultiplier = PlayerPrefs.GetFloat("GS_nitroThrustMultiplier", nitroThrustMultiplier);
 
         cannon = PlayerPrefs.GetInt("GS_cannon") == 1;
 
