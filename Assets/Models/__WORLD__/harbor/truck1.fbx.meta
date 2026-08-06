@@ -3,7 +3,12 @@ guid: 95230b665e2a7604fa814c79c6b4aaa6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: truck1.png
+    second: {fileID: 2100000, guid: 76ed9417e344aea479d718d65ff803fd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
