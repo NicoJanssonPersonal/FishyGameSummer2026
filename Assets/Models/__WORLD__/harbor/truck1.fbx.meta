@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 1a2a23d5f0510f248beb89f13335f259
+guid: 95230b665e2a7604fa814c79c6b4aaa6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: chain.png
-    second: {fileID: 2100000, guid: 5a5a727f4aca82b4cb712186a9415abb, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

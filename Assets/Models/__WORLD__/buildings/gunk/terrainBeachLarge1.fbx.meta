@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1a2a23d5f0510f248beb89f13335f259
+guid: baa46c899a0a0e343a8a7bd6afc68a99
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: chain.png
-    second: {fileID: 2100000, guid: 5a5a727f4aca82b4cb712186a9415abb, type: 2}
+      name: terrainBeachLarge1.png
+    second: {fileID: 2100000, guid: 2916c1ad400002345b0a8516893fa1f0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
