@@ -3683,6 +3683,46 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4963217975528794950, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
   m_PrefabInstance: {fileID: 313797259}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &313797261 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6924915564827463270, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &313797262 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 5496487089675188913, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &313797263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6633138390731995575, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &313797264 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4486732492041574979, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &313797265 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 702010070326740022, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &313797266 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7576437392839976427, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &313797267 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8931069267669704579, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &313797268 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4471310805339237413, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
+  m_PrefabInstance: {fileID: 313797259}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &342144243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5256,7 +5296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d17d76472c86f884b9a8d59de01b7165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishingController
-  rb: {fileID: 0}
+  rb: {fileID: 1796729970}
   plop: {fileID: 3935305661142784557, guid: 1a7e5e9fe3e09074d906918643bbe8cd, type: 3}
 --- !u!114 &508317929
 MonoBehaviour:
@@ -14992,6 +15032,110 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e51150cb1e5baae4fbae1856e8ccfab6, type: 3}
+--- !u!1 &1323931441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1323931442}
+  - component: {fileID: 1323931445}
+  - component: {fileID: 1323931444}
+  - component: {fileID: 1323931443}
+  m_Layer: 5
+  m_Name: CoinAndFishCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1323931442
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323931441}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1565239163}
+  - {fileID: 1532214946}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &1323931443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323931441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1323931444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323931441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &1323931445
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323931441}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1001 &1332974052
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17578,13 +17722,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UiManager
   levelText: {fileID: 286180770}
-  boatRB: {fileID: 0}
+  boatRB: {fileID: 1796729970}
   speedometerNeedle: {fileID: 81655960}
   compassWheel: {fileID: 827250741}
-  caughtFishHolder: {fileID: 0}
+  caughtFishHolder: {fileID: 1532214946}
   fishCaughtPrefab: {fileID: 631170055708560454, guid: ea7946fa497b1724f926fef6d4134fff, type: 3}
   peng: {fileID: 2666555983085672529, guid: a5ce7d985a2dca1469de3439ee9db6e2, type: 3}
-  coinSpawnPoint: {fileID: 0}
+  coinSpawnPoint: {fileID: 1565239162}
   xpBarGreen: {fileID: 1425151581}
   xpBarWhite: {fileID: 1135983913}
   fillLerpSpeed: 5
@@ -18075,6 +18219,81 @@ MonoBehaviour:
   - {fileID: 4812795971934692118, guid: 3755aeaadc0bbc0499cd4313d9643330, type: 3}
   - {fileID: 4812795971934692118, guid: 0e059541808b95e46b1d13483eabccc6, type: 3}
   container: {fileID: 1523101646}
+--- !u!1 &1532214945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1532214946}
+  - component: {fileID: 1532214948}
+  - component: {fileID: 1532214947}
+  m_Layer: 5
+  m_Name: fishCaughtBG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1532214946
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532214945}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1323931442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 100}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &1532214947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532214945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.5882353, g: 0.47450984, b: 0.38823533, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1532214948
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532214945}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1533709488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18819,6 +19038,41 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 178388b7b76dd104f8671744d397df0f, type: 3}
+--- !u!1 &1565239162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1565239163}
+  m_Layer: 5
+  m_Name: coinspawnpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1565239163
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565239162}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1323931442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -0.5, y: -0.5}
+  m_SizeDelta: {x: 300, y: 100}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &1567955009
 GameObject:
   m_ObjectHideFlags: 0
@@ -19873,20 +20127,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d4a06d826bea049ad78907eb5a4419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishMinigame
-  uiPanel: {fileID: 0}
-  greenZoneHolder: {fileID: 0}
+  uiPanel: {fileID: 404118681}
+  greenZoneHolder: {fileID: 1702118008}
   greenZone: {fileID: 6224181379542586208, guid: 3fd77f3e69860ce4e9d7ace123e6b678, type: 3}
-  fisheGameObject: {fileID: 0}
+  fisheGameObject: {fileID: 313797268}
   fishesGameObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  fishRB: {fileID: 0}
-  killZone: {fileID: 0}
-  baitHitBox: {fileID: 0}
-  uiManagerScript: {fileID: 0}
+  - {fileID: 313797267}
+  - {fileID: 313797266}
+  - {fileID: 313797265}
+  - {fileID: 313797264}
+  - {fileID: 313797263}
+  fishRB: {fileID: 313797262}
+  killZone: {fileID: 1517921229}
+  baitHitBox: {fileID: 313797261}
+  uiManagerScript: {fileID: 1480948971}
   zoneMoveSpeed: 1.5
   zoneMoveAmplitude: 15
 --- !u!4 &1658519059 stripped
@@ -27126,6 +27380,7 @@ SceneRoots:
   - {fileID: 508317927}
   - {fileID: 1360604970}
   - {fileID: 1480948972}
+  - {fileID: 1323931442}
   - {fileID: 1867079620}
   - {fileID: 1653483917}
   - {fileID: 873193161}
