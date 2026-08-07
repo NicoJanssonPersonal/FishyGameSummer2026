@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.42
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
       propertyPath: m_LocalPosition.x
       value: -47.7
       objectReference: {fileID: 0}
@@ -48,6 +60,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7da93fae698f99a46b3ec11b35c7d71e, type: 2}
+    - target: {fileID: -5754084199372789682, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 9166428700591565276, guid: bc811ccfb07d4c2458468e2764158c40, type: 3}
     - target: {fileID: 919132149155446097, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
       propertyPath: m_Name
       value: terrainStonePillarLarge1
@@ -58,14 +82,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3447027931503283102}
+      addedObject: {fileID: -1092681611746369993}
   m_SourcePrefab: {fileID: 100100000, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
 --- !u!1 &7702840067905923955 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
   m_PrefabInstance: {fileID: 7360172528068761122}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &3447027931503283102
+--- !u!64 &-1092681611746369993
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,4 +110,4 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 9166428700591565276, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+  m_Mesh: {fileID: 9166428700591565276, guid: bc811ccfb07d4c2458468e2764158c40, type: 3}
