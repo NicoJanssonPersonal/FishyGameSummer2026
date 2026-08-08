@@ -29,6 +29,7 @@ Material:
   - _ENABLEPLANERREFLECTION
   - _ENABLEREFRACTION
   - _ENABLESHORELINE
+  - _ENABLEWAVE
   m_InvalidKeywords: []
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
@@ -226,14 +227,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _1st_Wave_Height: 0.01
-    - _1st_Wave_Length: 3
-    - _1st_Wave_Sharpness: 0.3
-    - _1st_Wave_Speed: 1
-    - _2nd_Wave_Height: 0.015
+    - _1st_Wave_Height: 0.0001
+    - _1st_Wave_Length: 1
+    - _1st_Wave_Sharpness: 3.25
+    - _1st_Wave_Speed: 0.1
+    - _2nd_Wave_Height: 0.00025
     - _2nd_Wave_Length: 5
     - _2nd_Wave_Sharpness: 0.3
-    - _2nd_Wave_Speed: 1.3
+    - _2nd_Wave_Speed: 0.1
     - _A: 11.3
     - _AddPrecomputedVelocity: 0
     - _AffectedByMainColor: 1
@@ -292,7 +293,7 @@ Material:
     - _ENABLESHORELINE: 1
     - _ENABLESURFACEFOAM: 1
     - _ENABLEUNDERWATERLAYER: 1
-    - _ENABLEWAVE: 0
+    - _ENABLEWAVE: 1
     - _ENABLE_UNDERWATERLAYER: 0
     - _ENVIRONMENTREFLECTIONS_OFF: 1
     - _Enable_Intersection: 1
@@ -530,7 +531,7 @@ Material:
     - _WaveDirection: {r: 1, g: 0, b: 0, a: 0}
     - _WaveDirection2nd: {r: 0, g: 0, b: 1, a: 0}
     - _WaveTopColor: {r: 1, g: 0.07585351, b: 0, a: 1}
-    - _Wave_Top_Color: {r: 0.4764151, g: 0.99672765, b: 1, a: 1}
+    - _Wave_Top_Color: {r: 0.47641504, g: 0.99672765, b: 1, a: 0.19215687}
     - _maskMinMax: {r: 0, g: 0.78, b: 0, a: 0}
     - _shoreTexSpeed: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _shoreTexTile: {r: 1, g: 1, b: 0, a: 0}
