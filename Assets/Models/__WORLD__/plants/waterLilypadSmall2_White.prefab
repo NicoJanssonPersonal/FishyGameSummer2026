@@ -9,16 +9,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.69
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -28.595018
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0016675334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.693134
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -30,11 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -48,9 +60,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 612a7c595f9a85544846cda7d901c26f, type: 3}
       propertyPath: m_Name
-      value: waterLilypadSmall2
+      value: waterLilypadSmall2_White
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
