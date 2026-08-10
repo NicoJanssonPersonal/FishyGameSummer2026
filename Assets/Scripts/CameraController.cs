@@ -27,6 +27,8 @@ public class CameraController : MonoBehaviour
     private Camera cam;
     private Rigidbody boatRb;
 
+    [HideInInspector] public bool isTransitioning = false; 
+
     void Start()
     {
         Vector3 angles = transform.eulerAngles;
@@ -44,10 +46,16 @@ public class CameraController : MonoBehaviour
             boatRb = boatTarget.GetComponentInChildren<Rigidbody>();
         }
     }
+    public void ResetAngles()
+    {
+        Vector3 angles = transform.eulerAngles;
+        xRotation = angles.y;
+        yRotation = angles.x;
+    }
 
     void LateUpdate()
     {
-        if (boatTarget == null) return;
+        if (isTransitioning || boatTarget == null) return;
 
         if (boatRb == null) boatRb = boatTarget.GetComponent<Rigidbody>();
 

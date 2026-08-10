@@ -1,37 +1,83 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for changing scenes
 
 public class MainMenuManager : MonoBehaviour
 {
-    public GameObject mainMenuManager;
-    public Camera maincamera;
-    private Vector3 startCameraPos;
+    [Header("Cameras")]
+    public Camera mainCamera;       // Child of Player (Boat)
+    public Camera harborCamera;     // Standalone Camera at the Harbor
+
+    [Header("UI & Settings")]
+    public GameObject mainMenuUI;
+    public float transitionDuration = 2.5f;
+
+    private Vector3 defaultLocalPos;
+    private Quaternion defaultLocalRot;
+    private CameraController cameraController;
+
+    public GameObject UIManager;
+
     void Start()
     {
-        startCameraPos = maincamera.transform.position;
-        Time.timeScale = 0;
-        maincamera.transform.position = new Vector3(0,100,0);
+        UIManager.SetActive(false);
+        Time.timeScale = 0f;
+
+        defaultLocalPos = mainCamera.transform.localPosition;
+        defaultLocalRot = mainCamera.transform.localRotation;
+
+        cameraController = mainCamera.GetComponent<CameraController>();
+
+        harborCamera.gameObject.SetActive(true);
+        mainCamera.gameObject.SetActive(false);
     }
+
     public void PlayGame()
     {
-        // Loads the next scene in your Build Settings queue. 
-        // You can also use a scene name in quotes, like: SceneManager.LoadScene("GameScene");
-        Debug.Log("Start menu opened!");
-        maincamera.transform.position = startCameraPos;
-        Time.timeScale = 1;
-        mainMenuManager.SetActive(false);
+        if (mainMenuUI != null)
+            mainMenuUI.SetActive(false);
+
+        Time.timeScale = 1f;
+
+        StartCoroutine(SmoothCameraTransition());
     }
 
-    public void OpenOptions()
+    IEnumerator SmoothCameraTransition()
     {
-        // For now, this just prints to the console to prove it works.
-        // Later, you can make this open an options panel.
-        Debug.Log("Options menu opened!");
-    }
+        if (cameraController != null)
+            cameraController.isTransitioning = true;
 
-    public void ExitGame()
-    {
-        Debug.Log("Game Exited!");
-        Application.Quit(); // Closes the game (only works in a built application, not inside the Unity Editor)
+        Transform parentTransform = mainCamera.transform.parent;
+
+        Vector3 startLocalPos = parentTransform.InverseTransformPoint(harborCamera.transform.position);
+        Quaternion startLocalRot = Quaternion.Inverse(parentTransform.rotation) * harborCamera.transform.rotation;
+
+        mainCamera.transform.localPosition = startLocalPos;
+        mainCamera.transform.localRotation = startLocalRot;
+
+        mainCamera.gameObject.SetActive(true);
+        harborCamera.gameObject.SetActive(false);
+
+        float elapsed = 0f;
+
+        while (elapsed < transitionDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / transitionDuration);
+
+            mainCamera.transform.localPosition = Vector3.Lerp(startLocalPos, defaultLocalPos, t);
+            mainCamera.transform.localRotation = Quaternion.Slerp(startLocalRot, defaultLocalRot, t);
+
+            yield return null;
+        }
+
+        mainCamera.transform.localPosition = defaultLocalPos;
+        mainCamera.transform.localRotation = defaultLocalRot;
+
+        if (cameraController != null)
+        {
+            cameraController.ResetAngles();
+            UIManager.SetActive(true);
+            cameraController.isTransitioning = false;
+        }
     }
 }
