@@ -3,7 +3,12 @@ guid: 87afa6a4051adae4fac9ad2faf62a28c
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plop.png
+    second: {fileID: 2100000, guid: dcad1cd9502dac243964537c3edba4bd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
