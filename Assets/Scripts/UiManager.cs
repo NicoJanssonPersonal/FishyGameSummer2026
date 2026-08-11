@@ -21,7 +21,6 @@ public class UiManager : MonoBehaviour
     public RectTransform caughtFishHolder;
     public TextMeshProUGUI fishCaughtPrefab; // Use this as the prefab template
     public RectTransform peng;
-    // Tracks the current active text elements on screen
     private List<TextMeshProUGUI> activeFishTexts = new List<TextMeshProUGUI>();
 
     public GameObject coinSpawnPoint;
@@ -34,12 +33,18 @@ public class UiManager : MonoBehaviour
     public Image hpBarRed;
 
     public Image NitroBar;
+    private Vector2 orignalPosFishHolder;
+    [Header("Fish Holder Animation")]
+    public float slideDuration = 0.4f; // Time in seconds for the slide animation
+    private Coroutine slideCoroutine;
+    private bool isHidden = false; // Tracks if the box is currently off-screen
 
 
     void Start()
     {
         lastMaxXp = GlobalStats.expTonNextLevel;
         lastLevel = GlobalStats.Level;
+        orignalPosFishHolder = caughtFishHolder.anchoredPosition;
     }
 
     void Update()
@@ -90,13 +95,10 @@ public class UiManager : MonoBehaviour
 
         float targetPercentage = Mathf.Clamp01(currentHp / MaxHp);
 
-        // Red bar instantly drops to your new lower health
         hpBarRed.fillAmount = targetPercentage;
 
-        // White bar slowly slides down to catch up to the red bar
         hpBarWhite.fillAmount = Mathf.Lerp(hpBarWhite.fillAmount, targetPercentage, Time.deltaTime * fillLerpSpeed);
 
-        // Snap the white bar when it gets close enough
         if (Mathf.Abs(hpBarWhite.fillAmount - targetPercentage) < 0.001f)
         {
             hpBarWhite.fillAmount = targetPercentage;
@@ -105,7 +107,7 @@ public class UiManager : MonoBehaviour
     void updateNitroBar()
     {
         float targetPercentage = Mathf.Clamp01(GlobalStats.currentNitro / GlobalStats.maxNitro);
-        NitroBar.fillAmount = targetPercentage;
+        NitroBar.fillAmount = targetPercentage * 0.5f;
     }
 
     void updateLevelDisplay()
@@ -206,5 +208,38 @@ public class UiManager : MonoBehaviour
 
         if (coin != null)
             Destroy(coin.gameObject);
+    }
+    public void slideInBox()
+    {
+        if (slideCoroutine != null)
+        {
+            StopCoroutine(slideCoroutine);
+        }
+
+        Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-285f, orignalPosFishHolder.y);
+
+        isHidden = !isHidden;
+
+        slideCoroutine = StartCoroutine(AnimateBoxSlide(targetPos, slideDuration));
+    }
+
+    private IEnumerator AnimateBoxSlide(Vector2 targetPosition, float duration)
+    {
+        Vector2 startPosition = caughtFishHolder.anchoredPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float percent = Mathf.Clamp01(elapsed / duration);
+
+            float smoothPercent = Mathf.SmoothStep(0f, 1f, percent);
+
+            caughtFishHolder.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, smoothPercent);
+            yield return null;
+        }
+
+        caughtFishHolder.anchoredPosition = targetPosition;
+        slideCoroutine = null;
     }
 }
