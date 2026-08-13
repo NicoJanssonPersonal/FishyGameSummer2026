@@ -216,7 +216,7 @@ public class UiManager : MonoBehaviour
             StopCoroutine(slideCoroutine);
         }
 
-        Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-285f, orignalPosFishHolder.y);
+        Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-310f, orignalPosFishHolder.y);
 
         isHidden = !isHidden;
 
