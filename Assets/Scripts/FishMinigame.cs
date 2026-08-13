@@ -170,10 +170,10 @@ public class FishMinigame : MonoBehaviour
         float xpFromFish = thisFishDifficulty * 3 * GlobalStats.xpGain;
         GlobalStats.Experince += xpFromFish;
 
-        float moneyFromFish = thisFishDifficulty* 2 * GlobalStats.moneyGain;
+        float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain;
         GlobalStats.money += Mathf.RoundToInt(moneyFromFish);
 
-        uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish));
+        uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
         StartCoroutine(delay());
     }
 

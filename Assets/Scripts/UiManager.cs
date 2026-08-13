@@ -153,10 +153,49 @@ public class UiManager : MonoBehaviour
         compassWheel.localRotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void updateFishCaught(int moneyFromFish, int xpFromFish)
+    public void updateFishCaught(int moneyFromFish, int xpFromFish, int fishdiff)
     {
+        string fishName;
+
+        switch (fishdiff)
+        {
+            case 1:
+                fishName = "MINNOW";
+                break;
+            case 2:
+                fishName = "SOGGY BOOT";
+                break;
+            case 3:
+                fishName = "SILVER CARP";
+                break;
+            case 4:
+                fishName = "GHOST SQUID";
+                break;
+            case 5:
+                fishName = "EMILBERT";
+                break;
+            case 6:
+                fishName = "NEON ANGLER";
+                break;
+            case 7:
+                fishName = "CRYSTAL SALMON";
+                break;
+            case 8:
+                fishName = "MAGMA TUNA";
+                break;
+            case 9:
+                fishName = "ABYSSAL KRAKEN";
+                break;
+            case 10:
+                fishName = "CELESTIAL LEVIATHAN";
+                break;
+            default:
+                fishName = "MYSTERY FISH";
+                break;
+        }
+
         TextMeshProUGUI newFishText = Instantiate(fishCaughtPrefab, caughtFishHolder);
-        newFishText.text = "YOU CAUGHT A EMILBERT, " + moneyFromFish + " GOLD " + xpFromFish + " XP";
+        newFishText.text = $"YOU CAUGHT A {fishName}, {moneyFromFish} GOLD {xpFromFish} XP";
 
         activeFishTexts.Add(newFishText);
 
@@ -169,11 +208,10 @@ public class UiManager : MonoBehaviour
         for (int i = 0; i < activeFishTexts.Count; i++)
         {
             float newYPosition = 40f - (20f * i);
-
             activeFishTexts[i].rectTransform.anchoredPosition = new Vector2(0, newYPosition);
         }
-        coinsFallInChest(moneyFromFish);
 
+        coinsFallInChest(moneyFromFish);
     }
     void coinsFallInChest(int coinAmount)
     {
@@ -209,6 +247,8 @@ public class UiManager : MonoBehaviour
         if (coin != null)
             Destroy(coin.gameObject);
     }
+    public RectTransform slideBoxButton;
+
     public void slideInBox()
     {
         if (slideCoroutine != null)
@@ -218,14 +258,19 @@ public class UiManager : MonoBehaviour
 
         Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-310f, orignalPosFishHolder.y);
 
+        Vector3 targetRot = isHidden ? new Vector3(0f, 0f, 180f) : Vector3.zero;
+
         isHidden = !isHidden;
 
-        slideCoroutine = StartCoroutine(AnimateBoxSlide(targetPos, slideDuration));
+        slideCoroutine = StartCoroutine(AnimateBoxSlide(targetPos, targetRot, slideDuration));
     }
 
-    private IEnumerator AnimateBoxSlide(Vector2 targetPosition, float duration)
+    private IEnumerator AnimateBoxSlide(Vector2 targetPosition, Vector3 targetRotation, float duration)
     {
         Vector2 startPosition = caughtFishHolder.anchoredPosition;
+        Quaternion startRotation = slideBoxButton.localRotation;
+        Quaternion endRotation = Quaternion.Euler(targetRotation);
+
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -236,10 +281,15 @@ public class UiManager : MonoBehaviour
             float smoothPercent = Mathf.SmoothStep(0f, 1f, percent);
 
             caughtFishHolder.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, smoothPercent);
+
+            slideBoxButton.localRotation = Quaternion.Lerp(startRotation, endRotation, smoothPercent);
+
             yield return null;
         }
 
         caughtFishHolder.anchoredPosition = targetPosition;
+        slideBoxButton.localRotation = endRotation;
+
         slideCoroutine = null;
     }
 }

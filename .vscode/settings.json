@@ -67,6 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "FishyGameSummer2026.slnx",
+    "dotnet.defaultSolution": "FishyGame.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false
 }
