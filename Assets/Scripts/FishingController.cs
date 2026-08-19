@@ -88,41 +88,23 @@ public class FishingController1 : MonoBehaviour
     {
         if (tubeMaterial == null) return GlobalStats.fishDifficulty;
 
-        float luckBonus = GlobalStats.fishRarity * 0.5f;
-        float roll = Mathf.Clamp(Random.Range(0f, 100f) + luckBonus, 0f, 100f);
-        // add crazy special legendary fishes if in specific area
-        int difficultyBoost = 0;
-        Color targetColor = CommonColor;
+        float luckBonus = (GlobalStats.fishRarity * 0.5f) / 100f;
+        float normalizedRoll = Mathf.Clamp01(Random.Range(0f, 1f) + luckBonus);
 
-        // EXACT BASE PERCENTAGES (when fishRarity = 0):
-        if (roll >= 99.5f)        // 0.5% Chance (Rolls 99.5 to 100.0)
-        {
-            difficultyBoost = 10;
-            targetColor = ChaoticColor;
-        }
-        else if (roll >= 97.5f)   // 2.0% Chance (Rolls 97.5 to 99.49)
-        {
-            difficultyBoost = 7;
-            targetColor = LegendaryColor;
-        }
-        else if (roll >= 85.0f)   // 12.5% Chance (Rolls 85.0 to 97.49)
-        {
-            difficultyBoost = 4;
-            targetColor = RareColor;
-        }
-        else if (roll >= 50.0f)   // 35.0% Chance (Rolls 50.0 to 84.99)
-        {
-            difficultyBoost = 2;
-            targetColor = UncommonColor;
-        }
-        else                      // 50.0% Chance (Rolls 0.0 to 49.99)
-        {
-            difficultyBoost = 0;
-            targetColor = CommonColor;
-        }
+        float curveExponent = 3.0f;
+        float curvedRoll = Mathf.Pow(normalizedRoll, curveExponent);
+
+        int difficultyBoost = Mathf.RoundToInt(1f + (curvedRoll * 9f));
+
+        Color targetColor = CommonColor;
+        if (normalizedRoll >= 0.995f) targetColor = ChaoticColor;
+        else if (normalizedRoll >= 0.975f) targetColor = LegendaryColor;
+        else if (normalizedRoll >= 0.850f) targetColor = RareColor;
+        else if (normalizedRoll >= 0.500f) targetColor = UncommonColor;
 
         tubeMaterial.SetColor("_EmissionColor", targetColor);
-        return GlobalStats.fishDifficulty + difficultyBoost;
+
+        return difficultyBoost;
     }
 
     private void OnDestroy()

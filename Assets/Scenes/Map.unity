@@ -4932,7 +4932,7 @@ PrefabInstance:
       objectReference: {fileID: 2800000, guid: cdf8c9da98bc320489b0f06d01b0b77a, type: 3}
     - target: {fileID: 6633138390731995575, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7217043783096643717, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
       propertyPath: m_Enabled
@@ -4983,11 +4983,6 @@ RectTransform:
 --- !u!50 &313797262 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 5496487089675188913, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
-  m_PrefabInstance: {fileID: 313797259}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &313797263 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6633138390731995575, guid: f3b9567006bf9a94f8cd5771ee1a15cc, type: 3}
   m_PrefabInstance: {fileID: 313797259}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &313797264 stripped
@@ -29250,10 +29245,15 @@ MonoBehaviour:
   fisheGameObject: {fileID: 313797268}
   fishesGameObjects:
   - {fileID: 313797267}
+  - {fileID: 7263864}
   - {fileID: 313797266}
+  - {fileID: 2135097876}
   - {fileID: 313797265}
+  - {fileID: 1643266416}
   - {fileID: 313797264}
-  - {fileID: 313797263}
+  - {fileID: 777159545}
+  - {fileID: 215900557}
+  - {fileID: 1865293866}
   fishRB: {fileID: 313797262}
   killZone: {fileID: 1517921229}
   baitHitBox: {fileID: 313797261}

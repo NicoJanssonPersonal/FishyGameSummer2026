@@ -201,8 +201,8 @@ public class FishMinigame : MonoBehaviour
             fish.SetActive(false);
         }
 
-        //GameObject activeFish = fishesGameObjects[fishDifficulty - 1]; ta tibaka när det finns 10 olika sprites
-        GameObject activeFish = fishesGameObjects[0];
+        GameObject activeFish = fishesGameObjects[fishDifficulty - 1]; //ta tibaka när det finns 10 olika sprites
+        //GameObject activeFish = fishesGameObjects[0];
         activeFish.SetActive(true);
         fishe.anchoredPosition = initialFishPos;
 
