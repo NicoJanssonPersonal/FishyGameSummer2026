@@ -29,11 +29,14 @@ public class FishMinigame : MonoBehaviour
     private int currentDifficulty = 1;
     private int thisFishDifficulty;
 
+    public TextMeshProUGUI money;
+
     void Start()
     {
         fishe = fisheGameObject.GetComponent<RectTransform>();
         fishRB = fisheGameObject.GetComponent<Rigidbody2D>();
         initialFishPos = fishe.anchoredPosition;
+        money.text = GlobalStats.money.ToString();
         closeUI();
     }
 
@@ -172,7 +175,8 @@ public class FishMinigame : MonoBehaviour
 
         float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain;
         GlobalStats.money += Mathf.RoundToInt(moneyFromFish);
-
+        GlobalStats.SaveMoneyAndSkillpoints();
+        money.text = GlobalStats.money.ToString();
         uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
         StartCoroutine(delay());
     }
