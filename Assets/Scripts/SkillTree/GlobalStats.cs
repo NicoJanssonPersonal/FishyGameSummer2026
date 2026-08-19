@@ -54,7 +54,7 @@ public static class GlobalStats
     public static float rarityChance { get => _rarityChance; set => _rarityChance = value; }
 
     // === Currency System ===
-    public static int _money = 1000;
+    public static int _money = 10000;
     public static int money { get => _money; set => _money = value; }
     public static int _skillpoints = 300;
     public static int skillpoints { get => _skillpoints; set => _skillpoints = value; }
@@ -90,6 +90,11 @@ public static class GlobalStats
     private static float _nitroThrustMultiplier = 1.5f;
     public static float nitroThrustMultiplier { get => _nitroThrustMultiplier; set => _nitroThrustMultiplier = value; }
 
+    // === Gambling Stats ===
+    public static int _moneyWon = 0;
+    public static int moneyWon { get => _moneyWon; set => _moneyWon = value; }
+    
+
 
     public static void SaveStats()
     {
@@ -116,6 +121,7 @@ public static class GlobalStats
         PlayerPrefs.SetFloat("GS_expTonNextLevel", expTonNextLevel);
         PlayerPrefs.SetFloat("GS_rarityChance", rarityChance);
         PlayerPrefs.SetInt("GS_money", money);
+        PlayerPrefs.SetInt("GS_moneyWon", moneyWon);
         PlayerPrefs.SetInt("GS_skillpoints", skillpoints);
         PlayerPrefs.SetInt("GS_nodesUnlocked", nodesUnlocked);
 
@@ -141,6 +147,7 @@ public static class GlobalStats
     {
         PlayerPrefs.SetInt("GS_money", money);
         PlayerPrefs.SetInt("GS_skillpoints", skillpoints);
+        PlayerPrefs.SetInt("GS_moneyWon", moneyWon);
 
         PlayerPrefs.Save();
         Debug.Log("money and skillpoints successfully saved!");
@@ -177,6 +184,7 @@ public static class GlobalStats
         expTonNextLevel = PlayerPrefs.GetFloat("GS_expTonNextLevel");
         rarityChance = PlayerPrefs.GetFloat("GS_rarityChance");
         money = PlayerPrefs.GetInt("GS_money");
+        moneyWon = PlayerPrefs.GetInt("GS_moneyWon");
         skillpoints = PlayerPrefs.GetInt("GS_skillpoints");
         nodesUnlocked = PlayerPrefs.GetInt("GS_nodesUnlocked");
 

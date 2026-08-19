@@ -54,6 +54,7 @@ public class SlotMachine : MonoBehaviour
         if (isAnimating || button == null || !canBet) return;
 
         StartCoroutine(AnimateButton());
+        GlobalStats.moneyWon -= currentbet;
         Spin();
     }
 
@@ -350,6 +351,7 @@ public class SlotMachine : MonoBehaviour
         if (angle == 0)
         {
             print("JACKPOT");
+            GlobalStats.moneyWon += currentbet * 100;
             GlobalStats.money += currentbet * 100;
         }
         else if (angle == 45)
@@ -362,6 +364,7 @@ public class SlotMachine : MonoBehaviour
         }
         else if (angle == 135)
         {
+            GlobalStats.moneyWon += currentbet * 10;
             GlobalStats.money += currentbet * 10;
         }
         else if (angle == 180)
@@ -370,6 +373,7 @@ public class SlotMachine : MonoBehaviour
         }
         else if (angle == 225)
         {
+            GlobalStats.moneyWon += currentbet * 2;
             GlobalStats.money += currentbet * 2;
         }
         else if (angle == 270)
