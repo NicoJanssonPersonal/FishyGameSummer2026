@@ -17,7 +17,7 @@ public class TerrainDetector : MonoBehaviour
     {
         if (((1 << other.gameObject.layer) & terrainLayer) != 0)
         {
-            Vector3 closestPoint = other.ClosestPoint(transform.position);
+            Vector3 closestPoint = other.ClosestPointOnBounds(transform.position);
 
             Vector3 avoidDirection = transform.position - closestPoint;
 

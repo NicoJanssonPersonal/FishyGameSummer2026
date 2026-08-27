@@ -34,6 +34,10 @@ public class SharkController : MonoBehaviour
     [Range(0f, 1f)]
     public float slowMultiplier = 0.5f;
 
+    [Header("Terrain Avoidance")]
+    public float terrainIgnoreTimer = 0f;
+    private bool avoidingTerrain = false;
+
     public GameObject bloodPuddlePredaf;
     public GameObject sharkExplodePrefab;
 
@@ -66,7 +70,6 @@ public class SharkController : MonoBehaviour
         }
 
         ApplyRandomVariation();
-
         FindPlayerTarget();
     }
 
@@ -87,6 +90,18 @@ public class SharkController : MonoBehaviour
 
     void Update()
     {
+        if (avoidingTerrain)
+        {
+            terrainIgnoreTimer -= Time.deltaTime;
+            transform.Translate(Vector3.back * wanderSpeed * Time.deltaTime);
+
+            if (terrainIgnoreTimer <= 0f)
+            {
+                avoidingTerrain = false;
+            }
+            return;
+        }
+
         if (target == null)
         {
             FindPlayerTarget();
@@ -182,6 +197,21 @@ public class SharkController : MonoBehaviour
         {
             TakeHit();
         }
+        else if (other.CompareTag("Terrain"))
+        {
+            Debug.Log(gameObject.name + " is avoiding terraing");
+            AvoidTerrain();
+        }
+    }
+
+    void AvoidTerrain()
+    {
+        avoidingTerrain = true;
+        terrainIgnoreTimer = 2.5f;
+
+        transform.Rotate(0f, 180f, 0f);
+
+        Debug.Log(gameObject.name + " got too close to terrain, turning around!");
     }
 
     void TakeHit()
@@ -206,6 +236,7 @@ public class SharkController : MonoBehaviour
             StartCoroutine(SlowDownRoutine());
         }
     }
+
     public static void SharkDeath(SharkController shark)
     {
         if (shark == null) return;

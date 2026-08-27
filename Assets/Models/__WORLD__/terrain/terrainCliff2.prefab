@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: terrainCliff2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3fd57567b6e38574ca2af36ac72535f7, type: 3}
+      propertyPath: m_TagString
+      value: Terrain
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

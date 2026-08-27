@@ -52,9 +52,21 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: fcbda79d342eb604a81fa7fd882b8513, type: 2}
+    - target: {fileID: -49513972382164171, guid: aa7455a21aa185049b8366d9fd2a2e2a, type: 3}
+      propertyPath: m_TagString
+      value: Terrain
+      objectReference: {fileID: 0}
+    - target: {fileID: 825894089210680117, guid: aa7455a21aa185049b8366d9fd2a2e2a, type: 3}
+      propertyPath: m_TagString
+      value: Terrain
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: aa7455a21aa185049b8366d9fd2a2e2a, type: 3}
       propertyPath: m_Name
       value: terrainCliffLarge1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: aa7455a21aa185049b8366d9fd2a2e2a, type: 3}
+      propertyPath: m_TagString
+      value: Terrain
       objectReference: {fileID: 0}
     - target: {fileID: 2328169485041697687, guid: aa7455a21aa185049b8366d9fd2a2e2a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

@@ -76,6 +76,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: terrainStonePillarLarge1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e72bc9e032243044b8320e5c7ea1b64, type: 3}
+      propertyPath: m_TagString
+      value: Terrain
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
