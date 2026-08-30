@@ -94,7 +94,7 @@ public class CardUpgrade : MonoBehaviour
             GlobalStats.fishingRange *= (1f + (rarity / 100f));
             Debug.Log("current fishing range = " + GlobalStats.fishingRange);
         }
-        Debug.Log(GlobalStats.Level);
+        //Debug.Log(GlobalStats.Level);
     }
     void OnMouseDown()
     {
