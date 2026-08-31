@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic; // Added for List support
+//using System.Numerics;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -210,11 +209,21 @@ public class UiManager : MonoBehaviour
             float newYPosition = 40f - (20f * i);
             activeFishTexts[i].rectTransform.anchoredPosition = new Vector2(0, newYPosition);
         }
-
-        coinsFallInChest(moneyFromFish);
+        ShowFishCaught(moneyFromFish);
     }
-    void coinsFallInChest(int coinAmount)
+    public RectTransform slideBoxButton;
+
+    public void ShowFishCaught(int coinAmount)
     {
+        // här kommer fisken som visas före den ska exploderas
+        // updatera money counter till smooth steps
+        // adda ljud ti minigamet DONE
+        explodedFishToCoin(coinAmount);
+    }
+    public void explodedFishToCoin(int coinAmount)
+    {
+        Vector2 screenCenterPixels = new Vector2(Screen.width / 2f, Screen.height / 2f);
+
         for (int i = 0; i < Mathf.Min(coinAmount, 1000); i++)
         {
             RectTransform rt = Instantiate(peng, coinSpawnPoint.transform);
@@ -226,29 +235,55 @@ public class UiManager : MonoBehaviour
             StartCoroutine(FallCoin(rt));
         }
     }
+    public RectTransform coinTargetLocation;
     IEnumerator FallCoin(RectTransform coin)
     {
-        float speed = UnityEngine.Random.Range(200f, 350f);      // Different fall speed
-        float drift = UnityEngine.Random.Range(-30f, 30f);       // Horizontal drift
-        float rotation = UnityEngine.Random.Range(-180f, 180f);  // Spin
+        if (coin == null || coinTargetLocation == null) yield break;
 
-        while (coin != null && coin.anchoredPosition.y > -650f)
+        Vector3 startPos = coin.position;
+
+        Vector3 burstOffset = new Vector3(
+            UnityEngine.Random.Range(-100f, 100f),
+            UnityEngine.Random.Range(-50f, 120f),
+            0f
+        );
+        Vector3 popPos = startPos + burstOffset;
+
+        Vector3 controlPoint = (popPos + coinTargetLocation.position) * 0.5f
+                             + new Vector3(UnityEngine.Random.Range(-200f, 200f), UnityEngine.Random.Range(100f, 300f), 0f);
+
+        float duration = UnityEngine.Random.Range(0.6f, 0.9f);
+        float elapsed = 0f;
+
+        float rotationSpeed = UnityEngine.Random.Range(-500f, 500f);
+        Vector3 initialScale = coin.localScale;
+
+        while (elapsed < duration)
         {
-            coin.anchoredPosition += new Vector2(
-                drift * Time.deltaTime,
-                -speed * Time.deltaTime
-            );
+            if (coin == null) yield break;
 
-            coin.Rotate(0, 0, rotation * Time.deltaTime);
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            Vector3 currentPos = Mathf.Pow(1 - t, 2) * popPos +
+                                 2 * (1 - t) * t * controlPoint +
+                                 Mathf.Pow(t, 2) * coinTargetLocation.position;
+
+            coin.position = currentPos;
+
+            coin.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+
+            coin.localScale = Vector3.Lerp(initialScale, initialScale * 0.4f, t);
 
             yield return null;
         }
 
         if (coin != null)
+        {
+            coin.position = coinTargetLocation.position;
             Destroy(coin.gameObject);
+        }
     }
-    public RectTransform slideBoxButton;
-
     public void slideInBox()
     {
         if (slideCoroutine != null)

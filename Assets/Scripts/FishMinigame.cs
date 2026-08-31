@@ -37,6 +37,10 @@ public class FishMinigame : MonoBehaviour
     private int currentFishMult;
     private int timesMissed;
 
+    public AudioManager audioManager;
+
+
+
     void Start()
     {
         fishe = fisheGameObject.GetComponent<RectTransform>();
@@ -45,6 +49,8 @@ public class FishMinigame : MonoBehaviour
         money.text = GlobalStats.money.ToString();
         currentFishMult = 0;
         timesMissed = 0;
+        GlobalStats.LoadStats();
+        money.text = GlobalStats.money.ToString();
         closeUI();
     }
 
@@ -58,6 +64,7 @@ public class FishMinigame : MonoBehaviour
     void Update()
     {
 
+        //Debug.Log(currentFishMult);
         if (!isUIOpen)
             return;
 
@@ -86,6 +93,7 @@ public class FishMinigame : MonoBehaviour
                     spacePressedOnce = true;
                     if (i < greenZoneObjects.Length - 1)
                     {
+                        audioManager.PlayHitSound(currentFishMult);
                         MoveFishToZone(i + 1);
                     }
                     else
@@ -108,6 +116,7 @@ public class FishMinigame : MonoBehaviour
             multText.text = "";
             currentFishMult = 0;
             timesMissed = timesMissed + 1;
+            audioManager.PlayMissSound();
             missedFeedback();
         }
         if (timesMissed == 3)
@@ -152,7 +161,8 @@ public class FishMinigame : MonoBehaviour
         RectTransform zone = greenZoneObjects[zoneIndex].GetComponent<RectTransform>();
         Vector3 targetPos = zone.position;
         targetPos.y += Random.Range(5f, 30f);
-        spawnMultText(zoneIndex, greenZoneObjects[zoneIndex - 1].GetComponent<RectTransform>().position); //måst ha ett bättre sätt att skirva mult, inte bara ta zoneIndex
+        currentFishMult++;
+        spawnMultText(currentFishMult, greenZoneObjects[zoneIndex - 1].GetComponent<RectTransform>().position); //måst ha ett bättre sätt att skirva mult, inte bara ta zoneIndex
         fishe.position = targetPos;
     }
 
@@ -188,13 +198,38 @@ public class FishMinigame : MonoBehaviour
     {
         float xpFromFish = thisFishDifficulty * 3 * GlobalStats.xpGain;
         GlobalStats.Experince += xpFromFish;
-        Debug.Log(currentFishMult); // fixa så de inte är 0
-        float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain;
-        GlobalStats.money += Mathf.RoundToInt(moneyFromFish);
-        GlobalStats.SaveMoneyAndSkillpoints();
-        money.text = GlobalStats.money.ToString();
-        uiManagerScript.updateFishCaught(Mathf.RoundToInt(moneyFromFish), Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
+
+        float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain * currentFishMult;
+        int amountToAdd = Mathf.RoundToInt(moneyFromFish);
+
+        uiManagerScript.updateFishCaught(amountToAdd, Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
+
+        StartCoroutine(AddMoneySmoothly(amountToAdd, 0.4f));
+
         StartCoroutine(delay());
+    }
+    IEnumerator AddMoneySmoothly(int moneyToAdd, float duration)
+    {
+        int startMoney = GlobalStats.money;
+        int targetMoney = startMoney + moneyToAdd;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            int currentDisplayMoney = (int)Mathf.Lerp(startMoney, targetMoney, t);
+
+            // Update the visual UI string
+            money.text = currentDisplayMoney.ToString();
+
+            yield return null;
+        }
+
+        GlobalStats.money = targetMoney;
+        money.text = GlobalStats.money.ToString();
+        GlobalStats.SaveMoneyAndSkillpoints();
     }
 
     IEnumerator delay()
@@ -222,7 +257,7 @@ public class FishMinigame : MonoBehaviour
 
         GameObject flashObj = new GameObject("TempRedFlash", typeof(RectTransform), typeof(Image));
         flashObj.transform.SetParent(uiPanel.transform, false);
-        
+
         RectTransform flashRect = flashObj.GetComponent<RectTransform>();
         flashRect.anchorMin = Vector2.zero;
         flashRect.anchorMax = Vector2.one;

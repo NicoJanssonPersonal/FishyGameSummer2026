@@ -116,9 +116,9 @@ public static class GlobalStats
         PlayerPrefs.SetFloat("GS_spawnIntervall", spawnIntervall);
         PlayerPrefs.SetFloat("GS_plopAmount", plopAmount);
 
-        PlayerPrefs.SetFloat("GS_Experince", Experince);
-        PlayerPrefs.SetInt("GS_Level", Level);
-        PlayerPrefs.SetFloat("GS_expTonNextLevel", expTonNextLevel);
+        // PlayerPrefs.SetFloat("GS_Experince", Experince);
+        // PlayerPrefs.SetInt("GS_Level", Level);
+        // PlayerPrefs.SetFloat("GS_expTonNextLevel", expTonNextLevel);
         PlayerPrefs.SetFloat("GS_rarityChance", rarityChance);
         PlayerPrefs.SetInt("GS_money", money);
         PlayerPrefs.SetInt("GS_moneyWon", moneyWon);
@@ -155,42 +155,42 @@ public static class GlobalStats
 
     public static void LoadStats()
     {
-        if (!PlayerPrefs.HasKey("GS_thrustForce"))
+        if (!PlayerPrefs.HasKey("GS_money"))
         {
             Debug.Log("No GlobalStats save data found. Using class defaults.");
             return;
         }
 
-        thrustForce = PlayerPrefs.GetFloat("GS_thrustForce");
-        maxSpeed = PlayerPrefs.GetFloat("GS_maxSpeed");
-        reverseSpeedDebuff = PlayerPrefs.GetFloat("GS_reverseSpeedDebuff");
-        maxTurnTorque = PlayerPrefs.GetFloat("GS_maxTurnTorque");
-        turnTorque = PlayerPrefs.GetFloat("GS_turnTorque");
-        minTurningRadius = PlayerPrefs.GetFloat("GS_minTurningRadius");
-        maxAngularVelocity = PlayerPrefs.GetFloat("GS_maxAngularVelocity");
-        rudderTurnSpeed = PlayerPrefs.GetFloat("GS_rudderTurnSpeed");
+        thrustForce = PlayerPrefs.GetFloat("GS_thrustForce", thrustForce);
+        maxSpeed = PlayerPrefs.GetFloat("GS_maxSpeed", maxSpeed);
+        reverseSpeedDebuff = PlayerPrefs.GetFloat("GS_reverseSpeedDebuff", reverseSpeedDebuff);
+        maxTurnTorque = PlayerPrefs.GetFloat("GS_maxTurnTorque", maxTurnTorque);
+        turnTorque = PlayerPrefs.GetFloat("GS_turnTorque", turnTorque);
+        minTurningRadius = PlayerPrefs.GetFloat("GS_minTurningRadius", minTurningRadius);
+        maxAngularVelocity = PlayerPrefs.GetFloat("GS_maxAngularVelocity", maxAngularVelocity);
+        rudderTurnSpeed = PlayerPrefs.GetFloat("GS_rudderTurnSpeed", rudderTurnSpeed);
 
-        constantSpeed = PlayerPrefs.GetFloat("GS_constantSpeed");
-        fishDifficulty = PlayerPrefs.GetInt("GS_fishDifficulty");
-        fishingRange = PlayerPrefs.GetFloat("GS_fishingRange");
-        fishingStrength = PlayerPrefs.GetFloat("GS_fishingStrength");
-        minRadius = PlayerPrefs.GetFloat("GS_minRadius");
-        maxRadius = PlayerPrefs.GetFloat("GS_maxRadius");
-        spawnIntervall = PlayerPrefs.GetFloat("GS_spawnIntervall");
-        plopAmount = PlayerPrefs.GetFloat("GS_plopAmount");
+        constantSpeed = PlayerPrefs.GetFloat("GS_constantSpeed", constantSpeed);
+        fishDifficulty = PlayerPrefs.GetInt("GS_fishDifficulty", fishDifficulty);
+        fishingRange = PlayerPrefs.GetFloat("GS_fishingRange", fishingRange);
+        fishingStrength = PlayerPrefs.GetFloat("GS_fishingStrength", fishingStrength);
+        minRadius = PlayerPrefs.GetFloat("GS_minRadius", minRadius);
+        maxRadius = PlayerPrefs.GetFloat("GS_maxRadius", maxRadius);
+        spawnIntervall = PlayerPrefs.GetFloat("GS_spawnIntervall", spawnIntervall);
+        plopAmount = PlayerPrefs.GetFloat("GS_plopAmount", plopAmount);
 
-        Experince = PlayerPrefs.GetFloat("GS_Experince");
-        Level = PlayerPrefs.GetInt("GS_Level");
-        expTonNextLevel = PlayerPrefs.GetFloat("GS_expTonNextLevel");
-        rarityChance = PlayerPrefs.GetFloat("GS_rarityChance");
+        // Experince = PlayerPrefs.GetFloat("GS_Experince");
+        // Level = PlayerPrefs.GetInt("GS_Level");
+        // expTonNextLevel = PlayerPrefs.GetFloat("GS_expTonNextLevel");
+        rarityChance = PlayerPrefs.GetFloat("GS_rarityChance", rarityChance);
         money = PlayerPrefs.GetInt("GS_money");
         moneyWon = PlayerPrefs.GetInt("GS_moneyWon");
         skillpoints = PlayerPrefs.GetInt("GS_skillpoints");
         nodesUnlocked = PlayerPrefs.GetInt("GS_nodesUnlocked");
 
-        xpGain = PlayerPrefs.GetFloat("GS_xpGain");
-        moneyGain = PlayerPrefs.GetFloat("GS_moneyGain");
-        fishRarity = PlayerPrefs.GetFloat("GS_fishRarity");
+        xpGain = PlayerPrefs.GetFloat("GS_xpGain", xpGain);
+        moneyGain = PlayerPrefs.GetFloat("GS_moneyGain", moneyGain);
+        fishRarity = PlayerPrefs.GetFloat("GS_fishRarity", fishRarity);
 
         maxHealth = PlayerPrefs.GetFloat("GS_maxHealth", maxHealth);
 
