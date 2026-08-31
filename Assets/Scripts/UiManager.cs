@@ -1,6 +1,5 @@
 using System.Collections;
-using System.Collections.Generic; // Added for List support
-//using System.Numerics;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,26 +17,35 @@ public class UiManager : MonoBehaviour
     private int lastLevel;
 
     public RectTransform caughtFishHolder;
-    public TextMeshProUGUI fishCaughtPrefab; // Use this as the prefab template
+    public TextMeshProUGUI fishCaughtPrefab;
     public RectTransform peng;
     private List<TextMeshProUGUI> activeFishTexts = new List<TextMeshProUGUI>();
 
     public GameObject coinSpawnPoint;
+
     [Header("XP Bar")]
-    public Image xpBarGreen; // The main bar that fills smoothly
-    public Image xpBarWhite; // The background bar that snaps instantly
-    public float fillLerpSpeed = 10f; // How fast the green catches up to the white
+    public Image xpBarGreen;
+    public Image xpBarWhite;
+    public float fillLerpSpeed = 10f;
 
     public Image hpBarWhite;
     public Image hpBarRed;
 
     public Image NitroBar;
     private Vector2 orignalPosFishHolder;
-    [Header("Fish Holder Animation")]
-    public float slideDuration = 0.4f; // Time in seconds for the slide animation
-    private Coroutine slideCoroutine;
-    private bool isHidden = false; // Tracks if the box is currently off-screen
 
+    [Header("Fish Holder Animation")]
+    public float slideDuration = 0.4f;
+    private Coroutine slideCoroutine;
+    private bool isHidden = false;
+
+    [Header("Juiced Fish & Coin Effects")]
+    public RectTransform slideBoxButton;
+    public GameObject[] fishSprites;
+    public RectTransform uiCanvas;
+    public RectTransform coinTargetLocation;
+
+    public AudioManager audioManager;
 
     void Start()
     {
@@ -87,6 +95,7 @@ public class UiManager : MonoBehaviour
             }
         }
     }
+
     void updateHpBar()
     {
         float currentHp = GlobalStats.currentHealth;
@@ -103,6 +112,7 @@ public class UiManager : MonoBehaviour
             hpBarWhite.fillAmount = targetPercentage;
         }
     }
+
     void updateNitroBar()
     {
         float targetPercentage = Mathf.Clamp01(GlobalStats.currentNitro / GlobalStats.maxNitro);
@@ -158,39 +168,17 @@ public class UiManager : MonoBehaviour
 
         switch (fishdiff)
         {
-            case 1:
-                fishName = "MINNOW";
-                break;
-            case 2:
-                fishName = "SOGGY BOOT";
-                break;
-            case 3:
-                fishName = "SILVER CARP";
-                break;
-            case 4:
-                fishName = "GHOST SQUID";
-                break;
-            case 5:
-                fishName = "EMILBERT";
-                break;
-            case 6:
-                fishName = "NEON ANGLER";
-                break;
-            case 7:
-                fishName = "CRYSTAL SALMON";
-                break;
-            case 8:
-                fishName = "MAGMA TUNA";
-                break;
-            case 9:
-                fishName = "ABYSSAL KRAKEN";
-                break;
-            case 10:
-                fishName = "CELESTIAL LEVIATHAN";
-                break;
-            default:
-                fishName = "MYSTERY FISH";
-                break;
+            case 1: fishName = "MINNOW"; break;
+            case 2: fishName = "SOGGY BOOT"; break;
+            case 3: fishName = "SILVER CARP"; break;
+            case 4: fishName = "GHOST SQUID"; break;
+            case 5: fishName = "EMILBERT"; break;
+            case 6: fishName = "NEON ANGLER"; break;
+            case 7: fishName = "CRYSTAL SALMON"; break;
+            case 8: fishName = "MAGMA TUNA"; break;
+            case 9: fishName = "ABYSSAL KRAKEN"; break;
+            case 10: fishName = "CELESTIAL LEVIATHAN"; break;
+            default: fishName = "MYSTERY FISH"; break;
         }
 
         TextMeshProUGUI newFishText = Instantiate(fishCaughtPrefab, caughtFishHolder);
@@ -209,33 +197,103 @@ public class UiManager : MonoBehaviour
             float newYPosition = 40f - (20f * i);
             activeFishTexts[i].rectTransform.anchoredPosition = new Vector2(0, newYPosition);
         }
-        ShowFishCaught(moneyFromFish);
-    }
-    public RectTransform slideBoxButton;
 
-    public void ShowFishCaught(int coinAmount)
-    {
-        // här kommer fisken som visas före den ska exploderas
-        // updatera money counter till smooth steps
-        // adda ljud ti minigamet DONE
-        explodedFishToCoin(coinAmount);
+        ShowFishCaught(moneyFromFish, fishdiff);
     }
-    public void explodedFishToCoin(int coinAmount)
-    {
-        Vector2 screenCenterPixels = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
-        for (int i = 0; i < Mathf.Min(coinAmount, 1000); i++)
+    public void ShowFishCaught(int coinAmount, int fishdiff)
+    {
+        int fishIndex = Mathf.Clamp(fishdiff - 1, 0, fishSprites.Length - 1);
+
+        if (fishSprites.Length > 0 && fishSprites[fishIndex] != null && uiCanvas != null)
         {
-            RectTransform rt = Instantiate(peng, coinSpawnPoint.transform);
-            rt.anchoredPosition = new Vector2(
-                UnityEngine.Random.Range(-40f, 40f),
-                40f
-            );
+            GameObject spawnedFish = Instantiate(fishSprites[fishIndex]);
 
-            StartCoroutine(FallCoin(rt));
+            spawnedFish.transform.SetParent(uiCanvas, false);
+            spawnedFish.transform.SetAsLastSibling();
+
+            RectTransform fishRect = spawnedFish.GetComponent<RectTransform>();
+            if (fishRect != null)
+            {
+                fishRect.anchorMin = new Vector2(0.5f, 0.5f);
+                fishRect.anchorMax = new Vector2(0.5f, 0.5f);
+                fishRect.pivot = new Vector2(0.5f, 0.5f);
+                fishRect.anchoredPosition = Vector2.zero;
+            }
+
+            StartCoroutine(AnimateFishSequence(spawnedFish, coinAmount));
+        }
+        else
+        {
+            Debug.LogError("ShowFishCaught Error: fishSprites is empty or uiCanvas is not assigned!");
+            explodedFishToCoin(coinAmount, Vector3.zero);
         }
     }
-    public RectTransform coinTargetLocation;
+
+    private IEnumerator AnimateFishSequence(GameObject spawnedFish, int coinAmount)
+    {
+        Vector3 baseScale = spawnedFish.transform.localScale * 100f;
+        spawnedFish.transform.localScale = Vector3.zero;
+
+        float popDuration = 0.35f;
+        float elapsed = 0f;
+
+        while (elapsed < popDuration)
+        {
+            if (spawnedFish == null) yield break;
+            elapsed += Time.deltaTime;
+            float t = elapsed / popDuration;
+
+            float elasticT = Mathf.Sin(t * Mathf.PI * 0.5f) + Mathf.Sin(t * Mathf.PI) * 0.35f;
+            spawnedFish.transform.localScale = Vector3.LerpUnclamped(Vector3.zero, baseScale, elasticT);
+
+            yield return null;
+        }
+
+        spawnedFish.transform.localScale = baseScale;
+
+        yield return new WaitForSeconds(0.25f);
+
+        elapsed = 0f;
+        float swellTime = 0.12f;
+        while (elapsed < swellTime)
+        {
+            if (spawnedFish == null) yield break;
+            elapsed += Time.deltaTime;
+            spawnedFish.transform.localScale = Vector3.Lerp(baseScale, baseScale * 1.35f, elapsed / swellTime);
+            yield return null;
+        }
+
+        Vector3 explosionOrigin = spawnedFish.transform.position;
+        Destroy(spawnedFish);
+
+        explodedFishToCoin(coinAmount, explosionOrigin);
+    }
+
+    public void explodedFishToCoin(int coinAmount)
+    {
+        Vector3 defaultPos = coinSpawnPoint != null ? coinSpawnPoint.transform.position : Vector3.zero;
+        explodedFishToCoin(coinAmount, defaultPos);
+    }
+
+    public void explodedFishToCoin(int coinAmount, Vector3 spawnPosition)
+    {
+        int visualCoins = Mathf.Clamp(coinAmount, 10, 25);
+
+        for (int i = 0; i < visualCoins; i++)
+        {
+            if (peng != null && uiCanvas != null)
+            {
+                RectTransform rt = Instantiate(peng, uiCanvas);
+                rt.position = spawnPosition;
+                rt.localScale = Vector3.one;
+                rt.transform.SetAsLastSibling();
+
+                StartCoroutine(FallCoin(rt));
+            }
+        }
+    }
+
     IEnumerator FallCoin(RectTransform coin)
     {
         if (coin == null || coinTargetLocation == null) yield break;
@@ -243,19 +301,19 @@ public class UiManager : MonoBehaviour
         Vector3 startPos = coin.position;
 
         Vector3 burstOffset = new Vector3(
-            UnityEngine.Random.Range(-100f, 100f),
-            UnityEngine.Random.Range(-50f, 120f),
+            UnityEngine.Random.Range(-140f, 140f),
+            UnityEngine.Random.Range(-70f, 160f),
             0f
         );
         Vector3 popPos = startPos + burstOffset;
 
         Vector3 controlPoint = (popPos + coinTargetLocation.position) * 0.5f
-                             + new Vector3(UnityEngine.Random.Range(-200f, 200f), UnityEngine.Random.Range(100f, 300f), 0f);
+                             + new Vector3(UnityEngine.Random.Range(-250f, 250f), UnityEngine.Random.Range(100f, 350f), 0f);
 
-        float duration = UnityEngine.Random.Range(0.6f, 0.9f);
+        float duration = UnityEngine.Random.Range(0.55f, 0.85f);
         float elapsed = 0f;
 
-        float rotationSpeed = UnityEngine.Random.Range(-500f, 500f);
+        float rotationSpeed = UnityEngine.Random.Range(-600f, 600f);
         Vector3 initialScale = coin.localScale;
 
         while (elapsed < duration)
@@ -270,10 +328,9 @@ public class UiManager : MonoBehaviour
                                  Mathf.Pow(t, 2) * coinTargetLocation.position;
 
             coin.position = currentPos;
-
             coin.Rotate(0, 0, rotationSpeed * Time.deltaTime);
 
-            coin.localScale = Vector3.Lerp(initialScale, initialScale * 0.4f, t);
+            coin.localScale = Vector3.Lerp(initialScale, initialScale * 0.35f, t);
 
             yield return null;
         }
@@ -281,7 +338,42 @@ public class UiManager : MonoBehaviour
         if (coin != null)
         {
             coin.position = coinTargetLocation.position;
+
+            StartCoroutine(PunchScaleTarget());
+            audioManager.PlayCoinPickupAudio();
+
             Destroy(coin.gameObject);
+        }
+    }
+
+    private Coroutine punchScaleCoroutine;
+    public TextMeshProUGUI moneyText;
+    private IEnumerator PunchScaleTarget()
+    {
+        if (moneyText == null) yield break;
+
+        Transform textTransform = moneyText.transform;
+
+        Vector3 originalTargetScale = Vector3.one;
+        Vector3 punchScale = Vector3.one * 1.3f;
+
+        textTransform.localScale = punchScale;
+
+        float duration = 0.12f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            if (moneyText == null) yield break;
+            elapsed += Time.deltaTime;
+
+            textTransform.localScale = Vector3.Lerp(punchScale, originalTargetScale, elapsed / duration);
+            yield return null;
+        }
+
+        if (moneyText != null)
+        {
+            textTransform.localScale = originalTargetScale;
         }
     }
     public void slideInBox()
@@ -292,7 +384,6 @@ public class UiManager : MonoBehaviour
         }
 
         Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-310f, orignalPosFishHolder.y);
-
         Vector3 targetRot = isHidden ? new Vector3(0f, 0f, 180f) : Vector3.zero;
 
         isHidden = !isHidden;
@@ -316,7 +407,6 @@ public class UiManager : MonoBehaviour
             float smoothPercent = Mathf.SmoothStep(0f, 1f, percent);
 
             caughtFishHolder.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, smoothPercent);
-
             slideBoxButton.localRotation = Quaternion.Lerp(startRotation, endRotation, smoothPercent);
 
             yield return null;
