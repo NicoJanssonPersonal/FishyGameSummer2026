@@ -50,4 +50,20 @@ public class FishingLine : MonoBehaviour
             lineRenderer.enabled = false;
         }
     }
+    public float fishingLineLength()
+    {
+        if (lineRenderer == null || lineRenderer.positionCount < 2) return 0f;
+
+        float totalLength = 0f;
+
+        for (int i = 0; i < lineRenderer.positionCount - 1; i++)
+        {
+            Vector3 currentPoint = lineRenderer.GetPosition(i);
+            Vector3 nextPoint = lineRenderer.GetPosition(i + 1);
+
+            totalLength += Vector3.Distance(currentPoint, nextPoint);
+        }
+
+        return totalLength;
+    }
 }

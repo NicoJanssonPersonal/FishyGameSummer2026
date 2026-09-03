@@ -54,7 +54,7 @@ public class FishMinigame : MonoBehaviour
         closeUI();
     }
 
-    void debugfiskpos()
+    public void debugfiskpos()
     {
         Debug.Log("World: " + fishe.position);
         Debug.Log("Local: " + fishe.localPosition);
@@ -156,7 +156,7 @@ public class FishMinigame : MonoBehaviour
         if (zoneIndex >= greenZoneObjects.Length && !thisFishCaught)
         {
             CatchFish();
-            thisFishCaught = true;  
+            thisFishCaught = true;
             return;
         }
 
@@ -244,13 +244,18 @@ public class FishMinigame : MonoBehaviour
     }
 
     private Coroutine escapeCoroutine;
-
-    void FishEscaped()
+    private bool fishHasEscaped = false;
+    public void FishEscaped()
     {
-        if (escapeCoroutine != null)
-            StopCoroutine(escapeCoroutine);
+        if (!fishHasEscaped)
+        {
+            fishHasEscaped = true;
+            if (escapeCoroutine != null)
+                StopCoroutine(escapeCoroutine);
 
-        escapeCoroutine = StartCoroutine(AnimateFishEscaped());
+            escapeCoroutine = StartCoroutine(AnimateFishEscaped());
+        }
+
     }
 
     private IEnumerator AnimateFishEscaped()
@@ -309,6 +314,7 @@ public class FishMinigame : MonoBehaviour
 
     public void openUi(int fishDifficulty)
     {
+        fishHasEscaped = false;
         thisFishCaught = false;
         multText.text = "";
         currentFishMult = 0;
@@ -330,13 +336,14 @@ public class FishMinigame : MonoBehaviour
         generategreenZones(fishDifficulty, fishDifficulty);
     }
 
-    void closeUI()
+    public void closeUI()
     {
         thisFishCaught = false;
         isUIOpen = false;
         deletegreenZones();
         uiPanel.SetActive(false);
         //currentFishMult = 0;
+        fishHasEscaped = false;
         foreach (var fish in fishesGameObjects)
         {
             fish.SetActive(false);

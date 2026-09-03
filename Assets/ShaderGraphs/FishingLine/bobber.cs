@@ -4,6 +4,7 @@ public class bobber : MonoBehaviour
 {
     public FishingLine fishingLine;
     public GameObject splashEffect;
+    public FishMinigame fishMinigame;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,6 +16,10 @@ public class bobber : MonoBehaviour
         if (fishingLine == null)
         {
             fishingLine = FindAnyObjectByType<FishingLine>();
+        }
+        if (fishMinigame == null)
+        {
+            fishMinigame = FindAnyObjectByType<FishMinigame>();
         }
     }
 
@@ -29,7 +34,11 @@ public class bobber : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        
+        if (fishingLine.fishingLineLength() > 15)
+        {
+            fishMinigame.FishEscaped();
+        }
     }
     void OnDestroy()
     {
