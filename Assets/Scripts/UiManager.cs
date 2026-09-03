@@ -235,7 +235,7 @@ public class UiManager : MonoBehaviour
         Vector3 baseScale = spawnedFish.transform.localScale * 100f;
         spawnedFish.transform.localScale = Vector3.zero;
 
-        float popDuration = 0.35f;
+        float popDuration = 0.25f;
         float elapsed = 0f;
 
         while (elapsed < popDuration)
@@ -278,7 +278,7 @@ public class UiManager : MonoBehaviour
 
     public void explodedFishToCoin(int coinAmount, Vector3 spawnPosition)
     {
-        int visualCoins = Mathf.Clamp(coinAmount, 10, 25);
+        int visualCoins = Mathf.Clamp(coinAmount, 1, 50);
 
         for (int i = 0; i < visualCoins; i++)
         {

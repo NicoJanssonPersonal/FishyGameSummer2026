@@ -201,18 +201,19 @@ public class FishMinigame : MonoBehaviour
         float xpFromFish = thisFishDifficulty * 3 * GlobalStats.xpGain;
         GlobalStats.Experince += xpFromFish;
 
-        float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain * currentFishMult;
+        float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain * Mathf.Max(1f, currentFishMult);
         int amountToAdd = Mathf.RoundToInt(moneyFromFish);
         if (!thisFishCaught)
         {
             uiManagerScript.updateFishCaught(amountToAdd, Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
         }
-        StartCoroutine(AddMoneySmoothly(amountToAdd, 0.4f));
+        StartCoroutine(AddMoneySmoothly(amountToAdd, 0.5f));
 
         StartCoroutine(delay());
     }
     IEnumerator AddMoneySmoothly(int moneyToAdd, float duration)
     {
+        yield return new WaitForSeconds(1f);
         int startMoney = GlobalStats.money;
         int targetMoney = startMoney + moneyToAdd;
         float elapsed = 0f;
