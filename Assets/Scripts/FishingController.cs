@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class FishingController1 : MonoBehaviour
@@ -10,12 +11,15 @@ public class FishingController1 : MonoBehaviour
     private Renderer tubeRenderer;
     private Material tubeMaterial;
 
+    public GameObject bobber;
     [SerializeField][ColorUsage(true, true)] private Color ChaoticColor;
     [SerializeField][ColorUsage(true, true)] private Color LegendaryColor;
     [SerializeField][ColorUsage(true, true)] private Color RareColor;
     [SerializeField][ColorUsage(true, true)] private Color UncommonColor;
     [SerializeField][ColorUsage(true, true)] private Color CommonColor;
 
+    public FishingLine fishingLine;
+    public GameObject activeBobber;
     void Start()
     {
         Transform tubeChild = transform.Find("tube");
@@ -58,7 +62,6 @@ public class FishingController1 : MonoBehaviour
             if (animator != null) animator.SetTrigger("cast");
         }
     }
-
     void StartFishingMinigame()
     {
         totalScore++;
@@ -70,6 +73,7 @@ public class FishingController1 : MonoBehaviour
             if (distanceToBoat <= GlobalStats.fishingRange)
             {
                 Destroy(gameObject);
+                activeBobber = Instantiate(bobber, transform.position, Quaternion.identity);
                 fishMinigame.openUi(fishDiff);
             }
             else
@@ -89,7 +93,7 @@ public class FishingController1 : MonoBehaviour
         if (tubeMaterial == null) return GlobalStats.fishDifficulty;
 
         float luckBonus = (GlobalStats.fishRarity * 0.5f) / 100f;
-        float normalizedRoll = Mathf.Clamp01(Random.Range(0f, 1f) + luckBonus);
+        float normalizedRoll = Mathf.Clamp01(UnityEngine.Random.Range(0f, 1f) + luckBonus);
 
         float curveExponent = 3.0f;
         float curvedRoll = Mathf.Pow(normalizedRoll, curveExponent);

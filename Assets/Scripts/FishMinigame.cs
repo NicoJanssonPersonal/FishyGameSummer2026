@@ -331,7 +331,6 @@ public class FishMinigame : MonoBehaviour
         deletegreenZones();
         uiPanel.SetActive(false);
         //currentFishMult = 0;
-
         foreach (var fish in fishesGameObjects)
         {
             fish.SetActive(false);
