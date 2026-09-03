@@ -163,7 +163,7 @@ public class FishMinigame : MonoBehaviour
         RectTransform zone = greenZoneObjects[zoneIndex].GetComponent<RectTransform>();
         Vector3 targetPos = zone.position;
         targetPos.y += Random.Range(5f, 30f);
-        currentFishMult++;
+        currentFishMult = Mathf.Min(10, currentFishMult + 1); // cappar multen ti 10
         spawnMultText(currentFishMult, greenZoneObjects[zoneIndex - 1].GetComponent<RectTransform>().position); //måst ha ett bättre sätt att skirva mult, inte bara ta zoneIndex
         fishe.position = targetPos;
     }
