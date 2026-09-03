@@ -99,6 +99,7 @@ public class FishMinigame : MonoBehaviour
                     else
                     {
                         CatchFish();
+                        thisFishCaught = true;
                         spacePressedOnce = false;
                     }
                 }
@@ -149,12 +150,13 @@ public class FishMinigame : MonoBehaviour
             greenZoneObjects[i].transform.localPosition = newPos;
         }
     }
-
+    private bool thisFishCaught = false;
     void MoveFishToZone(int zoneIndex)
     {
-        if (zoneIndex >= greenZoneObjects.Length)
+        if (zoneIndex >= greenZoneObjects.Length && !thisFishCaught)
         {
             CatchFish();
+            thisFishCaught = true;  
             return;
         }
 
@@ -201,9 +203,10 @@ public class FishMinigame : MonoBehaviour
 
         float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain * currentFishMult;
         int amountToAdd = Mathf.RoundToInt(moneyFromFish);
-
-        uiManagerScript.updateFishCaught(amountToAdd, Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
-
+        if (!thisFishCaught)
+        {
+            uiManagerScript.updateFishCaught(amountToAdd, Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
+        }
         StartCoroutine(AddMoneySmoothly(amountToAdd, 0.4f));
 
         StartCoroutine(delay());
@@ -305,6 +308,7 @@ public class FishMinigame : MonoBehaviour
 
     public void openUi(int fishDifficulty)
     {
+        thisFishCaught = false;
         multText.text = "";
         currentFishMult = 0;
         thisFishDifficulty = fishDifficulty;
@@ -327,6 +331,7 @@ public class FishMinigame : MonoBehaviour
 
     void closeUI()
     {
+        thisFishCaught = false;
         isUIOpen = false;
         deletegreenZones();
         uiPanel.SetActive(false);

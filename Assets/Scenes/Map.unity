@@ -27562,7 +27562,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 14.53978}
+  m_AnchoredPosition: {x: 0, y: 14.539795}
   m_SizeDelta: {x: 1390, y: 782}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1001 &1510282571
@@ -33728,7 +33728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoatManager
   fishradius: {fileID: 783780317}
-  boatCollider: {fileID: 398733015}
+  boatCollider: {fileID: 1796729968}
 --- !u!54 &1796729970
 Rigidbody:
   m_ObjectHideFlags: 0

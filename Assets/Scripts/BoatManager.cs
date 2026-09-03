@@ -55,6 +55,8 @@ public class BoatManager : MonoBehaviour
         if (boatCollider != null)
         {
             boatCollider.enabled = false;
+            rb.constraints = 0;
+            // sir för jävligt ut
         }
     }
 
