@@ -27562,7 +27562,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 14.539795}
+  m_AnchoredPosition: {x: 0, y: 14.539764}
   m_SizeDelta: {x: 1390, y: 782}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1001 &1510282571
@@ -36334,7 +36334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1581446151121439821, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.123
+      value: -0.28
       objectReference: {fileID: 0}
     - target: {fileID: 1581446151121439821, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36368,25 +36368,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2564161953555909631, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.005
+    - target: {fileID: 2814708222878057711, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+      propertyPath: m_PlayAutomatically
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2564161953555909631, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.006
-      objectReference: {fileID: 0}
-    - target: {fileID: 2564161953555909631, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.598
+    - target: {fileID: 2814708222878057711, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+      propertyPath: m_Animations.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8192746917017218420, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
       propertyPath: m_Name
       value: fishermanPrefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 8192746917017218420, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
-      propertyPath: m_TagString
-      value: fiskarDude
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36396,11 +36388,6 @@ PrefabInstance:
 --- !u!4 &1924105977 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1581446151121439821, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
-  m_PrefabInstance: {fileID: 1924105976}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1924105980 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2564161953555909631, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
   m_PrefabInstance: {fileID: 1924105976}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1927594563 stripped
@@ -37016,7 +37003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   lineRenderer: {fileID: 0}
-  rodTip: {fileID: 1924105980}
+  rodTip: {fileID: 0}
   segmentCount: 20
   sagAmount: 0.5
 --- !u!4 &1946267232 stripped

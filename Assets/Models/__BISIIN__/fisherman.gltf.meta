@@ -13,7 +13,7 @@ ScriptedImporter:
   importSettings:
     nodeNameMethod: 1
     animationMethod: 2
-    generateMipMaps: 0
+    generateMipMaps: 1
     texturesReadable: 0
     defaultMinFilterMode: 9729
     defaultMagFilterMode: 9729
@@ -37,7 +37,4 @@ ScriptedImporter:
     messages: []
   - type: 2
     code: 19
-    messages: []
-  - type: 3
-    code: 36
     messages: []
