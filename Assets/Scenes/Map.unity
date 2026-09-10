@@ -36374,6 +36374,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1936264496059249407, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d69621ed0d27a3e48809f90d1645d354, type: 2}
     - target: {fileID: 2195538686258563743, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -37016,8 +37020,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 902448346ebd1d04d84ff8b30ee8eaa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  lineRenderer: {fileID: 0}
-  rodTip: {fileID: 0}
+  lineRenderer: {fileID: 1945180597}
+  rodTip: {fileID: 1990302270}
   segmentCount: 20
   sagAmount: 0.5
 --- !u!4 &1946267232 stripped
@@ -37754,6 +37758,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6919756545882998281, guid: f570b9777af285a468ce65a56df5b655, type: 3}
   m_PrefabInstance: {fileID: 1988343919}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1990302270 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6959963998564202977, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+  m_PrefabInstance: {fileID: 1924105976}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1991322564
 GameObject:
