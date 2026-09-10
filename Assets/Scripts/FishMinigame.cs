@@ -39,6 +39,8 @@ public class FishMinigame : MonoBehaviour
 
     public AudioManager audioManager;
 
+    public Animator animator;
+
 
 
     void Start()
@@ -200,7 +202,7 @@ public class FishMinigame : MonoBehaviour
     {
         float xpFromFish = thisFishDifficulty * 3 * GlobalStats.xpGain;
         GlobalStats.Experince += xpFromFish;
-
+        animator.SetTrigger("catch");
         float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain * Mathf.Max(1f, currentFishMult);
         int amountToAdd = Mathf.RoundToInt(moneyFromFish);
         if (!thisFishCaught)
@@ -253,6 +255,7 @@ public class FishMinigame : MonoBehaviour
             if (escapeCoroutine != null)
                 StopCoroutine(escapeCoroutine);
 
+            animator.SetTrigger("loseFish");
             escapeCoroutine = StartCoroutine(AnimateFishEscaped());
         }
 

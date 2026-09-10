@@ -10341,6 +10341,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 636143547}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!95 &642853146 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2195538686258563743, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+  m_PrefabInstance: {fileID: 1924105976}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &646051719
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30972,6 +30977,7 @@ MonoBehaviour:
   multText: {fileID: 433165045}
   multTextHolder: {fileID: 433165043}
   audioManager: {fileID: 577796781}
+  animator: {fileID: 642853146}
   baseColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   maxColor: {r: 1, g: 0, b: 0, a: 1}
   missColor: {r: 0.8, g: 0.2, b: 0.2, a: 1}
@@ -36334,7 +36340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1581446151121439821, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1581446151121439821, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36368,17 +36374,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2814708222878057711, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
-      propertyPath: m_PlayAutomatically
+    - target: {fileID: 2195538686258563743, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2814708222878057711, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
-      propertyPath: m_Animations.Array.size
-      value: 1
+    - target: {fileID: 3539866837255960774, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+      propertyPath: m_TagString
+      value: fiskarDude
+      objectReference: {fileID: 0}
+    - target: {fileID: 4402077522531238693, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8192746917017218420, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
       propertyPath: m_Name
       value: fishermanPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 8192746917017218420, guid: 12d735619c0fd224aa916a49cfc33afd, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

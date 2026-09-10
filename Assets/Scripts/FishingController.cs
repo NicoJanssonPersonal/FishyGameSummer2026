@@ -60,6 +60,7 @@ public class FishingController1 : MonoBehaviour
         {
             StartFishingMinigame();
             if (animator != null) animator.SetTrigger("cast");
+            Debug.Log("casted");
         }
     }
     void StartFishingMinigame()

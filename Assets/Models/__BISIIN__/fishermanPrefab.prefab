@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1581446151121439821}
-  - component: {fileID: 2814708222878057711}
   - component: {fileID: 4402077522531238693}
   m_Layer: 0
   m_Name: fishermanPrefab
@@ -34,27 +33,6 @@ Transform:
   - {fileID: 4772799858258625325}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &2814708222878057711
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8192746917017218420}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 6316130324300929012, guid: 41419f8437a1a7b44a6b63b040f5236d, type: 3}
-  m_Animations:
-  - {fileID: 6316130324300929012, guid: 41419f8437a1a7b44a6b63b040f5236d, type: 3}
-  - {fileID: -8749386135534558621, guid: 41419f8437a1a7b44a6b63b040f5236d, type: 3}
-  - {fileID: 7400000, guid: e2301eb36d40a1b4ebdf8aecf69c766e, type: 2}
-  - {fileID: 7400000, guid: b7aec15312101224c999c21263f2bcd3, type: 2}
-  - {fileID: 7400000, guid: 71ae7694e111dbb45bb23693cb10e502, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!95 &4402077522531238693
 Animator:
   serializedVersion: 7
