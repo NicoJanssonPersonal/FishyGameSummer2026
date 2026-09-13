@@ -4,7 +4,7 @@ public class BoatController : MonoBehaviour
 {
     [Header("Motor Settings")]
     public float thrustForce, maxSpeed, reverseSpeedDebuff;
-    public float sidewaysGrip = 2.5f; 
+    public float sidewaysGrip = 2.5f;
     public float forwardDrag = 0.5f; // Water resistance
 
     [Header("Steering Limits")]
@@ -15,7 +15,7 @@ public class BoatController : MonoBehaviour
 
     [Header("Nitro / Boost Tank Settings")]
     [Tooltip("Maximum Nitro Capacity (seconds of continuous boost)")]
-    public float nitroRegenRate = 15f; 
+    public float nitroRegenRate = 15f;
     [Tooltip("Delay in seconds before Nitro starts regenerating after release")]
     public float regenDelay = 0.5f;
     private float regenTimer = 0f;
@@ -38,10 +38,10 @@ public class BoatController : MonoBehaviour
     public float reverseTiltAngle = 45f;
 
     [Header("Visual Tilt Settings")]
-    [SerializeField] private Transform visualMesh; 
-    [SerializeField] private float rollAngle = 15f;  
-    [SerializeField] private float pitchAngle = 10f; 
-    [SerializeField] private float tiltSpeed = 5f;  
+    [SerializeField] private Transform visualMesh;
+    [SerializeField] private float rollAngle = 15f;
+    [SerializeField] private float pitchAngle = 10f;
+    [SerializeField] private float tiltSpeed = 5f;
 
     private Vector3 lastVelocity;
     private Quaternion meshInitialRotation;
@@ -107,12 +107,12 @@ public class BoatController : MonoBehaviour
 
     void getStatsFromGlobalStats()
     {
-        maxTurnTorque = GlobalStats.maxTurnTorque; 
-        turnTorque = GlobalStats.turnTorque; 
-        minTurningRadius = GlobalStats.minTurningRadius; 
+        maxTurnTorque = GlobalStats.maxTurnTorque;
+        turnTorque = GlobalStats.turnTorque;
+        minTurningRadius = GlobalStats.minTurningRadius;
         maxAngularVelocity = GlobalStats.maxAngularVelocity;
-        thrustForce = GlobalStats.thrustForce; 
-        maxSpeed = GlobalStats.maxSpeed; 
+        thrustForce = GlobalStats.thrustForce;
+        maxSpeed = GlobalStats.maxSpeed;
         reverseSpeedDebuff = GlobalStats.reverseSpeedDebuff;
         rudderTurnSpeed = GlobalStats.rudderTurnSpeed;
     }
@@ -125,13 +125,9 @@ public class BoatController : MonoBehaviour
         float targetBoostFactor = isBoosting ? (GlobalStats.nitroSpeedMultiplier - 1.0f) : 0f;
         activeBoostFactor = Mathf.Lerp(activeBoostFactor, targetBoostFactor, Time.fixedDeltaTime * 6f);
 
-        if (!CardManager.isUpgrading)
-        {
-            ApplyThrust();
-            ApplySteering();
-            ApplyVisualTilt();
-        }
-        
+        ApplyThrust();
+        ApplySteering();
+        ApplyVisualTilt();
         ApplyWaterResistance();
 
         float effectiveMaxSpeed = maxSpeed * (1f + activeBoostFactor);
@@ -169,7 +165,7 @@ public class BoatController : MonoBehaviour
 
         // Dynamically lower drag while nitro is engaged so speed builds up smooth and fast
         float dragFactor = Mathf.Lerp(1.0f, 0.4f, activeBoostFactor / (GlobalStats.nitroSpeedMultiplier - 1.0f + 0.0001f));
-        
+
         rb.AddForce(-forwardVelocity * (forwardDrag * dragFactor), ForceMode.Force);
         rb.AddForce(-rightVelocity * sidewaysGrip, ForceMode.Force);
     }
@@ -250,7 +246,7 @@ public class BoatController : MonoBehaviour
 
             float targetYRotation = turnInput * minTurningRadius * directionMultiplier;
             Quaternion targetRudderRot = Quaternion.Euler(0f, targetYRotation, 0f);
-            
+
             rudderTransform.localRotation = Quaternion.Lerp(
                 rudderTransform.localRotation,
                 targetRudderRot,

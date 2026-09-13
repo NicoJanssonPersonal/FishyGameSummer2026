@@ -56,12 +56,9 @@ public class FishingController1 : MonoBehaviour
     }
     void OnMouseDown()
     {
-        if (!CardManager.isUpgrading)
-        {
-            StartFishingMinigame();
-            if (animator != null) animator.SetTrigger("cast");
-            Debug.Log("casted");
-        }
+        StartFishingMinigame();
+        if (animator != null) animator.SetTrigger("cast");
+        Debug.Log("casted");
     }
     void StartFishingMinigame()
     {
