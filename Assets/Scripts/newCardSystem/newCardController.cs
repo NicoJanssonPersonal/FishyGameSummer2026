@@ -85,27 +85,27 @@ public class NewCardController : MonoBehaviour
 
         switch (text)
         {
-            case "betterCard":
+            case "cardsIconCardRarity":
                 upgradeType = "rarity";
                 realText = "card rarity upgraded by ";
                 break;
-            case "betterFish":
+            case "cardsIconFishRarity":
                 upgradeType = "rarity";
                 realText = "fish rarity upgraded by ";
                 break;
-            case "moreMoney":
+            case "cardsIconMoreCoins":
                 upgradeType = "economy";
                 realText = "money gain upgraded by ";
                 break;
-            case "morePlop":
+            case "cardsIconPlopAmount":
                 upgradeType = "fishing";
                 realText = "plop amount spawn upgraded by ";
                 break;
-            case "moreRange":
+            case "cardsIconFishingRange":
                 upgradeType = "fishing";
                 realText = "fishing range upgraded by ";
                 break;
-            case "moreXP":
+            case "cardsIconMoreXP":
                 upgradeType = "economy";
                 realText = "xp gain upgraded by ";
                 break;

@@ -22,7 +22,7 @@ public class NewCardManager : MonoBehaviour
     private void upgradeTime()
     {
         Time.timeScale = 0;
-        float[] xPositions = new float[] { -240f, 0f, 240f };
+        float[] xPositions = new float[] { -200f, 0f, 200f };
 
         spawnedCards = new GameObject[xPositions.Length];
 

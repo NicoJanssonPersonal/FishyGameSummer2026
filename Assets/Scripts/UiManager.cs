@@ -175,7 +175,7 @@ public class UiManager : MonoBehaviour
             case 5: fishName = "EMILBERT"; break;
             case 6: fishName = "NEON ANGLER"; break;
             case 7: fishName = "CRYSTAL SALMON"; break;
-            case 8: fishName = "MAGMA TUNA"; break;
+            case 8: fishName = "SWIM SHADY"; break;
             case 9: fishName = "ABYSSAL KRAKEN"; break;
             case 10: fishName = "CELESTIAL LEVIATHAN"; break;
             default: fishName = "MYSTERY FISH"; break;

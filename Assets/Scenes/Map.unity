@@ -5785,6 +5785,7 @@ GameObject:
   - component: {fileID: 366595455}
   - component: {fileID: 366595454}
   - component: {fileID: 366595460}
+  - component: {fileID: 366595461}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -6056,6 +6057,18 @@ MonoBehaviour:
     NearLimit: 5
     FarLimit: 30
     MaxQualityBoost: 0.2
+--- !u!114 &366595461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366595452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cefaa4df5f2080246b8ba7f8e8da5978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::cameraScript
 --- !u!1001 &367249056
 PrefabInstance:
   m_ObjectHideFlags: 0
