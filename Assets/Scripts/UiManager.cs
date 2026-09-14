@@ -168,16 +168,16 @@ public class UiManager : MonoBehaviour
 
         switch (fishdiff)
         {
-            case 1: fishName = "MINNOW"; break;
-            case 2: fishName = "SOGGY BOOT"; break;
-            case 3: fishName = "SILVER CARP"; break;
-            case 4: fishName = "GHOST SQUID"; break;
-            case 5: fishName = "EMILBERT"; break;
-            case 6: fishName = "NEON ANGLER"; break;
-            case 7: fishName = "CRYSTAL SALMON"; break;
-            case 8: fishName = "SWIM SHADY"; break;
-            case 9: fishName = "ABYSSAL KRAKEN"; break;
-            case 10: fishName = "CELESTIAL LEVIATHAN"; break;
+            case 1: fishName = "Captain Krill"; break;
+            case 2: fishName = "Swimba"; break;
+            case 3: fishName = "Makerel More"; break;
+            case 4: fishName = "The Notorious P.E.R.C.H"; break;
+            case 5: fishName = "Emilbert"; break;
+            case 6: fishName = "Pike Tyson"; break;
+            case 7: fishName = "En Grisss!"; break;
+            case 8: fishName = "Swim Shady"; break;
+            case 9: fishName = "Darth Baiter"; break;
+            case 10: fishName = "Blubba The Hut"; break;
             default: fishName = "MYSTERY FISH"; break;
         }
 
