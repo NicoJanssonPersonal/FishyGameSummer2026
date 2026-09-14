@@ -73,10 +73,10 @@ public class NewCardController : MonoBehaviour
     }
     private void changeColor(Color color)
     {
-        cardRarityIndicatorPlace.color = color;
-        cardRarityBannerPlace.color = color;
-        cardBackground.color = color;
-        cardTextPlace.color = color;
+        //cardRarityIndicatorPlace.color = color;
+        //cardRarityBannerPlace.color = color;
+        //cardBackground.color = color;
+        //cardTextPlace.color = color;
         cardSymbolBoxPlace.color = color;
     }
     private void changeText(string text)
