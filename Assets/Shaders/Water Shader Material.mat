@@ -29,7 +29,6 @@ Material:
   - _ENABLEPLANERREFLECTION
   - _ENABLEREFRACTION
   - _ENABLESHORELINE
-  - _ENABLEWAVE
   m_InvalidKeywords: []
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
@@ -293,7 +292,7 @@ Material:
     - _ENABLESHORELINE: 1
     - _ENABLESURFACEFOAM: 1
     - _ENABLEUNDERWATERLAYER: 1
-    - _ENABLEWAVE: 1
+    - _ENABLEWAVE: 0
     - _ENABLE_UNDERWATERLAYER: 0
     - _ENVIRONMENTREFLECTIONS_OFF: 1
     - _Enable_Intersection: 1
@@ -443,7 +442,7 @@ Material:
     - _Underwater_Fade: 34.2
     - _WORLDSPACEDEPTH: 1
     - _WaterDepth: 0.3
-    - _Water_Depth: 1
+    - _Water_Depth: 3
     - _WaveHeight: 0.01
     - _WaveHeight2nd: 0.01
     - _WaveLength: 10
@@ -485,7 +484,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color_Deep: {r: 0, g: 0.19104326, b: 1, a: 1}
-    - _Color_Shallow: {r: 0, g: 0.15098041, b: 0.5, a: 0}
+    - _Color_Shallow: {r: 0.18396229, g: 0.43259868, b: 1, a: 0.3254902}
     - _Deep_Color: {r: 0, g: 0.18142791, b: 0.758, a: 1}
     - _DistanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
