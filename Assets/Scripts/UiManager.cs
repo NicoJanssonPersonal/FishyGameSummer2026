@@ -162,7 +162,7 @@ public class UiManager : MonoBehaviour
         compassWheel.localRotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public void updateFishCaught(int moneyFromFish, int xpFromFish, int fishdiff)
+    public void updateFishCaught(int moneyFromFish, int xpFromFish, int fishdiff, float fishLenght, float fishWeight)
     {
         string fishName;
 
@@ -182,7 +182,7 @@ public class UiManager : MonoBehaviour
         }
 
         TextMeshProUGUI newFishText = Instantiate(fishCaughtPrefab, caughtFishHolder);
-        newFishText.text = $"YOU CAUGHT A {fishName}, {moneyFromFish} GOLD {xpFromFish} XP";
+        newFishText.text = $"{fishName}, {moneyFromFish} GOLD {xpFromFish} XP {fishLenght:F1} Cm {fishWeight:F1} Kg";
 
         activeFishTexts.Add(newFishText);
 

@@ -199,7 +199,7 @@ public class SharkController : MonoBehaviour
         }
         else if (other.CompareTag("Terrain"))
         {
-            Debug.Log(gameObject.name + " is avoiding terraing");
+           //Debug.Log(gameObject.name + " is avoiding terraing");
             AvoidTerrain();
         }
     }
@@ -211,13 +211,13 @@ public class SharkController : MonoBehaviour
 
         transform.Rotate(0f, 180f, 0f);
 
-        Debug.Log(gameObject.name + " got too close to terrain, turning around!");
+        //Debug.Log(gameObject.name + " got too close to terrain, turning around!");
     }
 
     void TakeHit()
     {
         hitCount++;
-        Debug.Log($"Shark hit! Total hits: {hitCount}/{maxHits}");
+        //Debug.Log($"Shark hit! Total hits: {hitCount}/{maxHits}");
 
         if (hitCount >= maxHits)
         {

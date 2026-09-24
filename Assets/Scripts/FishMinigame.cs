@@ -200,18 +200,67 @@ public class FishMinigame : MonoBehaviour
 
     void CatchFish()
     {
-        float xpFromFish = thisFishDifficulty * 3 * GlobalStats.xpGain;
-        GlobalStats.Experince += xpFromFish;
         animator.SetTrigger("catch");
-        float moneyFromFish = thisFishDifficulty * 2 * GlobalStats.moneyGain * Mathf.Max(1f, currentFishMult);
-        int amountToAdd = Mathf.RoundToInt(moneyFromFish);
+
         if (!thisFishCaught)
         {
-            uiManagerScript.updateFishCaught(amountToAdd, Mathf.RoundToInt(xpFromFish), thisFishDifficulty);
-        }
-        StartCoroutine(AddMoneySmoothly(amountToAdd, 0.5f));
+            float fishLenght = getLength(thisFishDifficulty);
+            float fishWeight = GetWeight(getLength(thisFishDifficulty));
 
+            float bonusFromFishSize = fishLenght - 5 * thisFishDifficulty;
+            float bonusFromFishWeight = fishWeight - Mathf.Pow(fishLenght, 2.2f) / 400f;
+
+            //Debug.Log($"bonus from fish length and width {bonusFromFishSize}, {bonusFromFishWeight}");
+
+            float xpFromFish = Mathf.Max(1f, (thisFishDifficulty + bonusFromFishSize + bonusFromFishWeight) * 3 * GlobalStats.xpGain);
+            GlobalStats.Experince += xpFromFish;
+
+            float moneyFromFish = Mathf.Max(1f, (thisFishDifficulty + bonusFromFishSize + bonusFromFishWeight) * 2 * GlobalStats.moneyGain * Mathf.Max(1f, currentFishMult));
+            int amountToAdd = Mathf.RoundToInt(moneyFromFish);
+
+            uiManagerScript.updateFishCaught(amountToAdd, Mathf.RoundToInt(xpFromFish), thisFishDifficulty, fishLenght, fishWeight);
+            Debug.Log(getLength(thisFishDifficulty).ToString());
+
+            StartCoroutine(AddMoneySmoothly(amountToAdd, 0.5f));
+        }
         StartCoroutine(delay());
+    }
+    public float getLength(int fishDiff)
+    {
+        float fishMaxSize = (5 * fishDiff) * 1.5f;
+        float fishMinSize = (5 * fishDiff) * 0.5f;
+        float meanSize = 5 * fishDiff;
+        float standardDeviation = 1 * fishDiff;
+        return NextGaussianClamped(meanSize, standardDeviation, fishMinSize, fishMaxSize);
+    }
+    public float GetWeight(float lengthCm)
+    {
+        float baseWeightKg = Mathf.Pow(lengthCm, 2.2f) / 400f;
+
+        float chonkFactor = Random.Range(0.85f, 1.40f);
+
+        return Mathf.Max(0.1f, baseWeightKg * chonkFactor);
+    }
+
+    public static float NextGaussian(float mean, float standardDeviation)
+    {
+        float u1 = Random.value;
+        float u2 = Random.value;
+
+        while (u1 <= float.Epsilon)
+        {
+            u1 = Random.value;
+        }
+
+        float randStdNormal = Mathf.Sqrt(-2.0f * Mathf.Log(u1)) * Mathf.Sin(2.0f * Mathf.PI * u2);
+
+        return mean + (standardDeviation * randStdNormal);
+    }
+
+    public static float NextGaussianClamped(float mean, float standardDeviation, float min, float max)
+    {
+        float value = NextGaussian(mean, standardDeviation);
+        return Mathf.Clamp(value, min, max);
     }
     IEnumerator AddMoneySmoothly(int moneyToAdd, float duration)
     {
@@ -227,7 +276,6 @@ public class FishMinigame : MonoBehaviour
 
             int currentDisplayMoney = (int)Mathf.Lerp(startMoney, targetMoney, t);
 
-            // Update the visual UI string
             money.text = currentDisplayMoney.ToString();
 
             yield return null;
