@@ -383,7 +383,7 @@ public class UiManager : MonoBehaviour
             StopCoroutine(slideCoroutine);
         }
 
-        Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-310f, orignalPosFishHolder.y);
+        Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-270f, orignalPosFishHolder.y);
         Vector3 targetRot = isHidden ? new Vector3(0f, 0f, 180f) : Vector3.zero;
 
         isHidden = !isHidden;
@@ -393,7 +393,12 @@ public class UiManager : MonoBehaviour
 
     private IEnumerator AnimateBoxSlide(Vector2 targetPosition, Vector3 targetRotation, float duration)
     {
-        Vector2 startPosition = caughtFishHolder.anchoredPosition;
+        Vector2 startHolderPos = caughtFishHolder.anchoredPosition;
+        Vector2 startButtonPos = slideBoxButton.anchoredPosition;
+
+        Vector2 movementDelta = targetPosition - startHolderPos;
+        Vector2 targetButtonPos = startButtonPos + movementDelta;
+
         Quaternion startRotation = slideBoxButton.localRotation;
         Quaternion endRotation = Quaternion.Euler(targetRotation);
 
@@ -403,16 +408,17 @@ public class UiManager : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float percent = Mathf.Clamp01(elapsed / duration);
-
             float smoothPercent = Mathf.SmoothStep(0f, 1f, percent);
 
-            caughtFishHolder.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, smoothPercent);
+            caughtFishHolder.anchoredPosition = Vector2.Lerp(startHolderPos, targetPosition, smoothPercent);
+            slideBoxButton.anchoredPosition = Vector2.Lerp(startButtonPos, targetButtonPos, smoothPercent);
             slideBoxButton.localRotation = Quaternion.Lerp(startRotation, endRotation, smoothPercent);
 
             yield return null;
         }
 
         caughtFishHolder.anchoredPosition = targetPosition;
+        slideBoxButton.anchoredPosition = targetButtonPos;
         slideBoxButton.localRotation = endRotation;
 
         slideCoroutine = null;
