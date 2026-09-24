@@ -81,13 +81,16 @@ public class DayNightCycle : MonoBehaviour
     private int shadowColorID;
     private int waveTopID;
     private int extraMaterialColorID;
+    private Transform lighTransform;
 
     public float TimeValue { get; private set; }
+    public bool movingSun = true;
 
     void Start()
     {
         if (sunLight == null) sunLight = GetComponent<Light>();
-
+        
+        lighTransform = sunLight.transform;
         // Cache Shader IDs
         shallowColorID = Shader.PropertyToID("_Color_Shallow");
         deepColorID = Shader.PropertyToID("_Color_Deep");
@@ -150,7 +153,10 @@ public class DayNightCycle : MonoBehaviour
         UpdateDigitalClockString();
 
         float xRotation = (overallDayPercent * 360f) - 90f;
-        transform.rotation = Quaternion.Euler(xRotation, 0f, 0f);
+        if (movingSun)
+        {
+            lighTransform.rotation = Quaternion.Euler(xRotation, 40f, 0f);
+        }
 
         TimeValue = Mathf.Cos((overallDayPercent - 0.5f) * 2f * Mathf.PI);
         float waterSwayProgress = (TimeValue * 0.5f) + 0.5f;
