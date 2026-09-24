@@ -12650,6 +12650,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1532214946}
+  - {fileID: 776404455}
   m_Father: {fileID: 1323931442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -13681,16 +13682,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776404454}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1532214946}
+  m_Father: {fileID: 717754168}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 329.8, y: 6.100006}
+  m_AnchoredPosition: {x: 672.8001, y: -216.89993}
   m_SizeDelta: {x: 58.3147, y: 58.3147}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &776404456
@@ -29062,6 +29063,7 @@ GameObject:
   - component: {fileID: 1532214946}
   - component: {fileID: 1532214948}
   - component: {fileID: 1532214947}
+  - component: {fileID: 1532214949}
   m_Layer: 5
   m_Name: fishCaughtBG
   m_TagString: Untagged
@@ -29080,15 +29082,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 776404455}
+  m_Children: []
   m_Father: {fileID: 717754168}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 324, y: -223}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 345, y: -223}
   m_SizeDelta: {x: 660, y: 336}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1532214947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29127,6 +29128,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532214945}
   m_CullTransparentMesh: 1
+--- !u!114 &1532214949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532214945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 45
+    m_Right: 45
+    m_Top: 45
+    m_Bottom: 45
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1001 &1533709488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33975,7 +34002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1757926846
 Transform:
   m_ObjectHideFlags: 0
@@ -40125,6 +40152,7 @@ MonoBehaviour:
   currentInGameTime: 0
   digitalClockDisplay: 
   sunLight: {fileID: 410087040}
+  movingSun: 1
 --- !u!4 &2062153001
 Transform:
   m_ObjectHideFlags: 0
