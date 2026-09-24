@@ -32429,6 +32429,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1587858163486516038, guid: d57e00d733d4ff14e8a4a4689aaf757f, type: 3}
   m_PrefabInstance: {fileID: 1739872166}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1658815553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8249202020852718666, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+  m_PrefabInstance: {fileID: 2714257850755443239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1658815557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658815553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f9c1347b7146e458168676fe5195ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightController
+  dayNightCycle: {fileID: 0}
+  lamp: {fileID: 0}
+  lightsFadeOnTime: 17
+  lightsFadeOffTime: 6
+  maxLightIntensity: 100
 --- !u!1001 &1659089531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33231,6 +33253,28 @@ RectTransform:
   m_AnchoredPosition: {x: 3.2999268, y: -4.920349}
   m_SizeDelta: {x: 98.400024, y: 98.400024}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1706690336 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 327486256496903038, guid: a114d28b02141e445bc52cbb18f985e1, type: 3}
+  m_PrefabInstance: {fileID: 1524012114148643485}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1706690340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706690336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f9c1347b7146e458168676fe5195ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightController
+  dayNightCycle: {fileID: 0}
+  lamp: {fileID: 0}
+  lightsFadeOnTime: 17
+  lightsFadeOffTime: 6
+  maxLightIntensity: 100
 --- !u!1 &1709148922
 GameObject:
   m_ObjectHideFlags: 0
@@ -38500,7 +38544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1963383246
 Transform:
   m_ObjectHideFlags: 0
@@ -40025,7 +40069,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DaylightCycle
   targetDayLengthInMinutes: 5
   targetNightLengthInMinutes: 2
-  startHour: 1.5
+  startHour: 15
   sunColorGradient:
     serializedVersion: 2
     key0: {r: 0.15216066, g: 0, b: 0.23584908, a: 1}
@@ -42679,7 +42723,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 327486256496903038, guid: a114d28b02141e445bc52cbb18f985e1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1706690340}
   m_SourcePrefab: {fileID: 100100000, guid: a114d28b02141e445bc52cbb18f985e1, type: 3}
 --- !u!1001 &1673412001887407098
 PrefabInstance:
@@ -43529,7 +43576,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8249202020852718666, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1658815557}
   m_SourcePrefab: {fileID: 100100000, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
 --- !u!1001 &2902833904050652629
 PrefabInstance:
