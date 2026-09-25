@@ -192,23 +192,23 @@ public class UiManager : MonoBehaviour
             activeFishTexts.RemoveAt(0);
         }
 
-        for (int i = 0; i < activeFishTexts.Count; i++)
+        /*for (int i = 0; i < activeFishTexts.Count; i++)
         {
             float newYPosition = 40f - (20f * i);
             activeFishTexts[i].rectTransform.anchoredPosition = new Vector2(0, newYPosition);
-        }
+        } */
 
-        ShowFishCaught(moneyFromFish, fishdiff);
+        ShowFishCaught(moneyFromFish, fishdiff, fishName, fishLenght, fishWeight);
     }
-
-    public void ShowFishCaught(int coinAmount, int fishdiff)
+    public showFishStats showFishStats;
+    public void ShowFishCaught(int coinAmount, int fishdiff, string fishname, float fishLenght, float fishWeight)
     {
         int fishIndex = Mathf.Clamp(fishdiff - 1, 0, fishSprites.Length - 1);
 
         if (fishSprites.Length > 0 && fishSprites[fishIndex] != null && uiCanvas != null)
         {
             GameObject spawnedFish = Instantiate(fishSprites[fishIndex]);
-
+            showFishStats.displayFishInfo(fishname, fishWeight, fishLenght, fishdiff);
             spawnedFish.transform.SetParent(uiCanvas, false);
             spawnedFish.transform.SetAsLastSibling();
 
@@ -220,7 +220,8 @@ public class UiManager : MonoBehaviour
                 fishRect.pivot = new Vector2(0.5f, 0.5f);
                 fishRect.anchoredPosition = Vector2.zero;
             }
-
+            
+            
             StartCoroutine(AnimateFishSequence(spawnedFish, coinAmount));
         }
         else
@@ -266,6 +267,7 @@ public class UiManager : MonoBehaviour
 
         Vector3 explosionOrigin = spawnedFish.transform.position;
         Destroy(spawnedFish);
+        showFishStats.hideFishInfo();
 
         explodedFishToCoin(coinAmount, explosionOrigin);
     }
@@ -320,7 +322,7 @@ public class UiManager : MonoBehaviour
         {
             if (coin == null) yield break;
 
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float t = elapsed / duration;
 
             Vector3 currentPos = Mathf.Pow(1 - t, 2) * popPos +
@@ -328,7 +330,7 @@ public class UiManager : MonoBehaviour
                                  Mathf.Pow(t, 2) * coinTargetLocation.position;
 
             coin.position = currentPos;
-            coin.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+            coin.Rotate(0, 0, rotationSpeed * Time.unscaledDeltaTime);
 
             coin.localScale = Vector3.Lerp(initialScale, initialScale * 0.35f, t);
 
@@ -365,7 +367,7 @@ public class UiManager : MonoBehaviour
         while (elapsed < duration)
         {
             if (moneyText == null) yield break;
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
 
             textTransform.localScale = Vector3.Lerp(punchScale, originalTargetScale, elapsed / duration);
             yield return null;

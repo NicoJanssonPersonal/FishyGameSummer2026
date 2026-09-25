@@ -6,10 +6,10 @@ public class NewCardManager : MonoBehaviour
 {
     public GameObject cardPrefab;
     public Transform cardParent; // Drag Canvas or UI Panel here
-    
+
     [Header("Juice Settings")]
     [Tooltip("Distance below target position cards start sliding in from")]
-    public float slideOffsetY = -800f; 
+    public float slideOffsetY = -800f;
 
     private GameObject[] spawnedCards;
     private Vector3[] originalScales;
@@ -32,6 +32,21 @@ public class NewCardManager : MonoBehaviour
     private IEnumerator upgradeTime()
     {
         yield return new WaitForSecondsRealtime(0.33f);
+
+        float duration = 0.2f;
+        float elapsed = 0f;
+        float initialScale = Time.timeScale;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            Time.timeScale = Mathf.Lerp(initialScale, 0f, Mathf.SmoothStep(0f, 1f, t));
+
+            yield return null;
+        }
+
         Time.timeScale = 0f;
         StartCoroutine(SpawnCardsRoutine());
     }
