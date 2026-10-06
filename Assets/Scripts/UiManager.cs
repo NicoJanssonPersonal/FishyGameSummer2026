@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
@@ -47,6 +48,7 @@ public class UiManager : MonoBehaviour
 
     public AudioManager audioManager;
 
+
     void Start()
     {
         lastMaxXp = GlobalStats.expTonNextLevel;
@@ -62,6 +64,25 @@ public class UiManager : MonoBehaviour
         SpeedOmeter();
         compass();
         updateNitroBar();
+
+
+        if (DockColliderChecker.isNearDock)
+        {
+            showUiButtonForDocks();
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                changeSceneToTavern();
+            }
+
+        }
+    }
+    private void changeSceneToTavern()
+    {
+        SceneManager.LoadScene("Tavern");
+    }
+    private void showUiButtonForDocks()
+    {
+        //logic for showing keybind
     }
 
     void updateXpBar()
@@ -220,8 +241,8 @@ public class UiManager : MonoBehaviour
                 fishRect.pivot = new Vector2(0.5f, 0.5f);
                 fishRect.anchoredPosition = Vector2.zero;
             }
-            
-            
+
+
             StartCoroutine(AnimateFishSequence(spawnedFish, coinAmount));
         }
         else

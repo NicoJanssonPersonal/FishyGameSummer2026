@@ -12,6 +12,7 @@ public class NewCardController : MonoBehaviour
     public Image cardSymbolPlace;
     public Image cardSymbolBoxPlace;
     public Image cardDecorationsPlace;
+    public Image backCardDecorationsPlace;
     public Image cardRarityIndicatorPlace;
     public Image cardRarityBannerPlace;
     public Image cardBackground;
@@ -20,6 +21,7 @@ public class NewCardController : MonoBehaviour
     public Sprite[] cardImages;
     public Sprite[] cardRarityBanner;
     public Sprite[] cardRarityIndicator;
+    public Sprite[] cardDecorations;
 
     public Color[] rarityColors = { Color.lightBlue, Color.limeGreen, Color.purple, Color.gold };
 
@@ -69,6 +71,7 @@ public class NewCardController : MonoBehaviour
 
         changeColor(rarityColors[cardRarity]);
         changeText(Text);
+        changeDecorations(Text);
 
     }
     private void changeColor(Color color)
@@ -78,6 +81,38 @@ public class NewCardController : MonoBehaviour
         //cardBackground.color = color;
         //cardTextPlace.color = color;
         cardSymbolBoxPlace.color = color;
+    }
+    private void changeDecorations(String text)
+    {
+        switch (text)
+        {
+            case "cardsIconCardRarity":
+                backCardDecorationsPlace.sprite = cardDecorations[6];
+                cardDecorationsPlace.gameObject.SetActive(false);
+                break;
+            case "cardsIconFishRarity":
+                cardDecorationsPlace.sprite = cardDecorations[2];
+                backCardDecorationsPlace.sprite = cardDecorations[2];
+                break;
+            case "cardsIconMoreCoins":
+                cardDecorationsPlace.sprite = cardDecorations[3];
+                backCardDecorationsPlace.sprite = cardDecorations[3];
+                break;
+            case "cardsIconPlopAmount":
+                backCardDecorationsPlace.sprite = cardDecorations[5];
+                cardDecorationsPlace.gameObject.SetActive(false);
+                break;
+            case "cardsIconFishingRange":
+                cardDecorationsPlace.sprite = cardDecorations[0];
+                backCardDecorationsPlace.sprite = cardDecorations[1];
+                break;
+            case "cardsIconMoreXP":
+                cardDecorationsPlace.sprite = cardDecorations[4];
+                backCardDecorationsPlace.sprite = cardDecorations[4];
+                break;
+            default:
+                break;
+        }
     }
     private void changeText(string text)
     {
@@ -147,35 +182,35 @@ public class NewCardController : MonoBehaviour
     {
         if (Stat.StartsWith("plop amount"))
         {
-            GlobalStats.plopAmount *= 1f + upgradeAmount/100f;
+            GlobalStats.plopAmount *= 1f + upgradeAmount / 100f;
             Debug.Log("current plopamount = " + GlobalStats.plopAmount);
         }
         if (Stat.StartsWith("xp gain"))
         {
-            GlobalStats.xpGain *= 1f + upgradeAmount/100f;
+            GlobalStats.xpGain *= 1f + upgradeAmount / 100f;
             Debug.Log("current xp gain = " + GlobalStats.xpGain);
         }
         if (Stat.StartsWith("money gain"))
         {
-            GlobalStats.moneyGain *= 1f + upgradeAmount/100f;
+            GlobalStats.moneyGain *= 1f + upgradeAmount / 100f;
             Debug.Log("current money gain = " + GlobalStats.moneyGain);
 
         }
         if (Stat.StartsWith("fish rarity"))
         {
-            GlobalStats.fishRarity *= 1f + upgradeAmount/100f;
+            GlobalStats.fishRarity *= 1f + upgradeAmount / 100f;
             Debug.Log("current fish rarity = " + GlobalStats.fishRarity);
 
         }
         if (Stat.StartsWith("card rarity"))
         {
-            GlobalStats.rarityChance *= 1f + upgradeAmount/100f;
+            GlobalStats.rarityChance *= 1f + upgradeAmount / 100f;
             Debug.Log("current card rarity chance = " + GlobalStats.rarityChance);
 
         }
         if (Stat.StartsWith("fishing range"))
         {
-            GlobalStats.fishingRange *= 1f + upgradeAmount/100f;
+            GlobalStats.fishingRange *= 1f + upgradeAmount / 100f;
             Debug.Log("current fishing range = " + GlobalStats.fishingRange);
         }
         //Debug.Log(GlobalStats.Level);
