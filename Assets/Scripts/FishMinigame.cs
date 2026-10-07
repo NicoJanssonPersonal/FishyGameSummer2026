@@ -153,6 +153,7 @@ public class FishMinigame : MonoBehaviour
         }
     }
     private bool thisFishCaught = false;
+    private int highestZone = 0;
     void MoveFishToZone(int zoneIndex)
     {
         if (zoneIndex >= greenZoneObjects.Length && !thisFishCaught)
@@ -165,11 +166,64 @@ public class FishMinigame : MonoBehaviour
         RectTransform zone = greenZoneObjects[zoneIndex].GetComponent<RectTransform>();
         Vector3 targetPos = zone.position;
         targetPos.y += Random.Range(5f, 30f);
-        currentFishMult = Mathf.Min(10, currentFishMult + 1); // cappar multen ti 10
+        if (zoneIndex > highestZone)
+        {
+            currentFishMult = Mathf.Min(20, currentFishMult + 1); // cappar multen ti 10
+            highestZone = zoneIndex;
+        }
         spawnMultText(currentFishMult, greenZoneObjects[zoneIndex - 1].GetComponent<RectTransform>().position); //måst ha ett bättre sätt att skirva mult, inte bara ta zoneIndex
+        zoneImpact(greenZoneObjects[zoneIndex - 1], currentFishMult);
         fishe.position = targetPos;
     }
+    private void zoneImpact(GameObject zone, int multAmount)
+    {
+        if (zone == null) return;
 
+        if (zone.TryGetComponent<RectTransform>(out RectTransform rectTransform))
+        {
+            Graphic graphic = zone.GetComponent<Graphic>();
+
+            // Scale values based on multiplier
+            float punchAmount = 0.12f + (multAmount * 0.025f);
+            float flashIntensity = Mathf.Clamp01(0.3f + (multAmount * 0.1f));
+            float duration = 0.2f;
+
+            StartCoroutine(JuiceZoneImpact(rectTransform, graphic, punchAmount, flashIntensity, duration));
+        }
+    }
+
+    private IEnumerator JuiceZoneImpact(RectTransform target, Graphic graphic, float punchAmount, float flashIntensity, float duration)
+    {
+        Vector3 originalScale = target.localScale;
+        Color originalColor = graphic != null ? graphic.color : Color.white;
+
+        Color targetColor = Color.Lerp(originalColor, Color.white, flashIntensity);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+
+            float scaleMultiplier = 1f + (Mathf.Sin(progress * Mathf.PI) * punchAmount);
+            target.localScale = originalScale * scaleMultiplier;
+
+            if (graphic != null)
+            {
+                float colorT = Mathf.Sin(progress * Mathf.PI);
+                graphic.color = Color.Lerp(originalColor, targetColor, colorT);
+            }
+
+            yield return null;
+        }
+
+        target.localScale = originalScale;
+        if (graphic != null)
+        {
+            graphic.color = originalColor;
+        }
+    }
     bool IsOverlapping(RectTransform fish, RectTransform zone)
     {
         Vector3[] fishCorners = new Vector3[4];
@@ -201,7 +255,7 @@ public class FishMinigame : MonoBehaviour
     void CatchFish()
     {
         animator.SetTrigger("catch");
-
+        highestZone = 0;
         if (!thisFishCaught)
         {
             float fishLenght = getLength(thisFishDifficulty);
@@ -471,10 +525,15 @@ public class FishMinigame : MonoBehaviour
 
     void spawnMultText(int multAmount, Vector3 prevZonePos)
     {
-        if (multAmount > 1)
+        if (multAmount >= 1)
         {
-            multTextHolder.position = prevZonePos;
+            multTextHolder.position = prevZonePos + new Vector3(Random.Range(-25, 25), 0f, 0f);
+            multTextHolder.rotation = Quaternion.Euler(0, 0, Random.Range(-20f, 20f));
+
+            float textScale = Mathf.Max(1f, 1f + (multAmount / 10f));
+
             multText.text = multAmount.ToString() + "x";
+            multText.fontSize = 36 * textScale;
 
             float t = Mathf.Clamp01((multAmount - 2f) / 8f);
 
