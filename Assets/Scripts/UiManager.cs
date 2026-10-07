@@ -47,10 +47,12 @@ public class UiManager : MonoBehaviour
     public RectTransform coinTargetLocation;
 
     public AudioManager audioManager;
+    public Image dockButtonShowCase;
 
 
     void Start()
     {
+        dockButtonShowCase.gameObject.SetActive(false);
         lastMaxXp = GlobalStats.expTonNextLevel;
         lastLevel = GlobalStats.Level;
         orignalPosFishHolder = caughtFishHolder.anchoredPosition;
@@ -68,22 +70,22 @@ public class UiManager : MonoBehaviour
 
         if (DockColliderChecker.isNearDock)
         {
-            showUiButtonForDocks();
-            if (Input.GetKeyDown(KeyCode.T))
+            dockButtonShowCase.gameObject.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 changeSceneToTavern();
             }
-
+        }else
+        {
+            dockButtonShowCase.gameObject.SetActive(false);
         }
     }
     private void changeSceneToTavern()
     {
         SceneManager.LoadScene("Tavern");
     }
-    private void showUiButtonForDocks()
-    {
-        //logic for showing keybind
-    }
+
 
     void updateXpBar()
     {
@@ -189,16 +191,16 @@ public class UiManager : MonoBehaviour
 
         switch (fishdiff)
         {
-            case 1: fishName = "Captain Krill"; break;
-            case 2: fishName = "Swimba"; break;
-            case 3: fishName = "Makerel More"; break;
-            case 4: fishName = "The Notorious P.E.R.C.H"; break;
+            case 1: fishName = "Billy Bob"; break;
+            case 2: fishName = "Shophead"; break;
+            case 3: fishName = "Gator Gar"; break;
+            case 4: fishName = "Mermfish"; break;
             case 5: fishName = "Emilbert"; break;
-            case 6: fishName = "Pike Tyson"; break;
-            case 7: fishName = "En Grisss!"; break;
-            case 8: fishName = "Swim Shady"; break;
-            case 9: fishName = "Darth Baiter"; break;
-            case 10: fishName = "Blubba The Hut"; break;
+            case 6: fishName = "Gunnar"; break;
+            case 7: fishName = "Chicken!"; break;
+            case 8: fishName = "Bumbee"; break;
+            case 9: fishName = "Spa Slipper"; break;
+            case 10: fishName = "Tunashark"; break;
             default: fishName = "MYSTERY FISH"; break;
         }
 
