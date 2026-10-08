@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class sceneManager : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class sceneManager : MonoBehaviour
     public GameObject mainCamera;
     public GameObject slotMachinePrefab;
     public GameObject updgradeBenchPrefab;
+
+    public GameObject endRunOutline;
     void Start()
     {
 
@@ -14,22 +17,15 @@ public class sceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        testInputs();
+        if (Input.GetKeyDown(KeyCode.E) && mainCamera.gameObject.activeInHierarchy)
+        {
+            endRunOutline.SetActive(true);
+            backOutofTavern();
+        }
     }
-    void testInputs()
+    public void backOutofTavern()
     {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            OpenSlotMachineView();
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            OpenUpgradeView();
-        }
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            BackToRoom();
-        }
+        SceneManager.LoadScene("Map");
     }
     public void OpenUpgradeView()
     {
