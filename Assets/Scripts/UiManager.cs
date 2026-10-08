@@ -48,7 +48,7 @@ public class UiManager : MonoBehaviour
 
     public AudioManager audioManager;
     public Image dockButtonShowCase;
-
+    public GameObject dockbuttonOutline;
 
     void Start()
     {
@@ -74,6 +74,7 @@ public class UiManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
+                dockbuttonOutline.SetActive(true);
                 changeSceneToTavern();
             }
         }else
