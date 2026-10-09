@@ -11,6 +11,8 @@ TagManager:
   - fiskarDude
   - RailGunShot
   - Terrain
+  - Bert
+  - BertTarget
   layers:
   - Default
   - TransparentFX

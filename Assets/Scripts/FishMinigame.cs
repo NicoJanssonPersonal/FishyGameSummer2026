@@ -184,7 +184,7 @@ public class FishMinigame : MonoBehaviour
             Graphic graphic = zone.GetComponent<Graphic>();
 
             // Scale values based on multiplier
-            float punchAmount = 0.12f + (multAmount * 0.025f);
+            float punchAmount = 0.5f + (multAmount * 0.025f);
             float flashIntensity = Mathf.Clamp01(0.3f + (multAmount * 0.1f));
             float duration = 0.2f;
 
@@ -207,7 +207,8 @@ public class FishMinigame : MonoBehaviour
             float progress = elapsedTime / duration;
 
             float scaleMultiplier = 1f + (Mathf.Sin(progress * Mathf.PI) * punchAmount);
-            target.localScale = originalScale * scaleMultiplier;
+
+            target.localScale = new Vector3(originalScale.x, originalScale.y * scaleMultiplier, originalScale.z);
 
             if (graphic != null)
             {
