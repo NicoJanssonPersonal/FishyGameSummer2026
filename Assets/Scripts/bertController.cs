@@ -5,9 +5,12 @@ public class bertController : MonoBehaviour
 {
     public Animator bertAnimator;
     [SerializeField] private float rotationSpeed = 5.0f;
+    [SerializeField] private float stoppingDistance = 0.5f;
+
+    public GameObject[] bertTargets;
 
     private NavMeshAgent agentBert;
-    private Transform targetTransform;
+    private Vector3 currentTarget;
 
     void Start()
     {
@@ -18,25 +21,35 @@ public class bertController : MonoBehaviour
             agentBert.updateRotation = false;
         }
 
-        GameObject targetObj = GameObject.FindGameObjectWithTag("BertTarget");
-        if (targetObj != null)
-        {
-            targetTransform = targetObj.transform;
-        }
-        else
-        {
-            Debug.LogWarning("bertController: No GameObject found with tag 'BertTarget'!");
-        }
+        PickNewRandomTarget();
     }
 
     void Update()
     {
-        if (targetTransform == null) return;
         if (agentBert == null || !agentBert.isActiveAndEnabled || !agentBert.isOnNavMesh) return;
+        if (bertTargets == null || bertTargets.Length == 0) return;
 
-        agentBert.SetDestination(targetTransform.position);
+        agentBert.SetDestination(currentTarget);
 
         RotateBertTowardsGoal();
+
+        if (!agentBert.pathPending && agentBert.remainingDistance <= stoppingDistance)
+        {
+            PickNewRandomTarget();
+        }
+    }
+
+    private void PickNewRandomTarget()
+    {
+        if (bertTargets != null && bertTargets.Length > 0)
+        {
+            int randomIndex = Random.Range(0, bertTargets.Length);
+
+            if (bertTargets[randomIndex] != null)
+            {
+                currentTarget = bertTargets[randomIndex].transform.position;
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -59,9 +72,9 @@ public class bertController : MonoBehaviour
     {
         Vector3 direction = agentBert.velocity;
 
-        if (direction.sqrMagnitude < 0.1f && targetTransform != null)
+        if (direction.sqrMagnitude < 0.1f)
         {
-            direction = targetTransform.position - transform.position;
+            direction = currentTarget - transform.position;
         }
 
         direction.y = 0f;
