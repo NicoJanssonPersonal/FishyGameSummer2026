@@ -812,6 +812,87 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6919756545882998281, guid: f570b9777af285a468ce65a56df5b655, type: 3}
   m_PrefabInstance: {fileID: 20855229}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &23508897
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 398733012}
+    m_Modifications:
+    - target: {fileID: 7019456406169563138, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_Range
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019456406169563138, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019456406169563138, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_Color.b
+      value: 0.07812488
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019456406169563138, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019456406169563138, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019456406169563138, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_Intensity
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7136690534305024273, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_Name
+      value: lantern1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.311
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.975
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
 --- !u!1001 &28682901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8989,6 +9070,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3016118061800239028, guid: 4949be5eb6beb9e40b372d469baeca0d, type: 3}
       insertIndex: 0
       addedObject: {fileID: 783780316}
+    - targetCorrespondingSourceObject: {fileID: 3016118061800239028, guid: 4949be5eb6beb9e40b372d469baeca0d, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 917915571}
     - targetCorrespondingSourceObject: {fileID: 3016118061800239028, guid: 4949be5eb6beb9e40b372d469baeca0d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1924105977}
@@ -20337,6 +20421,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1587858163486516038, guid: d57e00d733d4ff14e8a4a4689aaf757f, type: 3}
   m_PrefabInstance: {fileID: 916565554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &917915571 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7512372060448134059, guid: 8e3ccc1ea162e854fb9bc034dc3232f5, type: 3}
+  m_PrefabInstance: {fileID: 23508897}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &922292391 stripped
 Transform:
@@ -50516,14 +50605,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e034a4197c93f040b775fb8680ed1ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DaylightCycle
-  targetDayLengthInMinutes: 1
+  targetDayLengthInMinutes: 2
   targetNightLengthInMinutes: 2
-  startHour: 7
+  startHour: 17
   sunColorGradient:
     serializedVersion: 2
-    key0: {r: 0.15216066, g: 0, b: 0.23584908, a: 1}
-    key1: {r: 1, g: 0.6084906, b: 0.62747276, a: 1}
-    key2: {r: 1, g: 0.8561321, b: 0.7122642, a: 0}
+    key0: {r: 0.3160377, g: 0.61780703, b: 1, a: 1}
+    key1: {r: 1, g: 0.8025, b: 0.75, a: 1}
+    key2: {r: 1, g: 0.92110366, b: 0.8443396, a: 0}
     key3: {r: 1, g: 1, b: 1, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -50677,7 +50766,7 @@ MonoBehaviour:
   deepColorGradient:
     serializedVersion: 2
     key0: {r: 0.0000000146200065, g: 0, b: 0.007843138, a: 1}
-    key1: {r: 0.0026459405, g: 0, b: 0.08627451, a: 1}
+    key1: {r: 0.0017152674, g: 0, b: 0.03773582, a: 1}
     key2: {r: 0.16037738, g: 0.0537113, b: 0.09703973, a: 0}
     key3: {r: 0, g: 0.18025112, b: 1, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -50707,7 +50796,7 @@ MonoBehaviour:
   surfFoamColorGradient:
     serializedVersion: 2
     key0: {r: 0.054769337, g: 0, b: 0.1792453, a: 0.3529412}
-    key1: {r: 0.07087785, g: 0, b: 0.509434, a: 0.3529412}
+    key1: {r: 0.043105934, g: 0, b: 0.31132078, a: 0.3529412}
     key2: {r: 0.5176471, g: 0.2901961, b: 0.34015262, a: 0}
     key3: {r: 0.1745283, g: 0.6924712, b: 1, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
