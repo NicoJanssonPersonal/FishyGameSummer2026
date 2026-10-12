@@ -15,7 +15,6 @@ public class bertController : MonoBehaviour
 
     void Update()
     {
-        // Check if agent is close to destination or doesn't have an active path
         if (!agentBert.pathPending && agentBert.remainingDistance <= agentBert.stoppingDistance)
         {
             Vector3 point;
@@ -35,19 +34,15 @@ public class bertController : MonoBehaviour
             return false;
         }
 
-        // Standard Unity plane dimensions are 10 x 10 units
         float planeWidth = plane.localScale.x * 10f;
         float planeLength = plane.localScale.z * 10f;
 
-        // Generate a random local point within plane boundaries (-half to +half)
         float randomX = Random.Range(-planeWidth / 2f, planeWidth / 2f);
         float randomZ = Random.Range(-planeLength / 2f, planeLength / 2f);
 
-        // Convert offset point into world space position relative to the plane center
         Vector3 randomPoint = plane.position + (plane.right * randomX) + (plane.forward * randomZ);
 
         NavMeshHit hit;
-        // Search distance updated to 5.0f to accommodate larger mesh scales safely
         if (NavMesh.SamplePosition(randomPoint, out hit, 5.0f, NavMesh.AllAreas))
         {
             result = hit.position;
