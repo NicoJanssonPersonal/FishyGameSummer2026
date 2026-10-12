@@ -4,52 +4,58 @@ using UnityEngine.AI;
 public class bertController : MonoBehaviour
 {
     public Animator bertAnimator;
-    [SerializeField] private float rotationSpeed = 5.0f;
-    [SerializeField] private float stoppingDistance = 0.5f;
-
-    public GameObject[] bertTargets;
+    public Transform targetPlane;
 
     private NavMeshAgent agentBert;
-    private Vector3 currentTarget;
 
     void Start()
     {
         agentBert = GetComponent<NavMeshAgent>();
-
-        if (agentBert != null)
-        {
-            agentBert.updateRotation = false;
-        }
-
-        PickNewRandomTarget();
     }
 
     void Update()
     {
-        if (agentBert == null || !agentBert.isActiveAndEnabled || !agentBert.isOnNavMesh) return;
-        if (bertTargets == null || bertTargets.Length == 0) return;
-
-        agentBert.SetDestination(currentTarget);
-
-        RotateBertTowardsGoal();
-
-        if (!agentBert.pathPending && agentBert.remainingDistance <= stoppingDistance)
+        // Check if agent is close to destination or doesn't have an active path
+        if (!agentBert.pathPending && agentBert.remainingDistance <= agentBert.stoppingDistance)
         {
-            PickNewRandomTarget();
+            Vector3 point;
+            if (RandomPointOnPlane(targetPlane, out point))
+            {
+                Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
+                agentBert.SetDestination(point);
+            }
         }
     }
 
-    private void PickNewRandomTarget()
+    bool RandomPointOnPlane(Transform plane, out Vector3 result)
     {
-        if (bertTargets != null && bertTargets.Length > 0)
+        if (plane == null)
         {
-            int randomIndex = Random.Range(0, bertTargets.Length);
-
-            if (bertTargets[randomIndex] != null)
-            {
-                currentTarget = bertTargets[randomIndex].transform.position;
-            }
+            result = Vector3.zero;
+            return false;
         }
+
+        // Standard Unity plane dimensions are 10 x 10 units
+        float planeWidth = plane.localScale.x * 10f;
+        float planeLength = plane.localScale.z * 10f;
+
+        // Generate a random local point within plane boundaries (-half to +half)
+        float randomX = Random.Range(-planeWidth / 2f, planeWidth / 2f);
+        float randomZ = Random.Range(-planeLength / 2f, planeLength / 2f);
+
+        // Convert offset point into world space position relative to the plane center
+        Vector3 randomPoint = plane.position + (plane.right * randomX) + (plane.forward * randomZ);
+
+        NavMeshHit hit;
+        // Search distance updated to 5.0f to accommodate larger mesh scales safely
+        if (NavMesh.SamplePosition(randomPoint, out hit, 5.0f, NavMesh.AllAreas))
+        {
+            result = hit.position;
+            return true;
+        }
+
+        result = Vector3.zero;
+        return false;
     }
 
     void OnTriggerEnter(Collider other)
@@ -65,27 +71,6 @@ public class bertController : MonoBehaviour
         if (bertAnimator != null)
         {
             bertAnimator.SetTrigger("bertBite");
-        }
-    }
-
-    private void RotateBertTowardsGoal()
-    {
-        Vector3 direction = agentBert.velocity;
-
-        if (direction.sqrMagnitude < 0.1f)
-        {
-            direction = currentTarget - transform.position;
-        }
-
-        direction.y = 0f;
-
-        if (direction.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
-
-            targetRotation *= Quaternion.Euler(0, 180f, 0);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
 }
