@@ -40,6 +40,11 @@ public class SharkController : MonoBehaviour
 
     void Start()
     {
+        if (Random.value < 0.33f) // 33 procent chans att int denhär hajen spawnar
+        {
+            Destroy(gameObject);
+        }
+
         animator = GetComponent<Animator>();
         currentSpeed = normalSpeed;
         spawnPoint = transform.position;
