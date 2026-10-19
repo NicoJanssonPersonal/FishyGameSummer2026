@@ -8,24 +8,12 @@ public class SharkController : MonoBehaviour
     [Header("Movement Speeds")]
     public float normalSpeed = 5f;
     public float wanderSpeed = 2.5f;
-    public float rotationSpeed = 10f;
+    public float rotationSpeed = 720f;
 
     [Header("Detection & Combat")]
     public float detectionRange = 15f;
     public float attackRange = 2f;
     public float attackCooldown = 1.5f;
-
-    [Header("Circle Idle Settings")]
-    public float defaultCircleRadius = 10f;
-    public float baseCircleSpeed = 0.5f;
-
-    [Header("Randomization Settings")]
-    [Tooltip("Vary the size of the pattern per shark")]
-    public float sizeVariance = 3f;
-    [Tooltip("Vary the swimming speed per shark")]
-    public float speedVariance = 0.15f;
-    [Tooltip("Randomly rotate the circular path angle")]
-    public bool randomizeRotation = true;
 
     [Header("Health & Damage")]
     public int maxHits = 5;
@@ -47,13 +35,8 @@ public class SharkController : MonoBehaviour
     private bool isSlowed = false;
 
     private Vector3 spawnPoint;
-    private float circleTimer = 0f;
 
-    public float swimRadius;
-    private Quaternion patternRotation = Quaternion.identity;
-
-    private float actualSpeed;
-    private float actualRadius;
+    public float circleRadius = 10;
 
     void Start()
     {
@@ -67,26 +50,7 @@ public class SharkController : MonoBehaviour
             rb.useGravity = false;
         }
 
-        ApplyRandomVariation();
         FindPlayerTarget();
-    }
-
-    void ApplyRandomVariation()
-    {
-        circleTimer = Random.Range(0f, Mathf.PI * 2f);
-
-        actualSpeed = baseCircleSpeed + Random.Range(-speedVariance, speedVariance);
-        actualRadius = defaultCircleRadius + Random.Range(-sizeVariance, sizeVariance);
-
-        if (swimRadius <= 0f)
-        {
-            swimRadius = actualRadius;
-        }
-
-        if (randomizeRotation)
-        {
-            patternRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
-        }
     }
 
     void Update()
@@ -123,10 +87,31 @@ public class SharkController : MonoBehaviour
         }
         else
         {
-            SwimCircle();
+            SwimCircle(circleRadius);
         }
     }
+    private float currentAngle = 0f;
+    private void SwimCircle(float radius)
+    {
+        if (radius <= 0.0001f) return;
 
+        float angularSpeed = currentSpeed / radius;
+
+        currentAngle += angularSpeed * Time.deltaTime;
+
+        float x = spawnPoint.x + (Mathf.Cos(currentAngle) * radius);
+        float z = spawnPoint.z + (Mathf.Sin(currentAngle) * radius);
+        Vector3 newPosition = new Vector3(x, spawnPoint.y, z);
+
+        Vector3 moveDirection = newPosition - transform.position;
+
+        if (moveDirection != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(-moveDirection);
+        }
+
+        transform.position = newPosition;
+    }
     void FindPlayerTarget()
     {
         GameObject playerObj = GameObject.FindWithTag("Player");
@@ -149,31 +134,6 @@ public class SharkController : MonoBehaviour
         }
 
         transform.Translate(Vector3.back * currentSpeed * Time.deltaTime);
-    }
-
-    void SwimCircle()
-    {
-        float speedMultiplier = isSlowed ? slowMultiplier : 1f;
-
-        circleTimer += Time.deltaTime * actualSpeed * speedMultiplier;
-
-        float x = Mathf.Cos(circleTimer) * swimRadius;
-        float z = Mathf.Sin(circleTimer) * swimRadius;
-
-        Vector3 targetPosition = spawnPoint + (patternRotation * new Vector3(x, 0, z));
-
-        // Move directly toward the target point along the circle
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, wanderSpeed * speedMultiplier * Time.deltaTime);
-
-        // Rotate to face the direction of movement along the circle
-        Vector3 moveDirection = (targetPosition - transform.position);
-        moveDirection.y = 0;
-
-        if (moveDirection.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(-moveDirection.normalized);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        }
     }
 
     void TryChomp()
@@ -256,25 +216,32 @@ public class SharkController : MonoBehaviour
         currentSpeed = normalSpeed;
         isSlowed = false;
     }
-
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.magenta;
+        Gizmos.color = Color.red;
+
         Vector3 center = Application.isPlaying ? spawnPoint : transform.position;
-        float radius = Application.isPlaying ? actualRadius : defaultCircleRadius;
-        Quaternion rot = Application.isPlaying ? patternRotation : Quaternion.identity;
 
-        Vector3 lastPos = center + (rot * new Vector3(radius, 0, 0));
-        int steps = 50;
-        for (int i = 1; i <= steps; i++)
+        float drawRadius = circleRadius;
+
+        int segments = 36;
+        Vector3 previousPoint = Vector3.zero;
+
+        for (int i = 0; i <= segments; i++)
         {
-            float t = (i / (float)steps) * Mathf.PI * 2f;
-            float x = Mathf.Cos(t) * radius;
-            float z = Mathf.Sin(t) * radius;
-            Vector3 currentPos = center + (rot * new Vector3(x, 0, z));
+            float angle = (i * 360f / segments) * Mathf.Deg2Rad;
 
-            Gizmos.DrawLine(lastPos, currentPos);
-            lastPos = currentPos;
+            // Calculate X and Z for this point on the circle
+            float x = center.x + (Mathf.Cos(angle) * drawRadius);
+            float z = center.z + (Mathf.Sin(angle) * drawRadius);
+            Vector3 currentPoint = new Vector3(x, center.y, z);
+
+            if (i > 0)
+            {
+                Gizmos.DrawLine(previousPoint, currentPoint);
+            }
+
+            previousPoint = currentPoint;
         }
     }
 }
