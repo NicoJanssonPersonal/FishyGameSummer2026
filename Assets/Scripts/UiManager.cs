@@ -12,12 +12,9 @@ public class UiManager : MonoBehaviour
 
     public RectTransform speedometerNeedle;
     public RectTransform compassWheel;
-
-    private bool isWaitingForUpgrade = false;
     private float lastMaxXp;
     private int lastLevel;
 
-    public RectTransform caughtFishHolder;
     public TextMeshProUGUI fishCaughtPrefab;
     public RectTransform peng;
     private List<TextMeshProUGUI> activeFishTexts = new List<TextMeshProUGUI>();
@@ -33,15 +30,8 @@ public class UiManager : MonoBehaviour
     public Image hpBarRed;
 
     public Image NitroBar;
-    private Vector2 orignalPosFishHolder;
-
-    [Header("Fish Holder Animation")]
-    public float slideDuration = 0.4f;
-    private Coroutine slideCoroutine;
-    private bool isHidden = false;
 
     [Header("Juiced Fish & Coin Effects")]
-    public RectTransform slideBoxButton;
     public GameObject[] fishSprites;
     public RectTransform uiCanvas;
     public RectTransform coinTargetLocation;
@@ -55,7 +45,6 @@ public class UiManager : MonoBehaviour
         dockButtonShowCase.gameObject.SetActive(false);
         lastMaxXp = GlobalStats.expTonNextLevel;
         lastLevel = GlobalStats.Level;
-        orignalPosFishHolder = caughtFishHolder.anchoredPosition;
     }
 
     void Update()
@@ -205,23 +194,6 @@ public class UiManager : MonoBehaviour
             default: fishName = "MYSTERY FISH"; break;
         }
 
-        TextMeshProUGUI newFishText = Instantiate(fishCaughtPrefab, caughtFishHolder);
-        newFishText.text = $"{fishName}, {moneyFromFish} GOLD {xpFromFish} XP {fishLenght:F1} Cm {fishWeight:F1} Kg";
-
-        activeFishTexts.Add(newFishText);
-
-        if (activeFishTexts.Count > 5)
-        {
-            Destroy(activeFishTexts[0].gameObject);
-            activeFishTexts.RemoveAt(0);
-        }
-
-        /*for (int i = 0; i < activeFishTexts.Count; i++)
-        {
-            float newYPosition = 40f - (20f * i);
-            activeFishTexts[i].rectTransform.anchoredPosition = new Vector2(0, newYPosition);
-        } */
-
         ShowFishCaught(moneyFromFish, fishdiff, fishName, fishLenght, fishWeight);
     }
     public showFishStats showFishStats;
@@ -244,7 +216,6 @@ public class UiManager : MonoBehaviour
                 fishRect.pivot = new Vector2(0.5f, 0.5f);
                 fishRect.anchoredPosition = Vector2.zero;
             }
-
 
             StartCoroutine(AnimateFishSequence(spawnedFish, coinAmount));
         }
@@ -294,12 +265,6 @@ public class UiManager : MonoBehaviour
         showFishStats.hideFishInfo();
 
         explodedFishToCoin(coinAmount, explosionOrigin);
-    }
-
-    public void explodedFishToCoin(int coinAmount)
-    {
-        Vector3 defaultPos = coinSpawnPoint != null ? coinSpawnPoint.transform.position : Vector3.zero;
-        explodedFishToCoin(coinAmount, defaultPos);
     }
 
     public void explodedFishToCoin(int coinAmount, Vector3 spawnPosition)
@@ -401,52 +366,5 @@ public class UiManager : MonoBehaviour
         {
             textTransform.localScale = originalTargetScale;
         }
-    }
-    public void slideInBox()
-    {
-        if (slideCoroutine != null)
-        {
-            StopCoroutine(slideCoroutine);
-        }
-
-        Vector2 targetPos = isHidden ? orignalPosFishHolder : new Vector2(-270f, orignalPosFishHolder.y);
-        Vector3 targetRot = isHidden ? new Vector3(0f, 0f, 180f) : Vector3.zero;
-
-        isHidden = !isHidden;
-
-        slideCoroutine = StartCoroutine(AnimateBoxSlide(targetPos, targetRot, slideDuration));
-    }
-
-    private IEnumerator AnimateBoxSlide(Vector2 targetPosition, Vector3 targetRotation, float duration)
-    {
-        Vector2 startHolderPos = caughtFishHolder.anchoredPosition;
-        Vector2 startButtonPos = slideBoxButton.anchoredPosition;
-
-        Vector2 movementDelta = targetPosition - startHolderPos;
-        Vector2 targetButtonPos = startButtonPos + movementDelta;
-
-        Quaternion startRotation = slideBoxButton.localRotation;
-        Quaternion endRotation = Quaternion.Euler(targetRotation);
-
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float percent = Mathf.Clamp01(elapsed / duration);
-            float smoothPercent = Mathf.SmoothStep(0f, 1f, percent);
-
-            caughtFishHolder.anchoredPosition = Vector2.Lerp(startHolderPos, targetPosition, smoothPercent);
-            slideBoxButton.anchoredPosition = Vector2.Lerp(startButtonPos, targetButtonPos, smoothPercent);
-            slideBoxButton.localRotation = Quaternion.Lerp(startRotation, endRotation, smoothPercent);
-
-            yield return null;
-        }
-
-        caughtFishHolder.anchoredPosition = targetPosition;
-        slideBoxButton.anchoredPosition = targetButtonPos;
-        slideBoxButton.localRotation = endRotation;
-
-        slideCoroutine = null;
     }
 }
