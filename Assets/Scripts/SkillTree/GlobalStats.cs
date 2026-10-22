@@ -69,6 +69,11 @@ public static class GlobalStats
     private static float _fishRarity = 1f;
     public static float fishRarity { get => _fishRarity; set => _fishRarity = value; }
 
+    public static int _maxFish = 10;
+    public static int maxFish { get => _maxFish; set => _maxFish = value; }
+    public static int _currentFish = 0;
+    public static int currentFish { get => _currentFish; set => _currentFish = value; }
+
     // === SkillTree ===
     private static bool _cannon = false;
     public static bool cannon { get => _cannon; set => _cannon = value; }
@@ -128,6 +133,7 @@ public static class GlobalStats
         PlayerPrefs.SetFloat("GS_xpGain", xpGain);
         PlayerPrefs.SetFloat("GS_moneyGain", moneyGain);
         PlayerPrefs.SetFloat("GS_fishRarity", fishRarity);
+        PlayerPrefs.SetFloat("GS_maxFish", maxFish);
 
         PlayerPrefs.SetFloat("GS_maxHealth", maxHealth);
 
@@ -191,6 +197,7 @@ public static class GlobalStats
         xpGain = PlayerPrefs.GetFloat("GS_xpGain", xpGain);
         moneyGain = PlayerPrefs.GetFloat("GS_moneyGain", moneyGain);
         fishRarity = PlayerPrefs.GetFloat("GS_fishRarity", fishRarity);
+        fishRarity = PlayerPrefs.GetFloat("GS_maxFish", maxFish);
 
         maxHealth = PlayerPrefs.GetFloat("GS_maxHealth", maxHealth);
 

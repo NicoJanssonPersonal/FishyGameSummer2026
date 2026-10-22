@@ -217,7 +217,7 @@ public class UiManager : MonoBehaviour
                 fishRect.anchoredPosition = Vector2.zero;
             }
 
-            StartCoroutine(AnimateFishSequence(spawnedFish, coinAmount));
+            //StartCoroutine(AnimateFishSequence(spawnedFish, coinAmount));
         }
         else
         {

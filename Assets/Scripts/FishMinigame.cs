@@ -41,8 +41,9 @@ public class FishMinigame : MonoBehaviour
 
     public Animator animator;
 
+    public TextMeshProUGUI fishAmount;
 
-
+    private int[] totalOfAllFishWorth;
     void Start()
     {
         fishe = fisheGameObject.GetComponent<RectTransform>();
@@ -54,6 +55,8 @@ public class FishMinigame : MonoBehaviour
         GlobalStats.LoadStats();
         money.text = GlobalStats.money.ToString();
         closeUI();
+        fishAmount.text = 0.ToString() + "/" + GlobalStats.maxFish.ToString();
+        totalOfAllFishWorth = new int[10];
     }
 
     public void debugfiskpos()
@@ -270,15 +273,33 @@ public class FishMinigame : MonoBehaviour
             float xpFromFish = Mathf.Max(1f, (thisFishDifficulty + bonusFromFishSize + bonusFromFishWeight) * 3 * GlobalStats.xpGain);
             GlobalStats.Experince += xpFromFish;
 
-            float moneyFromFish = Mathf.Max(1f, (thisFishDifficulty + bonusFromFishSize + bonusFromFishWeight) * 2 * GlobalStats.moneyGain * Mathf.Max(1f, currentFishMult));
+            float moneyFromFish = Mathf.Max(1f, (thisFishDifficulty + bonusFromFishSize + bonusFromFishWeight) * 2 * Mathf.Max(1f, currentFishMult)); // * GlobalStats.moneyGain
             int amountToAdd = Mathf.RoundToInt(moneyFromFish);
 
             uiManagerScript.updateFishCaught(amountToAdd, Mathf.RoundToInt(xpFromFish), thisFishDifficulty, fishLenght, fishWeight);
             Debug.Log(getLength(thisFishDifficulty).ToString());
 
-            StartCoroutine(AddMoneySmoothly(amountToAdd, 0.5f));
+            // selfnote: use this somewhere else NICO!!!
+            // StartCoroutine(AddMoneySmoothly(amountToAdd, 0.5f));
+            fishStorageFunction(amountToAdd);
+            // next step. fix so that no money is gained before pressing buttoon at dock. aka remove animation at this point
         }
         StartCoroutine(delay());
+    }
+    private int moneyFromAllFish = 0;
+    public void fishStorageFunction(int amountToAdd)
+    {
+        Debug.Log("fishStorageFunction called");
+        GlobalStats.currentFish += 1;
+        fishAmount.text = GlobalStats.currentFish.ToString() + "/" + GlobalStats.maxFish.ToString(); // works
+        totalOfAllFishWorth[GlobalStats.currentFish - 1] = amountToAdd;
+        
+        for (int i = 0; i < totalOfAllFishWorth.Length; i++)
+        {
+            moneyFromAllFish += totalOfAllFishWorth[i];
+        }
+        Debug.Log("money from all fishes " + moneyFromAllFish);
+        moneyFromAllFish = 0; // reset for forloop
     }
     public float getLength(int fishDiff)
     {
@@ -320,8 +341,8 @@ public class FishMinigame : MonoBehaviour
     IEnumerator AddMoneySmoothly(int moneyToAdd, float duration)
     {
         yield return new WaitForSeconds(1f);
-        int startMoney = GlobalStats.money;
-        int targetMoney = startMoney + moneyToAdd;
+        int startMoney = Mathf.RoundToInt(GlobalStats.money * GlobalStats.moneyGain);
+        int targetMoney = startMoney + (moneyToAdd);
         float elapsed = 0f;
 
         while (elapsed < duration)
