@@ -40,6 +40,8 @@ public class UiManager : MonoBehaviour
     public Image dockButtonShowCase;
     public GameObject dockbuttonOutline;
 
+    public FishMinigame fishMinigame;
+
     void Start()
     {
         dockButtonShowCase.gameObject.SetActive(false);
@@ -56,7 +58,6 @@ public class UiManager : MonoBehaviour
         compass();
         updateNitroBar();
 
-
         if (DockColliderChecker.isNearDock)
         {
             dockButtonShowCase.gameObject.SetActive(true);
@@ -66,16 +67,22 @@ public class UiManager : MonoBehaviour
                 dockbuttonOutline.SetActive(true);
                 changeSceneToTavern();
             }
-        }else
+        }
+        else
         {
             dockButtonShowCase.gameObject.SetActive(false);
+        }
+
+        if (DockColliderChecker.enterdDockArea)
+        {
+            fishMinigame.sellFish();
+            DockColliderChecker.enterdDockArea = false;
         }
     }
     private void changeSceneToTavern()
     {
         SceneManager.LoadScene("Tavern");
     }
-
 
     void updateXpBar()
     {

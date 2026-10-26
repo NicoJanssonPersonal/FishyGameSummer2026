@@ -36320,6 +36320,7 @@ MonoBehaviour:
   audioManager: {fileID: 577796781}
   dockButtonShowCase: {fileID: 340400351}
   dockbuttonOutline: {fileID: 17816126}
+  fishMinigame: {fileID: 1653483918}
   showFishStats: {fileID: 1573134494}
   moneyText: {fileID: 1380235533}
 --- !u!4 &1480948972

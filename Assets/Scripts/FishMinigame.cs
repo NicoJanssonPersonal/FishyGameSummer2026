@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -293,13 +294,22 @@ public class FishMinigame : MonoBehaviour
         GlobalStats.currentFish += 1;
         fishAmount.text = GlobalStats.currentFish.ToString() + "/" + GlobalStats.maxFish.ToString(); // works
         totalOfAllFishWorth[GlobalStats.currentFish - 1] = amountToAdd;
-        
+
         for (int i = 0; i < totalOfAllFishWorth.Length; i++)
         {
             moneyFromAllFish += totalOfAllFishWorth[i];
         }
         Debug.Log("money from all fishes " + moneyFromAllFish);
         moneyFromAllFish = 0; // reset for forloop
+    }
+    public void sellFish()
+    {
+        int moneyToAdd = totalOfAllFishWorth.TakeLast(10).Sum();
+        System.Array.Clear(totalOfAllFishWorth, 0, totalOfAllFishWorth.Length);
+        StartCoroutine(AddMoneySmoothly(moneyToAdd, 0.5f));
+        // animate / lerp down number
+        GlobalStats.currentFish = 0;
+        fishAmount.text = GlobalStats.currentFish.ToString() + "/" + GlobalStats.maxFish.ToString(); // works 
     }
     public float getLength(int fishDiff)
     {
