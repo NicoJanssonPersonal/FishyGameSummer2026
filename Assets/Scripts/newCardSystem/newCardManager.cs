@@ -6,6 +6,7 @@ public class NewCardManager : MonoBehaviour
 {
     public GameObject cardPrefab;
     public Transform cardParent; // Drag Canvas or UI Panel here
+    public GameObject backgroundDarken;
 
     [Header("Juice Settings")]
     [Tooltip("Distance below target position cards start sliding in from")]
@@ -57,6 +58,7 @@ public class NewCardManager : MonoBehaviour
         float[] xPositions = new float[] { -200f, 0f, 200f };
         spawnedCards = new GameObject[xPositions.Length];
         originalScales = new Vector3[xPositions.Length];
+        backgroundDarken.SetActive(true);
 
         for (int i = 0; i < xPositions.Length; i++)
         {
@@ -131,6 +133,7 @@ public class NewCardManager : MonoBehaviour
     private IEnumerator DestroyCardsRoutine()
     {
         isAnimating = true;
+        backgroundDarken.SetActive(false);
 
         if (spawnedCards != null && spawnedCards.Length > 0)
         {
