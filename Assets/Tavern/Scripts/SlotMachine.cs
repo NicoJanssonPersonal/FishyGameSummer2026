@@ -42,7 +42,8 @@ public class SlotMachine : MonoBehaviour
 
         // Make sure the default bet is valid and clamped right away
         currentbet = Mathf.Clamp(100, 10, Mathf.Min(10000, GlobalStats.money));
-        betAmountText.text = "Bet amount : " + currentbet;
+        betAmountText.text = "" + currentbet;
+        //betAmountText.text = "Bet amount : " + currentbet;
 
         // Check if we can bet initially
         CheckCanBet();
@@ -96,7 +97,7 @@ public class SlotMachine : MonoBehaviour
             currentbet = maxAllowedBet;
         }
 
-        betAmountText.text = "Bet amount : " + currentbet;
+        betAmountText.text = "" + currentbet;
         CheckCanBet(); // Validate status after modifying
     }
 
@@ -120,7 +121,7 @@ public class SlotMachine : MonoBehaviour
             currentbet = 100;
         }
 
-        betAmountText.text = "Bet amount : " + currentbet;
+        betAmountText.text = "" + currentbet;
         CheckCanBet();
     }
 
