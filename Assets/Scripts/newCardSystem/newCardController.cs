@@ -29,6 +29,9 @@ public class NewCardController : MonoBehaviour
     private int cardRarity = 0;
 
     private String upgradeType = "";
+
+    public Sprite[] cardOutlines;
+    public Image outlinePlace;
     void Start()
     {
         newCardManager = GetComponentInParent<NewCardManager>();
@@ -87,26 +90,32 @@ public class NewCardController : MonoBehaviour
         switch (text)
         {
             case "cardsIconCardRarity":
+                outlinePlace.sprite = cardOutlines[0];
                 backCardDecorationsPlace.sprite = cardDecorations[6];
                 cardDecorationsPlace.gameObject.SetActive(false);
                 break;
             case "cardsIconFishRarity":
+                outlinePlace.sprite = cardOutlines[2];
                 cardDecorationsPlace.sprite = cardDecorations[2];
                 backCardDecorationsPlace.sprite = cardDecorations[2];
                 break;
             case "cardsIconMoreCoins":
+                outlinePlace.sprite = cardOutlines[3];
                 cardDecorationsPlace.sprite = cardDecorations[3];
                 backCardDecorationsPlace.sprite = cardDecorations[3];
                 break;
             case "cardsIconPlopAmount":
+                outlinePlace.sprite = cardOutlines[5];
                 backCardDecorationsPlace.sprite = cardDecorations[5];
                 cardDecorationsPlace.gameObject.SetActive(false);
                 break;
             case "cardsIconFishingRange":
+                outlinePlace.sprite = cardOutlines[1];
                 cardDecorationsPlace.sprite = cardDecorations[0];
                 backCardDecorationsPlace.sprite = cardDecorations[1];
                 break;
             case "cardsIconMoreXP":
+                outlinePlace.sprite = cardOutlines[4];
                 cardDecorationsPlace.sprite = cardDecorations[4];
                 backCardDecorationsPlace.sprite = cardDecorations[4];
                 break;
@@ -215,4 +224,17 @@ public class NewCardController : MonoBehaviour
         }
         //Debug.Log(GlobalStats.Level);
     }
+    Vector3 ogScale;
+    public void toggleCardHovered()
+    {
+        outlinePlace.gameObject.SetActive(true);
+        ogScale = gameObject.transform.localScale;
+        gameObject.transform.localScale = gameObject.transform.localScale * 1.10f;
+    }
+    public void toggleCardNotHovered()
+    {
+        outlinePlace.gameObject.SetActive(false);
+        gameObject.transform.localScale = ogScale;
+    }
+
 }
