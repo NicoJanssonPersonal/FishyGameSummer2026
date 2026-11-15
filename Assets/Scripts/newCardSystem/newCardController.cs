@@ -34,6 +34,7 @@ public class NewCardController : MonoBehaviour
     public Image outlinePlace;
     void Start()
     {
+        outlinePlace.gameObject.SetActive(false);
         newCardManager = GetComponentInParent<NewCardManager>();
         Sprite cardImg = cardImages[UnityEngine.Random.Range(0, cardImages.Length)];
         cardRarity = weightedRarityCalculation();
