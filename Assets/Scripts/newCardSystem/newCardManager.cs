@@ -5,7 +5,7 @@ using UnityEngine;
 public class NewCardManager : MonoBehaviour
 {
     public GameObject cardPrefab;
-    public Transform cardParent; // Drag Canvas or UI Panel here
+    public Transform cardParent;
     public GameObject backgroundDarken;
 
     [Header("Juice Settings")]
@@ -15,22 +15,37 @@ public class NewCardManager : MonoBehaviour
     private GameObject[] spawnedCards;
     private Vector3[] originalScales;
 
-    private bool calledOnce = false;
+    private bool isLevelingUp = false;
     private bool isAnimating = false;
+    private int pendingLevelUps = 0;
 
     void Update()
     {
-        if (!calledOnce && !isAnimating)
+        CheckForLevelUps();
+
+        if (pendingLevelUps > 0 && !isLevelingUp && !isAnimating)
         {
-            if (checkLevel())
-            {
-                StartCoroutine(upgradeTime());
-                calledOnce = true;
-            }
+            isLevelingUp = true;
+            StartCoroutine(UpgradeTimeRoutine());
         }
     }
 
-    private IEnumerator upgradeTime()
+    private void CheckForLevelUps()
+    {
+        if (FishMinigame.isUIOpen) return;
+
+        while (GlobalStats.Experince >= GlobalStats.expTonNextLevel)
+        {
+            GlobalStats.Level++;
+            GlobalStats.Experince -= GlobalStats.expTonNextLevel;
+            GlobalStats.expTonNextLevel = GlobalStats.expTonNextLevel * 1.33f;
+            pendingLevelUps++;
+
+            Debug.Log("Leveled up to " + GlobalStats.Level + "! Pending choices: " + pendingLevelUps);
+        }
+    }
+
+    private IEnumerator UpgradeTimeRoutine()
     {
         yield return new WaitForSecondsRealtime(0.33f);
 
@@ -44,7 +59,6 @@ public class NewCardManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
 
             Time.timeScale = Mathf.Lerp(initialScale, 0f, Mathf.SmoothStep(0f, 1f, t));
-
             yield return null;
         }
 
@@ -55,6 +69,8 @@ public class NewCardManager : MonoBehaviour
     private IEnumerator SpawnCardsRoutine()
     {
         isAnimating = true;
+        pendingLevelUps--;
+
         float[] xPositions = new float[] { -200f, 0f, 200f };
         spawnedCards = new GameObject[xPositions.Length];
         originalScales = new Vector3[xPositions.Length];
@@ -133,7 +149,11 @@ public class NewCardManager : MonoBehaviour
     private IEnumerator DestroyCardsRoutine()
     {
         isAnimating = true;
-        backgroundDarken.SetActive(false);
+
+        if (pendingLevelUps <= 0)
+        {
+            backgroundDarken.SetActive(false);
+        }
 
         if (spawnedCards != null && spawnedCards.Length > 0)
         {
@@ -187,10 +207,17 @@ public class NewCardManager : MonoBehaviour
         }
 
         spawnedCards = null;
-        calledOnce = false;
         isAnimating = false;
 
-        Time.timeScale = 1f;
+        if (pendingLevelUps > 0)
+        {
+            StartCoroutine(SpawnCardsRoutine());
+        }
+        else
+        {
+            isLevelingUp = false;
+            Time.timeScale = 1f;
+        }
     }
 
     private float EaseOutBack(float t)
@@ -203,18 +230,5 @@ public class NewCardManager : MonoBehaviour
     private float EaseInCubic(float t)
     {
         return t * t * t;
-    }
-
-    bool checkLevel()
-    {
-        if (GlobalStats.Experince < GlobalStats.expTonNextLevel) return false;
-        if (FishMinigame.isUIOpen) return false;
-
-        GlobalStats.Level++;
-        GlobalStats.Experince -= GlobalStats.expTonNextLevel;
-        GlobalStats.expTonNextLevel = GlobalStats.expTonNextLevel * 1.33f;
-
-        Debug.Log("Leveled up to " + GlobalStats.Level + "! Exp needed for next: " + GlobalStats.expTonNextLevel);
-        return true;
     }
 }
