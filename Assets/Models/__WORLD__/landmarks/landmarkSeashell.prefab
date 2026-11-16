@@ -64,9 +64,45 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -2696980673015873503, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1352553863953798561, guid: b603765051da8214eb09e89132bb68b0, type: 3}
+    - target: {fileID: -1276278913774318959, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7361c344341283840b9836582430b2e6, type: 2}
+    - target: {fileID: 645098804229233803, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -7937340691197118120, guid: b603765051da8214eb09e89132bb68b0, type: 3}
     - target: {fileID: 919132149155446097, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
       propertyPath: m_Name
       value: landmarkSeashell
+      objectReference: {fileID: 0}
+    - target: {fileID: 3863438385085976457, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 3906130615805142554, guid: b603765051da8214eb09e89132bb68b0, type: 3}
+    - target: {fileID: 6011823595362278671, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011823595362278671, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011823595362278671, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011823595362278671, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011823595362278671, guid: 2d102c6966ca30d4180dec50da381e03, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
